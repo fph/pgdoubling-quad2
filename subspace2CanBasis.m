@@ -4,9 +4,9 @@ function [X,p,swaps]=subspace2CanBasis(U,varargin)
 % [X,p,swaps]=subspace2CanBasis(U);
 %
 % output: 
-%
-% X,p: such that XXX
-% swaps: number of swaps performed by the algorithm
+% X,p: such that U(p(1:end),:) and [I;X] span the same subspace
+% swaps: number of "swaps" performed during the algorithm
+% (each swap is essentially a rank-1 update to X and costs O(n^2))
 %
 % optional arguments:
 %
@@ -73,7 +73,7 @@ while(swaps<maxSwaps)
     swaps=swaps+1;
 end
 if swaps==maxSwaps
-    warning('cbrpack:stagnated','failed to produce a X with the given threshold. Try running with a larger threshold.');
+    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold (obtained:%d, required:%d). Try running with a larger threshold.',maxval,threshold);
 end
 
 if swaps>=k
