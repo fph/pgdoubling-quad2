@@ -1,5 +1,5 @@
 function U=canBasis2Subspace(X,p)
-% "unpack" a canonical basis representation returning a matrix spanning the subspace
+% "unpack" a canonical basis returning a matrix spanning the subspace
 %
 % U=canBasis2Subspace(X,p)
 %
