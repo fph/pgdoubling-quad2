@@ -48,11 +48,10 @@ else
     v=symBasisHeuristic(U);
 end
 
-n=size(U,1);
-if mod(n,2)~=0
-    error('cbrpack:oddSize','the input matrix must have an even number of rows');
+[m n]=size(U);
+if m~=2*n
+    error('cbrpack:oddSize','symplectic matrices should be 2nxn');
 end
-n=n/2;
 
 S=rowSwap(U,v,'N');
 
@@ -68,9 +67,11 @@ X=S(n+1:end,:)/S(1:n,:);
 if(strcmp(lastid,'MATLAB:singularMatrix'))
     warning('cbrpack:badInitialPermutation', 'bad initial permutation provided - computing a new one using the heuristic. All fine, but this costs O(n^3)');
     v=symBasisHeuristic(U);
-    S=symplecticSwap(U,v,'N');
+    S=rowSwap(U,v,'N');
     X=S(n+1:end,:)/S(1:n,:);
 end
 warning(saved);
+
+%optimization
 
 

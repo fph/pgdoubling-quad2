@@ -7,4 +7,4 @@ function U=symBasis2SymplecticSubspace(X,v)
 %
 
 U=[eye(size(X));X];
-U=symplecticSwap(U,v,'T');
+U=rowSwap(U,v,'T');

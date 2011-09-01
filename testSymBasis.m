@@ -1,4 +1,5 @@
 function testSymBasis
+reset(RandStream.getDefaultStream);
 
 U=[1:6]';
 assertExceptionThrown(@() rowSwap(U,[1 0 0 0],'N'),'cbrpack:wrongPermutationLength');
@@ -17,5 +18,12 @@ U=[2;1];
 
 assertExceptionThrown(@() symplecticSubspace2SymBasis([1]),'cbrpack:oddSize');
 
+U=randn(10,4);
+assertExceptionThrown(@() symplecticSubspace2SymBasis(U),'cbrpack:oddSize');
+
+U=randn(10,5).*exp(randn(10,5));
+[X,v]=symplecticSubspace2SymBasis(U);
+U2=symBasis2SymplecticSubspace(X,v);
+assertElementsAlmostEqual(subspace(U2,U),0);
 
 
