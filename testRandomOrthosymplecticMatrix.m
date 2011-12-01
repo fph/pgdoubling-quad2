@@ -6,8 +6,13 @@ assertExceptionThrown(@() randomOrthosymplecticMatrix(3),'cbrpack:oddSize');
 
 n=5;
 
-for k=1:100
+for k=1:25
 S=randomOrthosymplecticMatrix(2*n);
-assertVectorsAlmostEqual(S*S',eye(2*n));
-assertVectorsAlmostEqual(S*matgic.jay(2*n)*S',matgic.jay(2*n));
+assertVectorsAlmostEqual(S'*S,eye(2*n));
+assertVectorsAlmostEqual(S'*matgic.jay(2*n)*S,matgic.jay(2*n));
+end
+
+for k=1:25
+S=randomLagrangianSubspace(2*n);
+assertVectorsAlmostEqual(S'*matgic.jay(2*n)*S,zeros(n));
 end
