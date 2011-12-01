@@ -74,4 +74,7 @@ warning(saved);
 
 %optimization
 
-
+%final check
+if norm(X-X','fro')/norm(X) > sqrt(eps)
+    warning('cbrpack:notSymplectic','the resulting matrix is numerically very far from Hermitian --- was your starting subspace symplectic?');
+end
