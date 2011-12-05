@@ -36,7 +36,20 @@ for k=1:10
     assertElementsAlmostEqual(X,X2);
 end
 
-U=randomLagrangianSubspace(2*n);
-[X,v]=symplecticSubspace2SymBasis(U);
-U2=symBasis2SymplecticSubspace(X,v);
-assertElementsAlmostEqual(subspace(U2,U),0);
+n=8;
+for k=1:10
+    U=randomLagrangianSubspace(2*n);
+    [X,v]=symplecticSubspace2SymBasis(U);
+    U2=symBasis2SymplecticSubspace(X,v);
+    assertElementsAlmostEqual(subspace(U2,U),0);
+end
+
+n=8;
+for S=[100 5 4 3 2 1.1 1.01 1.0001]
+    U=randomLagrangianSubspace(2*n);
+    [X,v]=symplecticSubspace2SymBasis(U,'diagonalThreshold',S);
+    T=sqrt(1+S^2);
+    assert(all(all(abs(X)<=T)));
+    U2=symBasis2SymplecticSubspace(X,v);
+    assertElementsAlmostEqual(subspace(U2,U),0);
+end

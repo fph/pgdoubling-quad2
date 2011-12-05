@@ -73,8 +73,38 @@ end
 warning(saved);
 
 %optimization
+swaps=0;
+while(swaps<maxSwaps)
+    [maxvec, maxis]=max(abs(X));
+    [maxval maxj]=max(maxvec);
+    maxi=maxis(maxj);
+    % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
+
+    [maxdiag maxdiagPos]=max(diag(X));
+    if maxdiag>diagonalThreshold
+        [X,v]=updateSymBasis(X,v,maxdiagPos);
+        swaps=swaps+1;
+    elseif maxval>offDiagonalThreshold
+        [X,v]=updateSymBasis(X,v,[maxi maxj]);
+        swaps=swaps+2;
+    else
+        break;
+    end    
+end
+
+if swaps==maxSwaps
+    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold (obtained:%d, required:%d). Try running with a larger threshold.',maxval,threshold);
+end
+
+if swaps>=k
+    U=rowSwap(U,v,'N');
+    X=U(n+1:end,:)/S(1:n,:);
+end
 
 %final check
 if norm(X-X','fro')/norm(X) > sqrt(eps)
     warning('cbrpack:notSymplectic','the resulting matrix is numerically very far from Hermitian --- was your starting subspace symplectic?');
 end
+
+%symmetrize
+X=(X+X')/2;
