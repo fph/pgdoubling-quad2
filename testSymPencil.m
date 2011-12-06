@@ -3,7 +3,7 @@ function testSymPencil
 reset(RandStream.getDefaultStream);
 
 n=10;
-for tries=1:1
+for tries=1:100
 S=randomLagrangianSubspace(4*n);
 first=1:n;second=n+1:2*n;third=2*n+1:3*n;fourth=3*n+1:4*n;
 

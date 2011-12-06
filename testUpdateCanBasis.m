@@ -30,3 +30,10 @@ assert(x>1.1);
 [X,p]=subspace2CanBasis(U,'threshold',1.1);
 x=max(max(abs(X)));
 assert(x<1.1);
+
+for k=1:100
+    U=randn(40,25);
+    [X,p]=subspace2CanBasis(U,'threshold',1.2);
+    U2=canBasis2Subspace(X,p);
+    assertElementsAlmostEqual(subspace(U,U2),0);
+end

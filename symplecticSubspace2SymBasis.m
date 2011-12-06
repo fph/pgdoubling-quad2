@@ -75,7 +75,7 @@ warning(saved);
 %optimization
 swaps=0;
 while(swaps<maxSwaps)
-    [maxvec, maxis]=max(abs(X));
+    [maxvec, maxis]=max(abs(X-diag(diag(X))));
     [maxval maxj]=max(maxvec);
     maxi=maxis(maxj);
     % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
@@ -98,7 +98,7 @@ end
 
 if swaps>=k
     U=rowSwap(U,v,'N');
-    X=U(n+1:end,:)/S(1:n,:);
+    X=U(n+1:end,:)/U(1:n,:);
 end
 
 %final check
