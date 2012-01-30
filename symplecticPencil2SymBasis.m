@@ -3,7 +3,7 @@ function [X,v,swaps]=symplecticPencil2SymBasis(L,U,varargin)
 %
 % [X,v,swaps]=symplecticPencil2SymBasis(L,U,...)
 %
-% L,U define a symplectic pencil, i.e. L*jay(length(L))*L'=U*jay(length(U))*U',
+% L,U define pencil L-sU which is symplectic, i.e., L*jay(length(L))*L'=U*jay(length(U))*U',
 % optional arguments and outputs are as in symplecticSubspace2SymBasis.m
 
 n=length(L)/2;
