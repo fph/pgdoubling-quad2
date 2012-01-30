@@ -4,7 +4,7 @@ function [L,U]=symBasis2SymplecticPencil(X,v)
 % function [L,U]=symBasis2SymplecticPencil(X,v)
 %
 % given X,v representing a symplectic pencil,
-% returns L,U such that pencil=L-gamma*U
+% returns L,U such that pencil=L-s*U
 % L is permuted lower block triangular, U upper
 
 n=length(X)/2;
