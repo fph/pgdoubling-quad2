@@ -44,7 +44,7 @@ newU=Utilde*U;
 [Xnew vnew swaps2]=symplecticPencil2SymBasis(newL,newU,options2);
 if all(vnew(:)==v(:))
     n=n/2;first=1:n;second=n+1:2*n;
-    nn=norm(S(first,first)-S_new(first,first),'fro')+norm(S(second,second)-S_new(second,second),'fro');
+    nn=norm(X(first,first)-Xnew(first,first),'fro')+norm(X(second,second)-Xnew(second,second),'fro');
 else
     nn=nan;
 end
