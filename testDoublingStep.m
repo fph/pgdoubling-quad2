@@ -8,4 +8,4 @@ v=logical(randi(2,n,1)-1);
 M=U\L;
 [XX,vv]=symplecticPencil2SymBasis(M^2,eye(n));
 
-subspace(symBasis2SymplecticSubspace(X2,v2),symBasis2SymplecticSubspace(XX,vv))
+assertElementsAlmostEqual(subspace(symBasis2SymplecticSubspace(X2,v2),symBasis2SymplecticSubspace(XX,vv)),0);
