@@ -11,7 +11,7 @@ if(size(U,1)~=2*n)
 end
 
 [Q,R,E]=qr(U',0);
-d=matgic.diagm(R);
+d=abs(matgic.diagm(R));
 
 if min(d)/max(d)<sqrt(eps(class(R)))
     warning('cbrpack:illConditionedSubspace','the provided subspace basis is ill-conditioned --- don''t expect much from the results');

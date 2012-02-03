@@ -11,11 +11,13 @@ function k=checkCAREInvariantSubspaceResidual(A,G,Q,U,X,stab)
 % stab can be 'stabilizing' (default) or 'antistabilizing'
 %
 % k.residual=subspace relative residual (as in ChuLM07, figure 4)
-% k.stability=how far the invariant subspace is from stability
+% k.stability=how far the invariant subspace is from stability. 0=stable, large=bad
 % k.riccatiResidual=residual of X in the Riccati equation
 % k.pencilBackwardError=(normalized) 2-norm of the smallest perturbation to A-sE
 %    that has the prescribed invariant subspace as exact invariant subspace
 %    (see Byers, Benner, A structure-preserving method for generalized...)
+% k.isGood=boolean value telling if the solution is "roughly ok"
+%
 
 if not(exist('stab','var')) || isempty(stab)
     stab='stabilizing';
@@ -66,3 +68,6 @@ switch stab
 end
 emax=max(real(L));
 k.stability=max(0,emax/norm(H));
+k.stability=abs(k.stability);
+
+k.isGood = (k.stability<1e-6) && k.residual<1e-10;

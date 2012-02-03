@@ -31,7 +31,7 @@ if threshold<1+sqrt(eps(U))
 end
 
 k=o.get('recompute',2);
-if(o.isSet('initialPermutation'))
+if(o.isSet('initialPermutation') && ~isempty(o.get('initialPermutation')))
     p=o.get('initialPermutation');
 else
     p=canBasisHeuristic(U);
