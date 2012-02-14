@@ -27,20 +27,21 @@ verbose=logical(o.get('verbose',false));
 
 steps=0;
 
-threshold1=2;
-options2=matgic.Options();
-%TODO: set options
+convergenceHistory=[nan nan nan nan nan nan];
 
 w=[]; %permutation guess
 while(true)
     steps=steps+1;
-    options2.set('initialRowSwap',v);
-    [S,v,w,swaps1,swaps2,nn]=doublingStep(S,v,w,threshold1,options2);
+    [S,v,w,swaps1,swaps2,nGH,nEF]=doublingStep(S,v,w);
     if(verbose)
-        fprintf('Step %3d, subspace change measure %5.2e, swaps 2*%d+%d\n',steps,nn,swaps1,swaps2);
+        fprintf('Step %3d, subspace change measure %5.2e, pseudo-residual measure %5.2e, swaps 2*%d+%d\n',steps,nGH,nEF,swaps1,swaps2);
     end
-    if nn<=tol
+    if nEF<=tol
         break;
+    end
+    convergenceHistory=[convergenceHistory(2:end) nEF];
+    if nEF<1e-6 && nEF>=mean(convergenceHistory) %stagnation
+        break
     end
     if(steps>maxSteps)
         break;

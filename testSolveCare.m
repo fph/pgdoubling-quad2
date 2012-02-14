@@ -29,5 +29,3 @@ for i=10:19
 %    k=checkCAREInvariantSubspaceResidual(A,G,Q,V,[],'antistabilizing');
 %    assertTrue(k.isGood);    
 end
-    
-    

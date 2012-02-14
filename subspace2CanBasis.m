@@ -33,5 +33,3 @@ X=Xt';clear Xt;
 if(invcond<sqrt(eps(U)))
     warning('cbrpack:illConditionedMatrix', 'subspace2CanBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');
 end
-
-

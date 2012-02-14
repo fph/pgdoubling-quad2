@@ -1,7 +1,7 @@
-function [X,v,swaps]=symplecticPencil2SymBasis(L,U,varargin)
+function [X,v,swaps]=symplecticPencil2SymBasis(L,U,v)
 % constructs a canonical basis representation of a symplectic pencil
 %
-% [X,v,swaps]=symplecticPencil2SymBasis(L,U,...)
+% [X,v,swaps]=symplecticPencil2SymBasis(L,U,v)
 %
 % L,U define pencil L-sU which is symplectic, i.e., L*jay(length(L))*L'=U*jay(length(U))*U',
 % optional arguments and outputs are as in symplecticSubspace2SymBasis.m
@@ -9,4 +9,8 @@ function [X,v,swaps]=symplecticPencil2SymBasis(L,U,varargin)
 n=length(L)/2;
 first=1:n;second=n+1:2*n;
 
-[X,v,swaps]=symplecticSubspace2SymBasis([U(:,first) L(:,second) U(:,second) L(:,first)]',varargin{:});
+if not(exist('v','var'))
+    v=[];
+end
+
+[X,v,swaps]=symplecticSubspace2SymBasis([U(:,first) L(:,second) U(:,second) L(:,first)]',v);
