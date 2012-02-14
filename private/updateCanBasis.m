@@ -1,4 +1,4 @@
-function [newX newp]=updateCanBasis(X,oldp,in,out)
+function [X p]=updateCanBasis(X,p,in,out)
 % computes efficiently a new canonical basis from an old one 
 %
 % [newX newv]=updateCanBasis(oldX,oldv,out,in)
@@ -14,11 +14,6 @@ function [newX newp]=updateCanBasis(X,oldp,in,out)
 % no error checking since this is meant to be called in a tight loop
 % if you choose to call this directly, you're on your own
 
-k=size(X,2);
-
-S=X(in,out);
-xj=X(in,:);
-xi=X(:,out);
 
 % the real update formula (obtained by a SMW trick) is
 %newX=X+(xi+e_in)*inv(S)*(e_out-xj);
@@ -27,17 +22,23 @@ xi=X(:,out);
 % however, this would lead to cancellation when S is very large
 % therefore, we rearrange the computations as follow
 
-%TODO: matgic:minv for this formula
+n=size(X,2);
+r=size(X,1);
+i1=true(r,1);
+i1(in)=false;
+i2=in;
 
-xiTimesInvS=xi/S;
+j1=true(n,1);
+j1(out)=false;
+j2=out;
 
-newX=X-xiTimesInvS*xj;
+%TODO: matgic:minv for this formula?
 
-newX(in,:)=-S\xj;
-newX(:,out)=xiTimesInvS;
-newX(in,out)=inv(S);
+X(i2,j2)=inv(X(i2,j2));
+X(i2,j1)=-X(i2,j2)*X(i2,j1);
+X(i1,j1)=X(i1,j1)+X(i1,j2)*X(i2,j1);
+X(i1,j2)=X(i1,j2)*X(i2,j2);
 
-newp=oldp;
-[newp(k+in) newp(out)]=deal(newp(out),newp(k+in));
+p([n+in out])=p([out n+in]);
 
 end
