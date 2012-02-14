@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,nn]=doublingStep(X,v,w,threshold1,options2)
+function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,w,threshold1,threshold2d,threshold2o)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,threshold1,options2)
+% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,threshold1,threshold2d,threshold2o)
 %
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
@@ -21,12 +21,14 @@ function [Xnew,vnew,w,swaps1,swaps2,nn]=doublingStep(X,v,w,threshold1,options2)
 %
 % if vnew==v, also computes a cheap measure of the change in the subspace that can be used as a stopping criterion
 
-if not(exist('options1','var')) || isempty(options1)
-    options1=matgic.Options();
+if not(exist('threshold1','var')) || isempty(threshold1)
+    threshold1=[];
 end
-
-if not(exist('options2','var')) || isempty(options2)
-    options2=matgic.Options();
+if not(exist('threshold2d','var')) || isempty(threshold2d)
+    threshold2d=[];
+end
+if not(exist('threshold2o','var')) || isempty(threshold2o)
+    threshold2o=[];
 end
 
 n=length(X);
@@ -42,10 +44,13 @@ assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton 
-[Xnew vnew swaps2]=symplecticPencil2SymBasis(newL,newU,options2);
+[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,v);
+[Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
 if all(vnew(:)==v(:))
     n=n/2;first=1:n;second=n+1:2*n;
-    nn=norm(X(first,first)-Xnew(first,first),'fro')+norm(X(second,second)-Xnew(second,second),'fro');
+    nGH=norm(X(first,first)-Xnew(first,first),'fro')+norm(X(second,second)-Xnew(second,second),'fro');
+    nEF=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
 else
-    nn=nan;
+    nGH=nan;
+    nEF=nan;
 end

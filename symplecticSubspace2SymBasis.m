@@ -1,50 +1,25 @@
-function [X,v,swaps]=symplecticSubspace2SymBasis(U,varargin)
+function [X,v,invcond]=symplecticSubspace2SymBasis(U,v)
 % symplectic basis representation of a symplectic subspace
 %
-% [X,v,swaps]=symplecticSubspace2SymBasis(U,...options...)
+% [X,v,invcond]=symplecticSubspace2SymBasis(U,v)
 %
 % given a (matrix whose columns span a) symplectic subspace, returns a symplectic basis representation
 % i.e., X and v such that Pi_v * U = [I;X]
 % here Pi_v = the matrix in rowSwap(?,v,'N'), and X is symmetric
 %
-% swaps is the number of swaps performed during the optimization algorithm.
-% Swapping two rows at the same time counts as 2.
 %
-% optional arguments:
+% The basis given may not meet a given threshold --- run optimizeSymBasis
+% if you need an optimal basis
 %
-% 'initialRowSwap',p: a guess for the starting row swap v
-% If omitted, it is replaced by a O(n^3) guess based on QRP
+% If your initial guess is off, you might need to do this twice to get more
+% stability:
 %
-% 'diagonalThreshold',S: the maximum allowed magnitude of diag(X). 
-%
-% 'offDiagonalThreshold', T: the maximum allowed magnitude of the other elements of X.
-% The theory requires S>=1, T>=sqrt(1+S^2); you'd better be far from those
-% values to be ok in critical cases. Defaults are (S=2, T=sqrt(5+S^2)).
-% Note that 'diagonalThreshold',inf is allowed (don't optimize at all, just return the starting basis).
-%
-% 'recompute',k (default 2): recomputes X and v at the end from the initial data, for added stability, if k or more swaps are needed
-% May be 0 (always recompute) or inf (never)
-%
-% 'maxSwaps',M (default 10*length(U)): never uses more than M swaps, warns if threshold criterion is not met afterwards
+% [X,v]=symplecticSubspace2SymBasis(U,crappyInitialGuess);
+% [X,v]=optimizeSymBasis(X,v);
+% [X,v]=symplecticsubspace2SymBasis(U,v); %should be ok now!
+% 
 
-o=matgic.Options(varargin{:});
-
-maxSwaps=o.get('maxSwaps',10*length(U));
-diagonalThreshold=o.get('diagonalThreshold',2);
-offDiagonalThreshold=o.get('offDiagonalThreshold',sqrt(5+diagonalThreshold^2));
-
-if diagonalThreshold<1+sqrt(eps(class(U)))
-    error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds S=1+sqrt(eps) or larger');
-end
-
-if offDiagonalThreshold<sqrt(1+diagonalThreshold^2)+sqrt(eps(class(U)))
-    error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds T=sqrt(1+S^2) or larger');
-end
-
-k=o.get('recompute',2);
-if(o.isSet('initialRowSwap'))
-    v=o.get('initialRowSwap');
-else
+if not(exist('v','var')) || isempty(v)
     v=symBasisHeuristic(U);
 end
 
@@ -55,51 +30,7 @@ end
 
 S=rowSwap(U,v,'N');
 
-%matlab crappy boilerplate to catch warnings...
-saved=warning('query','MATLAB:singularMatrix');
-warning off MATLAB:singularMatrix;
-lastwarn('');
-
-X=S(n+1:end,:)/S(1:n,:);
-
-%...and to rethrow them
-[lastmsg,lastid]=lastwarn;
-if(strcmp(lastid,'MATLAB:singularMatrix'))
-    warning('cbrpack:badInitialPermutation', 'bad initial permutation provided - computing a new one using the heuristic. All fine, but this costs O(n^3)');
-    v=symBasisHeuristic(U);
-    S=rowSwap(U,v,'N');
-    X=S(n+1:end,:)/S(1:n,:);
-end
-warning(saved);
-
-%optimization
-swaps=0;
-while(swaps<maxSwaps)
-    [maxvec, maxis]=max(abs(X-diag(diag(X))));
-    [maxval maxj]=max(maxvec);
-    maxi=maxis(maxj);
-    % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
-
-    [maxdiag maxdiagPos]=max(diag(X));
-    if maxdiag>diagonalThreshold
-        [X,v]=updateSymBasis(X,v,maxdiagPos);
-        swaps=swaps+1;
-    elseif maxval>offDiagonalThreshold
-        [X,v]=updateSymBasis(X,v,[maxi maxj]);
-        swaps=swaps+2;
-    else
-        break;
-    end    
-end
-
-if swaps==maxSwaps
-    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold (obtained:%d, required:%d). Try running with a larger threshold.',maxval,threshold);
-end
-
-if swaps>=k
-    U=rowSwap(U,v,'N');
-    X=U(n+1:end,:)/U(1:n,:);
-end
+[X invcond]=linsolve(S(1:n,:)',S(n+1:end,:)');
 
 %final check
 if norm(X-X','fro')/norm(X) > sqrt(eps)
@@ -108,3 +39,7 @@ end
 
 %symmetrize
 X=(X+X')/2;
+
+if(invcond<sqrt(eps(U)))
+    warning('cbrpack:illConditionedMatrix', 'symplecticSubspace2SymBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');
+end

@@ -26,9 +26,9 @@ for k=1:10
     U=randomLagrangianSubspace(2*n);
     v1=randi([0,1],n,1);
     v2=randi([0,1],n,1);
-    [X1,v]=symplecticSubspace2SymBasis(U,'diagonalThreshold',inf,'initialRowSwap',v1);
+    [X1,v]=symplecticSubspace2SymBasis(U,v1);
     assertEqual(v,v1);
-    [X2,v]=symplecticSubspace2SymBasis(U,'diagonalThreshold',inf,'initialRowSwap',v2);
+    [X2,v]=symplecticSubspace2SymBasis(U,v2);
     assertEqual(v,v2);
     range=[1:n];inout=range(v1~=v2);
     [X,v]=updateSymBasis(X1,v1,inout);
@@ -47,8 +47,9 @@ end
 n=8;
 for S=[100 5 4 3 2 1.1 1.01 1.0001]
     U=randomLagrangianSubspace(2*n);
-    [X,v]=symplecticSubspace2SymBasis(U,'diagonalThreshold',S);
-    T=sqrt(1+S^2);
+    [X,v]=symplecticSubspace2SymBasis(U);
+    [X,v]=optimizeSymBasis(X,v,S);
+    T=sqrt(5+S^2);
     assert(all(all(abs(X)<=T)));
     U2=symBasis2SymplecticSubspace(X,v);
     assertElementsAlmostEqual(subspace(U2,U),0);
