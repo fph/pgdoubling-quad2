@@ -27,16 +27,15 @@ verbose=logical(o.get('verbose',false));
 
 steps=0;
 
-options1=matgic.Options();
+threshold1=2;
 options2=matgic.Options();
 %TODO: set options
 
 w=[]; %permutation guess
 while(true)
     steps=steps+1;
-    options1.set('initialPermutation',w);
     options2.set('initialRowSwap',v);
-    [S,v,swaps1,swaps2,w,nn]=doublingStep(S,v,options1,options2);
+    [S,v,w,swaps1,swaps2,nn]=doublingStep(S,v,w,threshold1,options2);
     if(verbose)
         fprintf('Step %3d, subspace change measure %5.2e, swaps 2*%d+%d\n',steps,nn,swaps1,swaps2);
     end

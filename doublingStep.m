@@ -1,7 +1,7 @@
-function [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,options1,options2)
+function [Xnew,vnew,w,swaps1,swaps2,nn]=doublingStep(X,v,w,threshold1,options2)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,options1,options2)
+% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,threshold1,options2)
 %
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
@@ -33,7 +33,8 @@ n=length(X);
 first=1:n;second=n+1:2*n;
 [L,U]=symBasis2SymplecticPencil(X,v);
 Z=[L;U];
-[leftX,w,swaps1]=subspace2CanBasis(Z,options1);
+[leftX,w,invcond1]=subspace2CanBasis(Z,w);
+[leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
 invw=w([second,first]);
 Tildes=canBasis2Subspace(-leftX',invw);Tildes=Tildes';
 Ltilde=Tildes(:,second);Utilde=-Tildes(:,first);

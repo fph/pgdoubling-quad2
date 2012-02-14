@@ -1,81 +1,37 @@
-function [X,p,swaps]=subspace2CanBasis(U,varargin)
+function [X,p,invcond]=subspace2CanBasis(U,p)
 % Canonical basis representation of a subspace
 %
-% [X,p,swaps]=subspace2CanBasis(U);
+% [X,p,invcond]=subspace2CanBasis(U,p);
+%
+% input: U subspace, p initial permutation guess (may be empty, in this 
+% case the procedure will use a O(n^3) heuristic based on QRP)
 %
 % output: 
 % X,p: such that U(p(1:end),:) and [I;X] span the same subspace
-% swaps: number of "swaps" performed during the algorithm
-% (each swap is essentially a rank-1 update to X and costs O(n^2))
 %
-% optional arguments:
+% The basis given may not meet a given threshold --- run optimizeCanBasis
+% if you need an optimal basis
 %
-% 'initialPermutation',p: a guess for the starting permutation p
-% If omitted, it is replaced by a O(n^3) guess based on QRP
+% If your initial guess is off, you might need to do this twice to get more
+% stability:
 %
-% 'threshold',T (default 2): the maximum allowed magnitude of the elements in X. 
-% May be infinity; in this case, the starting permutation (or the heuristic) is used
-%
-% 'recompute',k (default 2): recomputes X and v at the end from the initial data, for added stability, if k or more swaps are needed
-% May be 0 (always recompute) or inf (never)
-%
-% 'maxSwaps',M (default 10*length(U)): never uses more than M swaps, warns if threshold criterion is not met afterwards
-%
+% [X,p]=subspace2CanBasis(U,crappyInitialGuess);
+% [X,p]=optimizeCanBasis(X,p);
+% [X,p]=subspace2CanBasis(U,p); %should be ok now!
 
-o=matgic.Options(varargin{:});
-
-maxSwaps=o.get('maxSwaps',10*length(U));
-threshold=o.get('threshold',2);
-if threshold<1+sqrt(eps(U))
-    error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds T=1+sqrt(eps) or larger');
-end
-
-k=o.get('recompute',2);
-if(o.isSet('initialPermutation') && ~isempty(o.get('initialPermutation')))
-    p=o.get('initialPermutation');
-else
+if not(exist('p','var')) || isempty(p)
     p=canBasisHeuristic(U);
 end
 
 [m n]=size(U);
-assert(length(p)==m);
+assertEqual(length(p),m);
 
-%matlab crappy boilerplate to catch warnings...
-saved=warning('query','MATLAB:singularMatrix');
-warning off MATLAB:singularMatrix;
-lastwarn('');
+%X=U(p(n+1:m),:)/U(p(1:n),:);
+[Xt,invcond]=linsolve(U(p(1:n),:)',U(p(n+1:m),:)');
+X=Xt';clear Xt;
 
-X=U(p(n+1:m),:)/U(p(1:n),:);
-
-%...and to rethrow them
-[lastmsg,lastid]=lastwarn;
-if(strcmp(lastid,'MATLAB:singularMatrix'))
-    warning('cbrpack:badInitialPermutation', 'bad initial permutation provided - computing a new one using the heuristic. All fine, but this costs O(n^3)');
-    p=canBasisHeuristic(U);
-    X=U(p(n+1:m),:)/U(p(1:n),:);
-end
-warning(saved);
-
-%optimization loop
-
-swaps=0;
-while(swaps<maxSwaps)
-    [maxvec, maxis]=max(abs(X));
-    [maxval maxj]=max(maxvec);
-    maxi=maxis(maxj);
-    % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
-
-    if maxval<threshold
-        break;
-    end
-
-    [X,p]=updateCanBasis(X,p,maxi,maxj);
-    swaps=swaps+1;
-end
-if swaps==maxSwaps
-    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold (obtained:%d, required:%d). Try running with a larger threshold.',maxval,threshold);
+if(invcond<sqrt(eps(U)))
+    warning('cbrpack:illConditionedMatrix', 'subspace2CanBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');
 end
 
-if swaps>=k
-    X=U(p(n+1:m),:)/U(p(1:n),:); %recompute X based on p
-end
+

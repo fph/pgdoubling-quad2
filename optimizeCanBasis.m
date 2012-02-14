@@ -1,7 +1,7 @@
-function [X,p]=optimizeCanBasis(X,p,threshold,maxSwaps);
+function [X,p swaps]=optimizeCanBasis(X,p,threshold,maxSwaps);
 % given a canBasis, reduces it so that all elements are below a threshold
 %
-% [X,p]=optimizeCanBasis(X,p,threshold,maxswaps);
+% [X,p swaps]=optimizeCanBasis(X,p,threshold,maxswaps);
 %
 %
 
@@ -15,7 +15,7 @@ if not(exist('maxSwaps','var')) || isempty(maxSwaps)
     maxSwaps=10*size(X,2);
 end
 
-assert(length(p)==size(X,2)+size(X,1));
+assertEqual(length(p),size(X,2)+size(X,1));
 
 swaps=0;
 while(swaps<maxSwaps)
