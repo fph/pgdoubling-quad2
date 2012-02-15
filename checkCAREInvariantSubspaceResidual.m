@@ -41,7 +41,8 @@ if not(exist('X','var')) || isempty(X)
     else
         %reconstruct X from U
         assertEqual(size(U),[2*n n]);
-        X=U(n+1:end,:)/U(1:n,:);
+        [X invcond]=linsolve(U(1:n,:)',U(n+1:end,:)'); %this form does not throw warnings if the matrix to invert is ill-conditioned
+        X=X';
     end
 end
 
