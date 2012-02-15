@@ -21,16 +21,20 @@ function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,w,threshold1,thres
 %
 % if vnew==v, also computes a cheap measure of the change in the subspace that can be used as a stopping criterion
 
-if not(exist('threshold1','var')) || isempty(threshold1)
-    threshold1=[];
-end
-if not(exist('threshold2d','var')) || isempty(threshold2d)
-    threshold2d=[];
-end
-if not(exist('threshold2o','var')) || isempty(threshold2o)
-    threshold2o=[];
+if not(exist('w','var'))
+    w=[];
 end
 
+if not(exist('threshold1','var'))
+    threshold1=[];
+end
+if not(exist('threshold2d','var'))
+    threshold2d=[];
+end
+if not(exist('threshold2o','var'))
+    threshold2o=[];
+end
+ 
 n=length(X);
 first=1:n;second=n+1:2*n;
 [L,U]=symBasis2SymplecticPencil(X,v);
@@ -43,7 +47,7 @@ Ltilde=Tildes(:,second);Utilde=-Tildes(:,first);
 assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
-%TODO: could do scaling as in Newton 
+%TODO: could do scaling as in Newton
 [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,v);
 [Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
 if all(vnew(:)==v(:))
