@@ -8,7 +8,8 @@ function [AA,EE]=evenPencil(A,B,Q,R,S)
 %    [B' S' R]    [ 0  0 0]
 %
 % S may be omited (it is often zero)
-% A,B,Q,R may be taken as the output of carex
+% A,B,Q,R may be taken directly from the carex output
+
 
 if not(exist('S','var')) || isempty(S)
     S=zeros(size(B));
