@@ -21,7 +21,7 @@ v=false(2*n,1);
 K=abs(jay(2*n));
 assertVectorsAlmostEqual(Eh\Ah,K*H*K');
 
-%alsp when v is different...
+%also when v is different...
 for tries=1:4 %if we try more, we stumble on a singular leading matrix
     v=logical(randi(2,2*n,1)-1);
     [X,v]=evenPencil2SymBasis(AA,EE,n,m,v);
