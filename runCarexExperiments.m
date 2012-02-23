@@ -5,11 +5,13 @@ if not(exist('experiments','var'))
 end
 
 for i=experiments
+    fprintf('[%d]',i);
     [A,G,Q]=carex(i);
     [X,Y,U,V]=solveCARE(A,G,Q);
     k=checkCAREInvariantSubspaceResidual(A,G,Q,U);
     assertTrue(k.isGood);
     results{i}=k;
 end
+fprintf('\n');
 
 for i=1:length(results) disp(results{i}.residual), end
