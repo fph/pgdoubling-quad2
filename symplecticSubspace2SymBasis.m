@@ -40,6 +40,6 @@ end
 %symmetrize
 X=(X+X')/2;
 
-if(invcond<sqrt(eps(U)))
+if(invcond<sqrt(eps(class(U))))
     warning('cbrpack:illConditionedMatrix', 'symplecticSubspace2SymBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');
 end

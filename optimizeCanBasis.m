@@ -7,7 +7,7 @@ function [X,p swaps]=optimizeCanBasis(X,p,threshold,maxSwaps);
 
 if not(exist('threshold','var')) || isempty(threshold)
     threshold=2;
-elseif threshold<1+sqrt(eps(X))
+elseif threshold<1+sqrt(eps(class(X)))
     error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds T=1+sqrt(eps) or larger');
 end
 
