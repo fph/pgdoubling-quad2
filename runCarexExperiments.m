@@ -11,3 +11,5 @@ for i=experiments
     assertTrue(k.isGood);
     results{i}=k;
 end
+
+for i=1:length(results) disp(results{i}.residual), end
