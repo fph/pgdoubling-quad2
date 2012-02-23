@@ -14,10 +14,6 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 % options as in solveCARE
 
 o=matgic.Options(varargin{:});
-gamma=o.get('gamma',norm(H));
-if not(gamma>0)
-    error 'gamma must be positive'
-end
 
 [n m]=size(B);
 
@@ -36,7 +32,7 @@ end
 
 [Ah,Eh]=symBasis2HamiltonianPencil(S,v);
 
-gamma=o.get('gamma',norm(H));
+gamma=o.get('gamma',norm(Ah,'fro')/norm(Eh,'fro'));
 if not(gamma>0)
     error 'gamma must be positive'
 end
