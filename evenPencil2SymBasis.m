@@ -12,7 +12,7 @@ function [X,v,invcond]=evenPencil2SymBasis(AA,EE,n,m,v)
 firstSecond=1:2*n;third=2*n+1:2*n+m;
 U=[EE(:,firstSecond)'; (AA(:,firstSecond)*jay(2*n))'];
 
-if not(exist('v','var'))
+if not(exist('v','var')) || isempty(v)
     v=extendedSymBasisHeuristic([U; AA(:,third)']);
 end
 
