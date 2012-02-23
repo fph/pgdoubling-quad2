@@ -30,7 +30,7 @@ end
 
 S=rowSwap(U,v,'N');
 
-[X invcond]=linsolve(S(1:n,:)',S(n+1:end,:)');
+[X invcond]=rightLinSolve(S(n+1:end,:),S(1:n,:));
 
 %final check
 if norm(X-X','fro')/norm(X,'fro') > sqrt(eps)
