@@ -6,12 +6,17 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 % returns the first two blocks of the stable and unstable invariant subspaces 
 % of evenPencil(A,B,C,Q,R,S), U and V.
 %
+% Accepts options as in solveCARE
+%
 % X and Y are obtained by writing them in form [X;I] and [I;Y]
 % respectively. In other words, X is the stabilizing solution of the Riccati equation
 % with coefficients A-BR^(-1)C', -BR^(-1)B', Q-CR^(-1)C', and Y the one of
 % its dual equation.
 %
-% options as in solveCARE
+% Notice though that the order of the blocks in the ECARE and the CARE
+% approach are different, so U and V obtained by this function and
+% solveCARE differ by a factor abs(jay()), and we get [X;I] instead of
+% [I;X]. This is a fault of the standard notations, not mine.
 
 o=matgic.Options(varargin{:});
 
@@ -39,6 +44,14 @@ end
 
 [S,v]=symplecticPencil2SymBasis(Ah+gamma*Eh,Ah-gamma*Eh);
 [S,v]=optimizeSymBasis(S,v);
-%TODO: need to swap something to adjust [I;X] vs. [X;I]
-[X,Y,U,V]=doubling(S,v,o);
 
+[S,v]=doubling(S,v,o);
+
+n=length(S)/2;
+first=1:n;second=n+1:2*n;
+
+U=rowSwap([eye(n);-S(second,second);],v(second),'N');
+[X invcond1]=rightLinSolve(U(first,:),U(second,:));
+
+V=rowSwap([-S(first,first);eye(n)],v(first),'T');
+[Y invcond2]=rightLinSolve(V(second,:),V(first,:));

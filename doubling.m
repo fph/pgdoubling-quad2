@@ -1,7 +1,7 @@
-function [X,Y,U,V]=doubling(S,v,varargin)
+function [S,v]=doubling(S,v,varargin)
 % applies doubling to a symplectic pencil
 %
-% [X,Y,U,V]=doubling(X,v,varargin)
+% [X,v]=doubling(X,v,varargin)
 %
 % X,v are the symBasis of a symplectic pencil
 %
@@ -41,11 +41,3 @@ while(true)
     end
 end
 
-n=length(S)/2;
-first=1:n;second=n+1:2*n;
-
-U=rowSwap([eye(n);-S(second,second);],v(second),'N');
-X=U(second,:)/U(first,:);
-
-V=rowSwap([-S(first,first);eye(n)],v(first),'T');
-Y=V(first,:)/V(second,:);
