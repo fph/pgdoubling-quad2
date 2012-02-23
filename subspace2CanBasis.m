@@ -27,8 +27,7 @@ end
 assertEqual(length(p),m);
 
 %X=U(p(n+1:m),:)/U(p(1:n),:);
-[Xt,invcond]=linsolve(U(p(1:n),:)',U(p(n+1:m),:)');
-X=Xt';clear Xt;
+[X,invcond]=rightLinSolve(U(p(n+1:m),:),U(p(1:n),:));
 
 if(invcond<sqrt(eps(class(U))))
     warning('cbrpack:illConditionedMatrix', 'subspace2CanBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');

@@ -18,9 +18,10 @@ end
 
 U=rowSwap(U,v,'N');
 
-[Xext invcond]=linsolve([U(1:2*n,:); AA(third,:)]',U(2*n+1:4*n,:)');
 
-X=Xext(firstSecond,:);
+[Xext invcond]=rightLinSolve(U(2*n+1:4*n,:),[U(1:2*n,:); AA(third,:)]);
+
+X=Xext(:,firstSecond);
 
 %final check
 if norm(X-X','fro')/norm(X,'fro') > sqrt(eps)
