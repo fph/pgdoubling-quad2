@@ -7,11 +7,14 @@ function lambda=hInfinityEigenvalues(UH,UJ)
 [twon n]=size(UH);
 first=1:n;second=n+1:2*n;
 
-ZH=UH(first,:);
-YH=UH(second,:);
+%these are as follows and not the opposite following (25) in BenBMX07. I
+%suspect they tweaked the definition of the even pencils in order to
+%maintain the same order.
+YH=UH(first,:);
+ZH=UH(second,:);
 
-ZJ=UJ(first,:);
-YJ=UJ(second,:);
+YJ=UJ(first,:);
+ZJ=UJ(second,:);
 
 U=[YH';ZJ'];
 [X,p]=subspace2CanBasis(U);
@@ -21,5 +24,7 @@ Ytilde=Ytilde';
 Ztilde=Ztilde';
 
 %assertVectorsAlmostEqual(YH*Ztilde,ZJ*Ytilde)
+
+ZH*Ztilde, YJ*Ytilde
 
 lambda=eig(ZH*Ztilde,YJ*Ytilde);
