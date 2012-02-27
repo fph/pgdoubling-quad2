@@ -26,9 +26,7 @@ if not(exist('S','var'))
     S=[];
 end
 
-if not(exist('v','var'))
-    v=[];
-end
+v=o.get('initialv',[]);
 
 [AA,EE]=evenPencil(A,B,Q,R,S);
 
