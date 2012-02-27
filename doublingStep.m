@@ -42,7 +42,7 @@ Z=[L;U];
 [leftX,w,invcond1]=subspace2CanBasis(Z,w);
 [leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
 [Ltilde,Utilde]=leftDual(leftX,w);
-assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
+%assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton
