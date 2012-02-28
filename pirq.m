@@ -1,7 +1,7 @@
-function [Pi,U,Q]=pirq(U)
+function [Pi,U,Q,invcond]=pirq(U)
 %computes a "restricted" Pi*R*Q factorization of a subspace U
 %
-% [Pi,U,Q]=pirq(U)
+% [Pi,U,Q,invcond]=pirq(U)
 %
 % U has size 2n+m x n+m
 %
@@ -24,11 +24,17 @@ k1=0;k2=0; %{k1,k2}=length of the already factorized part in the {1st,2nd} block
 
 Q=eye(b);
 
+firstPivot=nan;
+
 while(true)
     
     rowNorms=sum(abs(U([k1+1:n,n+k1+1:2*n,2*n+k2+1:end],k1+k2+1:end).^2),2);
     
     [pivotValue relativePivotRow]=max(rowNorms); %relative=relative to the "reduced" matrix
+    if isnan(firstPivot)
+        firstPivot=pivotValue;
+    end
+    lastPivot=pivotValue;
     
     if relativePivotRow<=2*(n-k1)
         %pivotRow is in one of the first two blocks
@@ -85,4 +91,4 @@ while(true)
     end
 end
 
-%invert Pi, now we were working with its inverse
+invcond=lastPivot/firstPivot;
