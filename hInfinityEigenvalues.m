@@ -25,6 +25,4 @@ Ztilde=Ztilde';
 
 %assertVectorsAlmostEqual(YH*Ztilde,ZJ*Ytilde)
 
-ZH*Ztilde, YJ*Ytilde
-
 lambda=eig(ZH*Ztilde,YJ*Ytilde);
