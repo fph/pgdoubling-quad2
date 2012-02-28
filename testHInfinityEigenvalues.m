@@ -8,8 +8,8 @@ XH=randn(n);XH=XH+XH';
 XJ=randn(n);XJ=XJ+XJ';
 
 
-[XHP,vh]=symplecticSubspace2SymBasis([XH;eye(n)]);
-[XJP,vj]=symplecticSubspace2SymBasis([XJ;eye(n)]);
+[XHP,vh]=symplecticSubspace2SymBasis([eye(n);XH]);
+[XJP,vj]=symplecticSubspace2SymBasis([eye(n);XJ]);
 
 [XHP,vh]=optimizeSymBasis(XHP,vh);
 [XJP,vj]=optimizeSymBasis(XJP,vj);
