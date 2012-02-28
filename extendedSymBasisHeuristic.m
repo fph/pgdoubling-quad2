@@ -5,7 +5,7 @@ function v=extendedSymBasisHeuristic(U)
 %
 % uses QRP (just a crappy heuristic)
 %
-% U is 2n+m x n+m
+% U is 2n+m x n+m, 1:n can be swapped with n+1:2*n
 
 [a b]=size(U);
 n=a-b;
