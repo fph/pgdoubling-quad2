@@ -11,7 +11,7 @@ for i=1:50
     v=logical(randi(2,n,1)-1);
     U(1:2*n,:)=rowSwap(U(1:2*n,:),v,'N');
     
-    vh=extendedSymBasisHeuristic(U);
+    vh=extendedSymBasisHeuristicOld(U);
     vhp=extendedSymBasisHeuristicPaper(U);
         
     EE=[U(1:n,:)' zeros(n+m,m)];

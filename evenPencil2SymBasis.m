@@ -13,7 +13,7 @@ firstSecond=1:2*n;third=2*n+1:2*n+m;
 U=[EE(:,firstSecond)'; (AA(:,firstSecond)*jay(2*n))'];
 
 if not(exist('v','var')) || isempty(v)
-    v=extendedSymBasisHeuristic([U; AA(:,third)']);
+    v=extendedSymBasisHeuristicPaper([U; AA(:,third)']);
 end
 
 U=rowSwap(U,v,'N');
