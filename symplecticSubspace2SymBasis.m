@@ -19,21 +19,19 @@ function [X,v,invcond]=symplecticSubspace2SymBasis(U,v)
 % [X,v]=symplecticsubspace2SymBasis(U,v); %should be ok now!
 % 
 
-if not(exist('v','var')) || isempty(v)
-    [v invcond]=extendedSymBasisHeuristicPaper(U);
-%    [v invcond]=symBasisHeuristic(U);
-    invcond
-end
-
 [m n]=size(U);
 if m~=2*n
     error('cbrpack:oddSize','symplectic matrices should be 2nxn');
 end
 
+if not(exist('v','var')) || isempty(v)
+    [v invcond]=extendedSymBasisHeuristicPaper(U);
+%    [v invcond]=symBasisHeuristic(U);
+end
+
 S=rowSwap(U,v,'N');
 
 [X invcond]=rightLinSolve(S(n+1:end,:),S(1:n,:));
-invcond
 
 %final check
 if norm(X-X','fro')/norm(X,'fro') > sqrt(eps)
