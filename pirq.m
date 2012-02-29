@@ -18,7 +18,7 @@ m=b-n;
 
 Pi=(1:a)';
 
-%initialU=U;
+initialU=U;
 
 k1=0;k2=0; %{k1,k2}=length of the already factorized part in the {1st,2nd} block;
 
@@ -27,8 +27,11 @@ Q=eye(b);
 firstPivot=nan;
 
 while(true)
-    
+%    Ubefore=round(U)
+%    U([k1+1:n,n+k1+1:2*n,2*n+k2+1:end],k1+k2+1:end)
     rowNorms=sum(abs(U([k1+1:n,n+k1+1:2*n,2*n+k2+1:end],k1+k2+1:end).^2),2);
+    
+%    rowNorms
     
     [pivotValue relativePivotRow]=max(rowNorms); %relative=relative to the "reduced" matrix
     if isnan(firstPivot)
@@ -49,14 +52,11 @@ while(true)
         rowToZeroOut=k1+1;
 
         %swaps row absolutePivot into k1+1
-        U([rowToZeroOut,absolutePivotRow],:)=U([absolutePivotRow,rowToZeroOut],:);
-        Pi([rowToZeroOut,absolutePivotRow],:)=Pi([absolutePivotRow,rowToZeroOut],:);
-%        rowNorms([rowToZeroOut,absolutePivotRow],:)=rowNorms([absolutePivotRow,rowToZeroOut],:);
-
-        %and row conjugateRow into n+k1+1
-        U([n+rowToZeroOut,conjugateRow],:)=U([conjugateRow,n+rowToZeroOut],:);
-        Pi([n+rowToZeroOut,conjugateRow],:)=Pi([conjugateRow,n+rowToZeroOut],:);
-%        rowNorms([n+rowToZeroOut,conjugateRow],:)=rowNorms([conjugateRow,n+rowToZeroOut],:);
+        U([rowToZeroOut,absolutePivotRow,n+rowToZeroOut,conjugateRow],:)=U([absolutePivotRow,rowToZeroOut,conjugateRow,n+rowToZeroOut],:);
+        Pi([rowToZeroOut,absolutePivotRow,n+rowToZeroOut,conjugateRow],:)=Pi([absolutePivotRow,rowToZeroOut,conjugateRow,n+rowToZeroOut],:);
+%        'swap'
+%        absolutePivotRow,rowToZeroOut
+%        conjugateRow,rowToZeroOut+n
 
 
     else
@@ -69,8 +69,13 @@ while(true)
         Pi([rowToZeroOut,absolutePivotRow],:)=Pi([absolutePivotRow,rowToZeroOut],:);
 %        rowNorms([rowToZeroOut,absolutePivotRow],:)=rowNorms([absolutePivotRow,rowToZeroOut],:);
 
+%        'swap'
+%        absolutePivotRow,rowToZeroOut
 
     end
+   
+ %   UafterPivoting=round(U)
+%    k1,k2
     
     [v,beta]=gallery('house',U(rowToZeroOut,k1+k2+1:end).'); %H=I-beta*v*v'
     U(:,k1+k2+1:end)=U(:,k1+k2+1:end)-beta*U(:,k1+k2+1:end)*v*v';
@@ -78,7 +83,7 @@ while(true)
     
     Q(k1+k2+1:end,:)=Q(k1+k2+1:end,:)-beta*v*v'*Q(k1+k2+1:end,:);
 
-%    assertVectorsAlmostEqual(U*Q,initialU(Pi,:));
+    assertVectorsAlmostEqual(U*Q,initialU(Pi,:));
     
     if relativePivotRow<=2*(n-k1) %increment one of the two indices
         k1=k1+1;
@@ -86,7 +91,7 @@ while(true)
         k2=k2+1;
     end
     
-    if k1+k2>=b-1
+    if k1+k2>=b %we had b before, but this would avoid the last swap
         break;
     end
 end

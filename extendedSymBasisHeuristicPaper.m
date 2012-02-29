@@ -17,8 +17,11 @@ m=b-n;
 
 invPi=1:length(Pi);
 invPi(Pi)=invPi;
+%invPi=Pi;
 
 v=(invPi(1:n)>invPi(n+1:2*n));
+
+%Pi,invPi,v,invcond
 
 if invcond<sqrt(eps(class(R)))
     warning('cbrpack:illConditionedSubspace','the provided subspace basis is ill-conditioned --- don''t expect much from the results');

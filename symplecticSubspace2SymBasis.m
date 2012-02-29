@@ -20,7 +20,9 @@ function [X,v,invcond]=symplecticSubspace2SymBasis(U,v)
 % 
 
 if not(exist('v','var')) || isempty(v)
-    v=symBasisHeuristic(U);
+    [v invcond]=extendedSymBasisHeuristicPaper(U);
+%    [v invcond]=symBasisHeuristic(U);
+    invcond
 end
 
 [m n]=size(U);
@@ -31,6 +33,7 @@ end
 S=rowSwap(U,v,'N');
 
 [X invcond]=rightLinSolve(S(n+1:end,:),S(1:n,:));
+invcond
 
 %final check
 if norm(X-X','fro')/norm(X,'fro') > sqrt(eps)
