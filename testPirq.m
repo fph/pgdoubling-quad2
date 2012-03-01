@@ -11,5 +11,5 @@ for tries=1:100
     
     assertVectorsAlmostEqual(R*Q,U(Pi,:));
     assertVectorsAlmostEqual(Q*Q',eye(size(Q)));
-    assertVectorsAlmostEqual(mod(Pi(1:n),n), mod(Pi(n+1:2*n),n));
+    assertVectorsAlmostEqual(abs(Pi(1:n)-Pi(n+1:2*n))/n,ones(n,1));
 end
