@@ -34,56 +34,49 @@ while(true)
 %    rowNorms
     
     [pivotValue relativePivotRow]=max(rowNorms); %relative=relative to the "reduced" matrix
-    if isnan(firstPivot)
-        firstPivot=pivotValue;
-    end
-    lastPivot=pivotValue;
     
+    %k=row to zero out, p=pivot row
     if relativePivotRow<=2*(n-k1)
         %pivotRow is in one of the first two blocks
         if relativePivotRow>n-k1
-            absolutePivotRow=relativePivotRow+2*k1;
-            conjugateRow=absolutePivotRow-n;
+            p=relativePivotRow+2*k1-n;
+            U([p,n+p],:)=jay(2)*U([p,n+p],:);
+            Pi([p n+p])=Pi([n+p p]);
         else
-            absolutePivotRow=relativePivotRow+k1;
-            conjugateRow=absolutePivotRow+n;
+            p=relativePivotRow+k1;
         end
         
-        rowToZeroOut=k1+1;
+        k=k1+1;
 
-        %swaps row absolutePivot into k1+1
-        U([rowToZeroOut,absolutePivotRow,n+rowToZeroOut,conjugateRow],:)=U([absolutePivotRow,rowToZeroOut,conjugateRow,n+rowToZeroOut],:);
-        Pi([rowToZeroOut,absolutePivotRow,n+rowToZeroOut,conjugateRow],:)=Pi([absolutePivotRow,rowToZeroOut,conjugateRow,n+rowToZeroOut],:);
-%        'swap'
-%        absolutePivotRow,rowToZeroOut
-%        conjugateRow,rowToZeroOut+n
-
-
+        %swaps row p and p+n into k and k+n
+        U([p p+n k k+n],:)=U([k k+n p p+n],:);
+        Pi([p p+n k k+n],:)=Pi([k k+n p p+n],:);
     else
         %pivotRow is in the third block
-        absolutePivotRow=relativePivotRow+2*k1+k2;
-        rowToZeroOut=2*n+k2+1;
+        p=relativePivotRow+2*k1+k2;
+        k=2*n+k2+1;
         
         %swaps it into 2*n+k2+1
-        U([rowToZeroOut,absolutePivotRow],:)=U([absolutePivotRow,rowToZeroOut],:);
-        Pi([rowToZeroOut,absolutePivotRow],:)=Pi([absolutePivotRow,rowToZeroOut],:);
-%        rowNorms([rowToZeroOut,absolutePivotRow],:)=rowNorms([absolutePivotRow,rowToZeroOut],:);
+        U([k,p],:)=U([p,k],:);
+        Pi([k,p],:)=Pi([p,k],:);
+%       rowNorms([rowToZeroOut,absolutePivotRow],:)=rowNorms([absolutePivotRow,rowToZeroOut],:);
 
 %        'swap'
 %        absolutePivotRow,rowToZeroOut
 
     end
-   
- %   UafterPivoting=round(U)
-%    k1,k2
-    
-    [v,beta]=gallery('house',U(rowToZeroOut,k1+k2+1:end).'); %H=I-beta*v*v'
+    [v,beta,rowNorm]=gallery('house',U(k,k1+k2+1:end).'); %H=I-beta*v*v'
     U(:,k1+k2+1:end)=U(:,k1+k2+1:end)-beta*U(:,k1+k2+1:end)*v*v';
-    U(rowToZeroOut,k1+k2+2:end)=0;
+    U(k,k1+k2+2:end)=0;
     
     Q(k1+k2+1:end,:)=Q(k1+k2+1:end,:)-beta*v*v'*Q(k1+k2+1:end,:);
+    if isnan(firstPivot)
+        firstPivot=rowNorm;
+    end
+    lastPivot=rowNorm;
 
-    assertVectorsAlmostEqual(U*Q,initialU(Pi,:));
+    assertVectorsAlmostEqual(U(Pi,:)'*[jay(2*n) zeros(2*n,m);zeros(m,2*n+m)]*U(Pi,:),zeros(n+m));
+    assertVectorsAlmostEqual(abs(U*Q),abs(initialU(Pi,:)));
     
     if relativePivotRow<=2*(n-k1) %increment one of the two indices
         k1=k1+1;
@@ -96,4 +89,4 @@ while(true)
     end
 end
 
-invcond=lastPivot/firstPivot;
+invcond=abs(lastPivot/firstPivot);

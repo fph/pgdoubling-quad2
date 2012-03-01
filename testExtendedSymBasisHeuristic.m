@@ -11,8 +11,8 @@ for i=1:50
     v=logical(randi(2,n,1)-1);
     U(1:2*n,:)=rowSwap(U(1:2*n,:),v,'N');
     
-    vh=extendedSymBasisHeuristicOld(U);
-    vhp=extendedSymBasisHeuristicPaper(U);
+    [vh invcondprev]=extendedSymBasisHeuristicOld(U);
+    [vhp invcondprevp]=extendedSymBasisHeuristicPaper(U);
         
     EE=[U(1:n,:)' zeros(n+m,m)];
     AA=[(jay(n)*U(n+1:2*n,:))' U(2*n+1:2*n+m,:)'];
