@@ -75,8 +75,8 @@ while(true)
     end
     lastPivot=rowNorm;
 
-    assertVectorsAlmostEqual(U(Pi,:)'*[jay(2*n) zeros(2*n,m);zeros(m,2*n+m)]*U(Pi,:),zeros(n+m));
-    assertVectorsAlmostEqual(abs(U*Q),abs(initialU(Pi,:)));
+%    assertVectorsAlmostEqual(U(Pi,:)'*[jay(2*n) zeros(2*n,m);zeros(m,2*n+m)]*U(Pi,:),zeros(n+m));
+%    assertVectorsAlmostEqual(abs(U*Q),abs(initialU(Pi,:)));
     
     if relativePivotRow<=2*(n-k1) %increment one of the two indices
         k1=k1+1;
