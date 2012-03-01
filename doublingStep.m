@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,w,threshold1,threshold2d,threshold2o)
+function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,threshold1,threshold2d,threshold2o)
+% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 %
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
@@ -21,8 +21,12 @@ function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,w,threshold1,thres
 %
 % if vnew==v, also computes a cheap measure of the change in the subspace that can be used as a stopping criterion
 
-if not(exist('w','var'))
-    w=[];
+if not(exist('wguess','var'))
+    wguess=[];
+end
+
+if not(exist('vguess','var'))
+    vguess=[];
 end
 
 if not(exist('threshold1','var'))
@@ -39,14 +43,14 @@ n=length(X);
 first=1:n;second=n+1:2*n;
 [L,U]=symBasis2SymplecticPencil(X,v);
 Z=[L;U];
-[leftX,w,invcond1]=subspace2CanBasis(Z,w);
+[leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
 [leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
 [Ltilde,Utilde]=leftDual(leftX,w);
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton
-[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,v);
+[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vguess);
 [Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
 if all(vnew(:)==v(:))
     n=n/2;first=1:n;second=n+1:2*n;
