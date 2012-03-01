@@ -25,8 +25,7 @@ if m~=2*n
 end
 
 if not(exist('v','var')) || isempty(v)
-    [v invcond]=extendedSymBasisHeuristicPaper(U);
-%    [v invcond]=symBasisHeuristic(U);
+    [v invcond]=symBasisHeuristic(U);
 end
 
 S=rowSwap(U,v,'N');
