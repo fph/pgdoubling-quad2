@@ -8,7 +8,7 @@ for tries=1:10
     X=randn(n);X=(X+X')/2;
     v=logical(randi(2,n,1)-1);
     [L,U]=symBasis2SymplecticPencil(X,v);
-    [X2,v2]=doublingStep(X,v,[],2);
+    [X2,v2]=doublingStep(X,v,[],[],2);
     M=U\L;
     [XX,vv]=symplecticPencil2SymBasis(M^2,eye(n));
     
