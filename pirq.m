@@ -1,92 +1,60 @@
-function [Pi,U,Q,invcond]=pirq(U)
-%computes a "restricted" Pi*R*Q factorization of a subspace U
+function [v,U,Q,invcond]=pirq(U)
+%computes a Pi*R*Q factorization of a symplectic subspace U
 %
-% [Pi,U,Q,invcond]=pirq(U)
+% [v,U,Q,invcond]=pirq(U)
 %
-% U has size 2n+m x n+m
+% U has size 2n x n
 %
-% returns Pi, R, Q such that R*Q=U(Pi,:)
-%
-% Pi should "behave well" on the first two structured blocks
-% Pi=blkdiag(Pi1,Pi1,Pi2), size(Pi1)==[n,n], size(Pi2)==[m,m]
-%
-% Here R([1:n 2*n+1:end]) is lower triangular, Q is orthogonal
+% returns Pi_v, R, Q such that R*Q=RowSwap(U,v,'N')
+% R is permuted lower triangular, Q is orthogonal
 
-[a b]=size(U);
-n=a-b;
-m=b-n;
+[m n]=size(U);
+if(m~=2*n)
+    error('cbrpack:oddSize','the input matrix must have an even number of rows');
+end
 
-Pi=(1:a)';
+v=false(n,1);
+Q=eye(n);
 
 initialU=U;
 
-k1=0;k2=0; %{k1,k2}=length of the already factorized part in the {1st,2nd} block;
-
-Q=eye(b);
-
 firstPivot=nan;
 
-while(true)
-%    Ubefore=round(U)
-%    U([k1+1:n,n+k1+1:2*n,2*n+k2+1:end],k1+k2+1:end)
-    rowNorms=sum(abs(U([k1+1:n,n+k1+1:2*n,2*n+k2+1:end],k1+k2+1:end).^2),2);
-    
-%    rowNorms
-    
-    [pivotValue relativePivotRow]=max(rowNorms); %relative=relative to the "reduced" matrix
-    
-    %k=row to zero out, p=pivot row
-    if relativePivotRow<=2*(n-k1)
-        %pivotRow is in one of the first two blocks
-        if relativePivotRow>n-k1
-            p=relativePivotRow+2*k1-n;
-            U([p,n+p],:)=jay(2)*U([p,n+p],:);
-            Pi([p n+p])=Pi([n+p p]);
-        else
-            p=relativePivotRow+k1;
-        end
-        
-        k=k1+1;
+Perm=1:n; %we permute the rows in each block to keep the already-factorized part in the first k-1 rows
 
-        %swaps row p and p+n into k and k+n
-        U([p p+n k k+n],:)=U([k k+n p p+n],:);
-        Pi([p p+n k k+n],:)=Pi([k k+n p p+n],:);
+for k=1:n
+    SquaredRowNorms=sum(abs(U([k:n,n+k:2*n],k:end).^2),2);    
+    [pivotValue relativePivotRow]=max(SquaredRowNorms); %relative=relative to the "reduced" matrix
+
+    if relativePivotRow>n-k+1
+        p=relativePivotRow+2*(k-1)-n;
+        U([p,n+p],:)=jay(2)*U([p,n+p],:);
+        v(Perm(p))=true;
     else
-        %pivotRow is in the third block
-        p=relativePivotRow+2*k1+k2;
-        k=2*n+k2+1;
-        
-        %swaps it into 2*n+k2+1
-        U([k,p],:)=U([p,k],:);
-        Pi([k,p],:)=Pi([p,k],:);
-%       rowNorms([rowToZeroOut,absolutePivotRow],:)=rowNorms([absolutePivotRow,rowToZeroOut],:);
-
-%        'swap'
-%        absolutePivotRow,rowToZeroOut
-
+        p=relativePivotRow+(k-1);
     end
-    [v,beta,rowNorm]=gallery('house',U(k,k1+k2+1:end).'); %H=I-beta*v*v'
-    U(:,k1+k2+1:end)=U(:,k1+k2+1:end)-beta*U(:,k1+k2+1:end)*v*v';
-    U(k,k1+k2+2:end)=0;
     
-    Q(k1+k2+1:end,:)=Q(k1+k2+1:end,:)-beta*v*v'*Q(k1+k2+1:end,:);
+    %swaps row p and p+n into k and k+n
+    U([p p+n k k+n],:)=U([k k+n p p+n],:);
+    Perm([p k])=Perm([k p]);
+
+    [w,beta,rowNorm]=gallery('house',U(k,k:end).'); %H=I-beta*v*v'
+    U(:,k:end)=U(:,k:end)-beta*(U(:,k:end)*w)*w';
+    U(k,k+1:end)=0;
+    
+    Q(k:end,:)=Q(k:end,:)-beta*w*(w'*Q(k:end,:));
     if isnan(firstPivot)
         firstPivot=rowNorm;
     end
     lastPivot=rowNorm;
-
-%    assertVectorsAlmostEqual(U(Pi,:)'*[jay(2*n) zeros(2*n,m);zeros(m,2*n+m)]*U(Pi,:),zeros(n+m));
-%    assertVectorsAlmostEqual(abs(U*Q),abs(initialU(Pi,:)));
     
-    if relativePivotRow<=2*(n-k1) %increment one of the two indices
-        k1=k1+1;
-    else
-        k2=k2+1;
-    end
-    
-    if k1+k2>=b %we had b before, but this would avoid the last swap
-        break;
-    end
+%    tmp1=U*Q;
+%    tmp2=rowSwap(initialU,v,'N');
+%    norm(tmp1-tmp2([Perm,n+Perm],:))
 end
+
+%undoes the permutation
+U(Perm,:)=U(1:n,:);
+U(Perm+n,:)=U(n+1:2*n,:);
 
 invcond=abs(lastPivot/firstPivot);
