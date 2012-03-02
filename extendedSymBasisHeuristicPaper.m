@@ -13,7 +13,11 @@ m=b-n;
 
 % start reducing the last block to triangular form, then invokes pirq
 [Q,R]=qr(U(2*n+1:end,:)');
-d=abs(diag(R));
+if m>1 %badly-implemented Matlab diag does not do what I mean for m=1 :(
+    d=abs(diag(R));
+else
+    d=abs(R(1,1));
+end
 if min(d)/max(d)<sqrt(eps(class(U)))
     warning('cbrpack:illConditionedThirdBlock','the extended part of the "extended Lagrangian" subspace is almost singular --- you are about to invert an ill-conditioned matrix');
 end
