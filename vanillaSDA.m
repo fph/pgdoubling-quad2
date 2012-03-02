@@ -38,7 +38,7 @@ for k=1:maxIters
     %newres=norm(Gnew-G,'fro');
     newres=norm(Enew,'fro');
     cd=cond(eye(n)-G*H);
-    fprintf('step %3d residual measures: %e %e -- cond %e\n',k,norm(Enew,'fro'),norm(Gnew-G,'fro'),cd)
+%    fprintf('step %3d residual measures: %e %e -- cond %e\n',k,norm(Enew,'fro'),norm(Gnew-G,'fro'),cd)
     if(newres>=oldres && newres<1.e-1)
         break;
     end
