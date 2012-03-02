@@ -6,7 +6,9 @@ function [X,Y]=vanillaSDA(A,G,Q,varargin)
 
 o=matgic.Options(varargin{:});
 
-maxIters=o.get('maxIters',100);
+verbose=logical(o.get('verbose',false));
+
+maxIters=o.get('maxSteps',100);
 
 H=hamiltonian(A,G,Q);
 gamma=o.get('gamma',norm(H,'fro'));
@@ -37,7 +39,9 @@ for k=1:maxIters
     %newres=norm(Gnew-G,'fro');
     newres=norm(Enew,'fro');
     cd=cond(eye(n)-G*H);
-%    fprintf('step %3d residual measures: %e %e -- cond %e\n',k,norm(Enew,'fro'),norm(Gnew-G,'fro'),cd)
+    if verbose
+        fprintf('step %3d residual measures: %e %e -- cond %e\n',k,norm(Enew,'fro'),norm(Gnew-G,'fro'),cd)
+    end
     if(newres>=oldres && newres<1.e-1)
         break;
     end
