@@ -13,7 +13,7 @@ m=b-n;
 
 % start reducing the last block to triangular form, then invokes pirq
 [Q,R]=qr(U(2*n+1:end,:)');
-if m>1 %badly-implemented Matlab diag does not do what I mean for m=1 :(
+if m>1 %the badly-designed Matlab diag does not do what I mean for m=1 :(
     d=abs(diag(R));
 else
     d=abs(R(1,1));
