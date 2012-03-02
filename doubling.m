@@ -7,6 +7,8 @@ function [S,v]=doubling(S,v,varargin)
 %
 % options available:
 % maxSteps: maximum number of step before returning (default:200)
+% minSteps: minimum number of steps, independently of the stopping
+% criterion
 % tolerance: tolerance at which to stop, if attainable (default: eps)
 %   (the algorithm will stop anyway if the results aren't improving anymore)
 % verbose: (logical) print convergence history and extra diagnostic information
@@ -15,6 +17,7 @@ function [S,v]=doubling(S,v,varargin)
 o=matgic.Options(varargin{:});
 
 maxSteps=o.get('maxSteps',inf);
+minSteps=o.get('minSteps',0);
 tol=o.get('tolerance',eps);
 
 verbose=logical(o.get('verbose',false));
@@ -39,6 +42,9 @@ while(true)
     [S,v,w,swaps1,swaps2,nGH,nEF]=doublingStep(S,v,wguess,vguess);
     if(verbose)
         fprintf('Step %3d, subspace change measure %5.2e, pseudo-residual measure %5.2e, swaps 2*%d+%d\n',steps,nGH,nEF,swaps1,swaps2);
+    end
+    if steps<minSteps
+        continue;
     end
     if nEF<=tol
         break;
