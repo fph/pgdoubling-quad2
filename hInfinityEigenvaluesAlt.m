@@ -1,0 +1,25 @@
+function lambda=hInfinityEigenvaluesAlt(UH,UJ,gamma)
+% computes eigenvalues of X_H*X_J for a h-Infinity control problem
+%
+% given bases of the subspaces UH=im [X_H;I], UJ=im [X_J;I], computes the
+% eigenvalues of (X_HX_J)
+%
+% uses the "alternative" formulation of Ben
+
+[twon n]=size(UH);
+first=1:n;second=n+1:2*n;
+
+%these are as follows and not the opposite following (25) in BenBMX07. I
+%suspect they tweaked the definition of the even pencils in order to
+%maintain the same order.
+YH=UH(first,:);
+ZH=UH(second,:);
+
+YJ=UJ(first,:);
+ZJ=UJ(second,:);
+
+YY=[gamma*ZH'*YH ZH'*ZJ;ZJ'*ZH gamma*ZJ'*YJ];
+
+%assertVectorsAlmostEqual(YH*Ztilde,ZJ*Ytilde)
+
+lambda=eig(YY);
