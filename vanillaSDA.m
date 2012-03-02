@@ -1,18 +1,17 @@
-function [X,Y]=vanillaSDA(A,G,Q,maxIters)
+function [X,Y]=vanillaSDA(A,G,Q,varargin)
 %solves a CARE with the original SDA
 %
-% [X,Y]=vanillaSDA(A,G,Q,maxIters)
+% [X,Y]=vanillaSDA(A,G,Q)
 %
 
-if not(exist('maxIters','var')) || isempty(maxIters)
-    maxIters=100;
-end
+o=matgic.Options(varargin{:});
 
-n=length(A);
+maxIters=o.get('maxIters',100);
 
 H=hamiltonian(A,G,Q);
+gamma=o.get('gamma',norm(H,'fro'));
 
-gamma=norm(H,'fro');
+n=length(A);
 
 EE=H-gamma*eye(2*n);
 AA=H+gamma*eye(2*n);
