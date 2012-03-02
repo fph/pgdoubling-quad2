@@ -53,7 +53,7 @@ while(true)
     if nEF<1e-6 && nEF>=mean(convergenceHistory) %stagnation
         break
     end
-    if(steps>maxSteps)
+    if(steps>=maxSteps)
         break;
     end
 end
