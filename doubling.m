@@ -28,8 +28,6 @@ steps=0;
 convergenceHistory=[nan nan nan nan nan nan];
 
 w=[];
-wguess=[]; %permutation guess
-vguess=[];
 while(true)
     steps=steps+1;
     if(safer)
