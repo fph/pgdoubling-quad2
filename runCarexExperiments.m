@@ -7,7 +7,12 @@ end
 for i=experiments
     fprintf('[%d]',i);
     [A,G,Q]=carex(i);
-    [X,Y,U,V]=solveCARE(A,G,Q,'maxSteps',200,'safer',true);
+    if i==17
+        needsSafer=true;
+    else
+        needsSafer=false;
+    end
+    [X,Y,U,V]=solveCARE(A,G,Q,'maxSteps',200,'safer',needsSafer);
     k=checkCAREInvariantSubspaceResidual(A,G,Q,U);
     assertTrue(k.isGood);
     results{i}=k;

@@ -45,6 +45,7 @@ first=1:n;second=n+1:2*n;
 Z=[L;U];
 [leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
 [leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
+[leftX,w,invcond1]=subspace2CanBasis(Z,w);
 [Ltilde,Utilde]=leftDual(leftX,w);
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
@@ -52,6 +53,7 @@ newU=Utilde*U;
 %TODO: could do scaling as in Newton for the matrix sign
 [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vguess);
 [Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
+[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vnew);
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
