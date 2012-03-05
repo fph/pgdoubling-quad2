@@ -49,14 +49,13 @@ Z=[L;U];
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
-%TODO: could do scaling as in Newton
+%TODO: could do scaling as in Newton for the matrix sign
 [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vguess);
 [Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
-if all(vnew(:)==v(:))
-    n=n/2;first=1:n;second=n+1:2*n;
-    nGH=norm(X(first,first)-Xnew(first,first),'fro')+norm(X(second,second)-Xnew(second,second),'fro');
-    nEF=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
-else
-    nGH=nan;
-    nEF=nan;
+
+%computes residual measures
+Xold=symBasis2symBasis(X,v,vnew);
+n=n/2;first=1:n;second=n+1:2*n;
+nGH=norm(Xold(first,first)-Xnew(first,first),'fro')+norm(Xold(second,second)-Xnew(second,second),'fro');
+nEF=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
 end
