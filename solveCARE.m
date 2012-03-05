@@ -4,7 +4,6 @@ function [X,Y,U,V]=solveCARE(A,G,Q,varargin)
 % [X,Y,U,V]=solveCARE(A,G,Q,...)
 %
 % options:
-% gamma: constant to use for the Cayley transform
 % defectCorrectionSteps: makes extra defect correction steps at the end
 % (*on X,U only, not Y,V*)
 % (default: 0)
@@ -13,11 +12,13 @@ function [X,Y,U,V]=solveCARE(A,G,Q,varargin)
 o=matgic.Options(varargin{:});
 
 H=hamiltonian(A,G,Q);
-gamma=o.get('gamma',norm(H));
-if not(gamma>0)
-    error 'gamma must be positive'
-end
-[S,v]=symplecticPencil2SymBasis(H+gamma*eye(size(H)),H-gamma*eye(size(H)));
+%optimizes basis for the Hamiltonian pencil
+[S,v]=hamiltonianPencil2SymBasis(H,eye(size(H)));
+[S,v]=optimizeSymBasis(S,v);
+[AA,EE]=symBasis2HamiltonianPencil(S,v);
+
+gamma=1.1*length(S)*max(max(abs(S))); %more solid than the other choice
+[S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
 [S,v]=optimizeSymBasis(S,v);
 
 [S,v]=doubling(S,v,o);
