@@ -1,7 +1,7 @@
-function [X,v]=hamiltonianPencil2SymBasis(A,E,v)
+function [X,v,invcond]=hamiltonianPencil2SymBasis(A,E,v)
 %extracts symBases of Hamiltonian pencils and matrices
 %
-% [X,v]=hamiltonianPencil2SymBasis(A,E,v)
+% [X,v,invcond]=hamiltonianPencil2SymBasis(A,E,v)
 %
 % use E=eye() or E=[] if you just have a Hamiltonian matrix
 
@@ -18,4 +18,4 @@ end
 J=jay(n);
 U=[E'; (A*J)'];
 
-[X,v]=symplecticSubspace2SymBasis(U,v);
+[X,v,invcond]=symplecticSubspace2SymBasis(U,v);
