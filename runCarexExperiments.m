@@ -7,7 +7,7 @@ end
 for i=experiments
     fprintf('[%d]',i);
     [A,G,Q]=carex(i);
-    [X,Y,U,V]=solveCARE(A,G,Q);
+    [X,Y,U,V]=solveCARE(A,G,Q,'maxSteps',200);
     k=checkCAREInvariantSubspaceResidual(A,G,Q,U);
     assertTrue(k.isGood);
     results{i}=k;
