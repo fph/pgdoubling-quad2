@@ -17,7 +17,7 @@ H=hamiltonian(A,G,Q);
 [S,v]=optimizeSymBasis(S,v);
 [AA,EE]=symBasis2HamiltonianPencil(S,v);
 
-gamma=1.1*length(S)*max(max(abs(S))); %more solid than the other choice
+gamma=1.1*length(S)*max(max(abs(S))); %this should ensure that gamma does not collide with some eigenvalues 
 [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
 [S,v]=optimizeSymBasis(S,v);
 
