@@ -35,11 +35,7 @@ v=o.get('initialv',[]);
 
 [Ah,Eh]=symBasis2HamiltonianPencil(S,v);
 
-gamma=o.get('gamma',norm(Ah,'fro')/norm(Eh,'fro'));
-if not(gamma>0)
-    error 'gamma must be positive'
-end
-
+gamma=1.1*length(S)*max(max(abs(S))); %this should ensure that gamma does not collide with some eigenvalues 
 [S,v]=symplecticPencil2SymBasis(Ah+gamma*Eh,Ah-gamma*Eh);
 [S,v]=optimizeSymBasis(S,v);
 
