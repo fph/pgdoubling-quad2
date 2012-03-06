@@ -59,6 +59,7 @@ while(upperBound-lowerBound>tol)
         lowerBound=gamma;
         lowerF=nan;
         reason='Could not solve the Riccati equation for X_J';
+        continue;
     end
     
     [A,B,Q,R,S]=hInfinityControlPencil('H',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
@@ -68,6 +69,7 @@ while(upperBound-lowerBound>tol)
         lowerBound=gamma;
         lowerF=nan;
         reason='Could not solve the Riccati equation for X_H';
+        continue;
     end
 
     nj=length(UJ)/2;
