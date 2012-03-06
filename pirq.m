@@ -16,14 +16,14 @@ end
 v=false(n,1);
 Q=eye(n);
 
-initialU=U;
+%initialU=U;
 
 firstPivot=nan;
 
 Perm=1:n; %we permute the rows in each block to keep the already-factorized part in the first k-1 rows
 
 for k=1:n
-    SquaredRowNorms=sum(abs(U([k:n,n+k:2*n],k:end).^2),2);    
+    SquaredRowNorms=sum(abs(U([k:n,n+k:2*n],k:end).^2),2);
     [pivotValue relativePivotRow]=max(SquaredRowNorms); %relative=relative to the "reduced" matrix
 
     if relativePivotRow>n-k+1
@@ -38,7 +38,20 @@ for k=1:n
     U([p p+n k k+n],:)=U([k k+n p p+n],:);
     Perm([p k])=Perm([k p]);
 
-    [w,beta,rowNorm]=gallery('house',U(k,k:end).'); %H=I-beta*v*v'
+%    [w,beta,rowNorm]=gallery('house',U(k,k:end).'); %H=I-beta*v*v'
+%  we re-implement gallery/house since the function call took most of the
+%  time here
+    w=U(k,k:end).';
+    if w(1)==0
+        rowNorm=-norm(w);
+    else
+        rowNorm=-norm(w)*sign(w(1));
+    end
+    w(1)=w(1)-rowNorm;
+    beta = -1/(rowNorm'*w(1));
+    rowNorm=abs(rowNorm);
+%
+%
     U(:,k:end)=U(:,k:end)-beta*(U(:,k:end)*w)*w';
     U(k,k+1:end)=0;
     
