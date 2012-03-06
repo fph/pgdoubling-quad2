@@ -28,13 +28,14 @@ end
 n=length(X);
 first=1:n;second=n+1:2*n;
 [A,E]=symBasis2HamiltonianPencil(X,v);
+scaling=abs((det(A)/det(E)))^(-1/n); %determinantal scaling, see [Higham, function of matrices]
 Z=[A;E];
 [leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
 [leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
 [leftX,w,invcond1]=subspace2CanBasis(Z,w);
 [Etilde,Atilde]=leftDual(leftX,w);
 assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
-newA=1/2*(Etilde*A+Atilde*E);
+newA=1/2*(scaling*Etilde*A+1/scaling*Atilde*E);
 newE=Etilde*E;
 %TODO: scaling
 [Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vguess);
