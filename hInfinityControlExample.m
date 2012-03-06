@@ -5,6 +5,9 @@ function [A B1 B2 C1 C2 D11 D12 D21 D22 gammaOpt]=hInfinityControlExample(kind,p
 %
 % BenBMX07Example6.1, parameters: [a]
 % DrcexcExample2.4, parameters: [m c k]
+% BenMX07Example3.1: parameters [alpha beta delta epsilon1 epsilon2 eta]
+% BenMX07Example6.2 or 6.3: as the previous one, with parameters hardcoded to the
+%   values in the paper
 
 switch kind
     case 'BenMX07Example6.1'
@@ -58,7 +61,7 @@ switch kind
         gammaOpt=nan;
     case 'BenMX07Example6.4'
         if not(exist('parameters','var')) || isempty(parameters)
-            parameters=1;
+            parameters=3;
         end
         alpha=parameters(1);
 
@@ -72,6 +75,33 @@ switch kind
         D21=[0 1];
         D22=0;
         gammaOpt=alpha;
+    case 'BenMX07Example3.1'
+        if not(exist('parameters','var')) || isempty(parameters)
+            error 'You should specify the parameter values'
+        end
+        alpha=parameters(1);
+        beta=parameters(2);
+        delta=parameters(3);
+        epsilon1=parameters(4);
+        epsilon2=parameters(5);
+        eta=parameters(6);
+        
+        A=-eye(2);
+        B1=blkdiag(epsilon1,epsilon2);
+        B2=[1;1];
+        C1=blkdiag(alpha,beta);
+        C2=[delta eta];
+        D11=blkdiag(1/2,1/2);
+        D12=[0;1];
+        D21=D12';
+        D22=0;
+        gammaOpt=nan;
+    case 'BenMX07Example6.2'
+        [A B1 B2 C1 C2 D11 D12 D21 D22]=hInfinityControlExample('BenMX07Example3.1',[1 1 1 0 0 1]);
+        gammaOpt=1/2;
+    case 'BenMX07Example6.3'
+        [A B1 B2 C1 C2 D11 D12 D21 D22]=hInfinityControlExample('BenMX07Example3.1',[1 1 1 0 1 1]);
+        gammaOpt=0.8062257748299;
     otherwise
         error 'Wrong type';
 end
