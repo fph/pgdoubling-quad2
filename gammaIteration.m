@@ -19,8 +19,8 @@ upperBound=inf;
 gamma=norm([A1 B1 B2; C1 D11 D12; C2 D21 D22]); %half-assed starting value
 reason='';
 
-S=warning('off','cbrpack:illConditionedMatrix');
-%onCleanup(@() warning(S));
+S=warning('off','cbrpack:illConditionedSubspace');
+onCleanup(@() warning(S));
 
 upperF=nan; %we want to use the secant method, therefore we need to keep track of the "y"s in the points upperBound and lowerBound
 lowerF=nan; 
@@ -32,10 +32,11 @@ while(upperBound-lowerBound>tol)
     %gets the next value of gamma to try
     if upperBound==inf
         gamma=2*gamma;
-    elseif not(isnan(lowerF+upperF))
-        %TODO: tried this secant method but it is slower than bisection?
-%        gamma=lowerBound-lowerF*(upperBound-lowerBound)/(upperF-lowerF);
-        gamma=(upperBound+lowerBound)/2;
+    elseif not(isnan(lowerF+upperF)) && mod(iterations,4)~=0
+        %the secant method can still be dramatically slower than bisection,
+        %so we make sure we try a little bit of both and force a bisection
+        %step every 4 iterations
+        gamma=lowerBound-lowerF*(upperBound-lowerBound)/(upperF-lowerF);
         assert(gamma>lowerBound && gamma<upperBound);
     else
         gamma=(upperBound+lowerBound)/2;
