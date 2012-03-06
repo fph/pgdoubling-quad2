@@ -47,8 +47,8 @@ EAhat=diag(s(1:n+m))*v(:,1:n+m)';
 Ehat=EAhat(:,1:n+m);Ahat=EAhat(:,n+m+1:end);
 es=eig(Ehat,Ahat);
 
-maxUnstable=max(real(es));
-eigModulus=max(abs(es));
+maxUnstable=max(real(es(isfinite(es))));
+eigModulus=max(abs(es(isfinite(es))));
 
 k.stability=maxUnstable/eigModulus;
 

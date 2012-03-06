@@ -78,6 +78,7 @@ while(upperBound-lowerBound>tol)
     kh=rank(UH(nh+1:end,:)'*UH(1:nh,:),tol);
 
     eigY=hInfinityEigenvaluesAlt(UH,UJ,gamma);
+    eigY=real(eigY);
     [absoluteValues permutation]=sort(abs(eigY));
     eigY=eigY(permutation);
     expectedZeros=nj+nh-kj-kh;
