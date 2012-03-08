@@ -1,22 +1,23 @@
-function results=runCarexExperiments(experiments)
+function results=runCarexExperiments(experiments,varargin)
+
+o=matgic.Options(varargin{:});
 
 if not(exist('experiments','var'))
     experiments=1:19;
 end
 
+if ~o.isSet('maxSteps')
+    o.set('maxSteps',200);
+end
+
 for i=experiments
     fprintf('[%d]',i);
     [A,G,Q]=carex(i);
-    if i==17
-        needsSafer=true;
-    else
-        needsSafer=false;
-    end
-    [X,Y,U,V]=solveCARE(A,G,Q,'maxSteps',200,'safer',needsSafer);
+    [X,Y,U,V]=solveCARE(A,G,Q,o);
     k=checkCAREInvariantSubspaceResidual(A,G,Q,U);
     assertTrue(k.isGood);
     results{i}=k;
 end
 fprintf('\n');
 
-for i=1:length(results) disp(results{i}.residual), end
+for i=experiments disp([i results{i}.residual]), end
