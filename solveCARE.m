@@ -21,7 +21,7 @@ gamma=1.1*length(S)*max(max(abs(S))); %this should ensure that gamma does not co
 [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
 [S,v]=optimizeSymBasis(S,v);
 
-[S,v]=doubling(S,v,o);
+[S,v]=doubling(S,v,'sda',o);
 
 n=length(S)/2;
 first=1:n;second=n+1:2*n;

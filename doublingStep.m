@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+% [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
 % 
@@ -15,7 +15,7 @@ function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,wguess,vguess,thre
 % 
 % note that one swap in swaps2 should cost half as much as one in swaps1, because of symmetry.
 %
-% if vnew==v, also computes a cheap measure of the change in the subspace that can be used as a stopping criterion
+% also computes two residual measures
 
 if not(exist('wguess','var'))
     wguess=[];
@@ -60,7 +60,7 @@ end
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
+res2=norm(Xold-Xnew,'fro');
 n=n/2;first=1:n;second=n+1:2*n;
-nGH=norm(Xold(first,first)-Xnew(first,first),'fro')+norm(Xold(second,second)-Xnew(second,second),'fro');
-nEF=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
+res=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
 end
