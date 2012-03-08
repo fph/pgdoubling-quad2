@@ -1,9 +1,15 @@
-function [X,v,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+function [X,v,swaps,invcond]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
-% [X,v,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+% [X,v,swaps,invcond]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
 %
-
+% invcond is the inverse condition number of all the performed
+% transformations composed. If it is larger than some moderate value,
+% consider recomputing the basis
+%
+% TODO: the condition number probably ain't the right thing --- if X=[1e12
+% 1; 1 1], then invcond is huge but the computation is perfectly
+% conditioned
 
 if not(exist('diagonalThreshold','var')) || isempty(diagonalThreshold)
     diagonalThreshold=2;
@@ -27,6 +33,7 @@ end
 
 %optimization
 swaps=0;
+invcond=1;
 while(swaps<maxSwaps)
     [maxvec, maxis]=max(abs(X-diag(diag(X))));
     [maxval maxj]=max(maxvec);
@@ -35,14 +42,15 @@ while(swaps<maxSwaps)
 
     [maxdiag maxdiagPos]=max(diag(X));
     if maxdiag>diagonalThreshold
-        [X,v]=updateSymBasis(X,v,maxdiagPos);
+        [X,v,stepcond]=updateSymBasis(X,v,maxdiagPos);
         swaps=swaps+1;
     elseif maxval>offdiagonalThreshold
-        [X,v]=updateSymBasis(X,v,[maxi maxj]);
+        [X,v,stepcond]=updateSymBasis(X,v,[maxi maxj]);
         swaps=swaps+2;
     else
         break;
-    end    
+    end
+    invcond=invcond*stepcond;
 end
 
 if swaps==maxSwaps
