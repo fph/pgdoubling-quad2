@@ -6,7 +6,9 @@ function [X,Y,U,V]=solveCareSign(A,G,Q,varargin)
 o=matgic.Options(varargin{:});
 
 H=hamiltonian(A,G,Q);
-[S,v]=hamiltonianPencil2SymBasis(H,eye(size(H)));
+%we may scale here, since we are only interested in stable/unstable subspaces
+scaling=norm(H);
+[S,v]=hamiltonianPencil2SymBasis(H,scaling*eye(size(H)));
 
 [S,v]=inverseFreeSign(S,v,o);
 

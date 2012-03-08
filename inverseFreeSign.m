@@ -18,7 +18,7 @@ o=matgic.Options(varargin{:});
 
 maxSteps=o.get('maxSteps',inf);
 minSteps=o.get('minSteps',0);
-tol=o.get('tolerance',eps);
+tol=o.get('tolerance',eps*length(S));
 
 verbose=logical(o.get('verbose',false));
 safer=logical(o.get('safer',false));

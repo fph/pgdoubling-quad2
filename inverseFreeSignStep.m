@@ -28,20 +28,27 @@ end
 n=length(X);
 first=1:n;second=n+1:2*n;
 [A,E]=symBasis2HamiltonianPencil(X,v);
-scaling=abs((det(A)/det(E)))^(-1/n); %determinantal scaling, see [Higham, function of matrices]
 Z=[A;E];
 [leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
 [leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
 [leftX,w,invcond1]=subspace2CanBasis(Z,w);
 [Etilde,Atilde]=leftDual(leftX,w);
-assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
-newA=1/2*(scaling*Etilde*A+1/scaling*Atilde*E);
+
+%assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
+
+newA=1/2*(Etilde*A+Atilde*E);
 newE=Etilde*E;
-%TODO: scaling
-[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vguess);
+
+%scaling=abs((det(newA)/det(newE)))^(-1/n); %determinantal scaling, see [Higham, function of matrices]
+scaling=norm(newA,'fro')/norm(newE,'fro');
+% this is an odd place to scale. Usually you want to scale directly in the
+% NMS iteration, H<- 1/2(s*H+inv(s*H))
+% But when you go inverse-free, this does not work as it makes the matrices
+% unbounded (s may be very large/small). Instead, we scale here, which is
+% equivalent but plays better with the inverse-free setting.
+[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,scaling*newE,vguess);
 [Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
 [Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vnew);
-
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
 res=norm(Xold-Xnew,'fro');
