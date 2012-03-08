@@ -2,6 +2,8 @@ function [X,v]=defectCorrectionCARE(A,G,Q,X,v,steps)
 %implements defect correction for a CARE
 %
 % [X,v]=defectCorrectionCARE(A,G,Q,X,v)
+%
+% WORK IN PROGRESS, does not seem to work as of now
 
 H=hamiltonian(A,G,Q);
 
