@@ -1,4 +1,6 @@
 syntax: glob
 pathdef.m
 *~
+*.orig
+
 
