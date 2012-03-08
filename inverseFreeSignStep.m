@@ -1,11 +1,13 @@
-function [Xnew,vnew,w,swaps1,swaps2,res]=inverseFreeSignStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 % analogous of doublingStep which performs a step of Newton for the matrix sign
 %
-% [Xnew,vnew,w,swaps1,swaps2,res]=nmsStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+% [Xnew,vnew,w,swaps1,swaps2,res,res2]=nmsStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 %
 % given X,v symbasis for a Hamiltonian matrix pencil H-sI
 % computes H_new=1/2* (H+inv(H))
 %
+% res and res2 are residual measures. Currently res2 is nan, but it is
+% there to get the same signature of doublingStep
 
 if not(exist('wguess','var'))
     wguess=[];
@@ -43,14 +45,14 @@ newA=1/2*(Etilde*A+Atilde*E);
 newE=Etilde*E;
 
 %scaling=abs((det(newA)/det(newE)))^(-1/n); %determinantal scaling, see [Higham, function of matrices]
-scaling=norm(newA,'fro')/norm(newE,'fro');
+%scaling=norm(newA,'fro')/norm(newE,'fro');
 % this is an odd place to scale. Usually you want to scale directly in the
 % NMS iteration, H<- 1/2(s*H+inv(s*H))
 % But when you go inverse-free, this does not work as it makes the matrices
 % unbounded (s may be very large/small). Instead, we scale here, which is
 % equivalent but plays better with the inverse-free setting.
 %
-% TODO: disabled scaling, gave problems? Investigate
+% TODO: disabled scaling because it gave problems. Need to investigate
 [Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vguess);
 [Xnew vnew swaps2,optcond]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
 if 1/optcond>n*threshold2o
@@ -60,4 +62,5 @@ end
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
 res=norm(Xold-Xnew,'fro');
+res2=nan;
 end

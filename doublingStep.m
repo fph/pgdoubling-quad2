@@ -3,12 +3,8 @@ function [Xnew,vnew,w,swaps1,swaps2,nGH,nEF]=doublingStep(X,v,wguess,vguess,thre
 %
 % [Xnew,vnew,swaps1,swaps2,w,nn]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
 %
-%
 % (X,v) is a symBasis for a symplectic pencil L-sU
-% options1 are the options to use for pencil2canBasis(L,U) 
-% options2 are the options to use for symplecticpencil2canBasis(Lsquare,Usquare)
-% seriously consider specifying initial guesses when available
-%
+% 
 % (Xnew,vnew,swaps2) (in output) is a symBasis for the symplectic pencil obtained by "squaring" L-sU
 % squaring here is extended to pencils in the sense of [Benner, Byers]:
 % if U is invertible, then it is a pencil that is right-equivalent to U^{-1}LU^{-1}L-sI,
@@ -40,20 +36,27 @@ if not(exist('threshold2o','var'))
 end
  
 n=length(X);
-first=1:n;second=n+1:2*n;
 [L,U]=symBasis2SymplecticPencil(X,v);
 Z=[L;U];
 [leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
-[leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
-[leftX,w,invcond1]=subspace2CanBasis(Z,w);
+[leftX,w,swaps1,optcond]=optimizeCanBasis(leftX,w,threshold1);
+if 1/optcond>n*threshold1
+    %'recompute' --- this almost never happens
+    [leftX,w,invcond1]=subspace2CanBasis(Z,w);
+end
+
 [Ltilde,Utilde]=leftDual(leftX,w);
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton for the matrix sign
+
 [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vguess);
-[Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
-[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vnew);
+[Xnew vnew swaps2 optcond]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
+if 1/optcond>n*threshold2o
+    %'recompute' --- this almost never happens
+    [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vnew);
+end
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
