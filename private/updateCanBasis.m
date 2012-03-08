@@ -1,7 +1,7 @@
-function [X p]=updateCanBasis(X,p,in,out)
+function [X p invcond]=updateCanBasis(X,p,in,out)
 % computes efficiently a new canonical basis from an old one 
 %
-% [newX newv]=updateCanBasis(oldX,oldv,out,in)
+% [newX newp invcond]=updateCanBasis(oldX,oldp,out,in)
 %
 % rows of I in the position(s) "out" are replaced with
 % rows of X in the position(s) "in"
@@ -13,7 +13,6 @@ function [X p]=updateCanBasis(X,p,in,out)
 %
 % no error checking since this is meant to be called in a tight loop
 % if you choose to call this directly, you're on your own
-
 
 % the real update formula (obtained by a SMW trick) is
 %newX=X+(xi+e_in)*inv(S)*(e_out-xj);
@@ -32,9 +31,11 @@ j1=true(n,1);
 j1(out)=false;
 j2=out;
 
-%TODO: matgic:minv for this formula?
-
+%TODO: matgic:minv?
+invcond=norm(X(i2,j2));
 X(i2,j2)=inv(X(i2,j2));
+invcond=invcond*norm(X(i2,j2));
+
 X(i2,j1)=-X(i2,j2)*X(i2,j1);
 X(i1,j1)=X(i1,j1)+X(i1,j2)*X(i2,j1);
 X(i1,j2)=X(i1,j2)*X(i2,j2);
