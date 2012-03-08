@@ -53,7 +53,7 @@ while(upperBound-lowerBound>tol)
     fprintf('It %3d yLower=%e, yUpper=%e, xLower: %e, xUpper:%e, gamma tested=%e ',iterations,lowerF,upperF,lowerBound,upperBound,gamma);
     
     [A,B,Q,R,S]=hInfinityControlPencil('J',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
-    [XJ YJ UJ VJ]=solveEcareSign(A,B,Q,R,S,'safer',true,'maxSteps',100);
+    [XJ YJ UJ VJ]=solveECARE(A,B,Q,R,S,'safer',true,'type','sign','maxSteps',100);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UJ);
     if not(k.isGood)
         lowerBound=gamma;
@@ -63,7 +63,7 @@ while(upperBound-lowerBound>tol)
     end
     
     [A,B,Q,R,S]=hInfinityControlPencil('H',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
-    [XH YH UH VH]=solveEcareSign(A,B,Q,R,S,'safer',true,'maxSteps',100);
+    [XH YH UH VH]=solveECARE(A,B,Q,R,S,'safer',true,'type','sign','maxSteps',100);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UH);
     if not(k.isGood)
         lowerBound=gamma;

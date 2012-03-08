@@ -3,7 +3,7 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 %
 % [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 %
-% returns the first two blocks of the stable and unstable invariant subspaces 
+% returns the first two blocks of the stable and unstable invariant subspaces
 % of evenPencil(A,B,C,Q,R,S), U and V.
 %
 % Accepts options as in solveCARE
@@ -20,6 +20,8 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 
 o=matgic.Options(varargin{:});
 
+type=o.get('type','sda');
+
 [n m]=size(B);
 
 if not(exist('S','var'))
@@ -33,19 +35,48 @@ v=o.get('initialv',[]);
 [S,v]=evenPencil2SymBasis(AA,EE,n,m,v);
 [S,v]=optimizeSymBasis(S,v);
 
-[Ah,Eh]=symBasis2HamiltonianPencil(S,v);
+switch type
+    case 'sda'
+        [AA,EE]=symBasis2HamiltonianPencil(S,v);
+        
+        %Cayley transform
+        gamma=o.get('gamma',1.1*length(S)*max(max(abs(S)))); %this should ensure that gamma does not collide with some eigenvalues
+        if not(gamma>0)
+            error 'gamma must be positive'
+        end
+        
+        [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
+        [S,v]=optimizeSymBasis(S,v);
+    case 'sign'
+        if o.isSet('gamma')
+            error 'specifying gamma makes sense only for sda, not for matrix sign'
+        end
+        
+        %do nothing, S is already ok as it is
+end
 
-gamma=1.1*length(S)*max(max(abs(S))); %this should ensure that gamma does not collide with some eigenvalues 
-[S,v]=symplecticPencil2SymBasis(Ah+gamma*Eh,Ah-gamma*Eh);
-[S,v]=optimizeSymBasis(S,v);
+[S,v]=doubling(S,v,type,o);
 
-[S,v]=doubling(S,v,'sda',o);
-
-n=length(S)/2;
-first=1:n;second=n+1:2*n;
-
-U=rowSwap([eye(n);-S(second,second);],v(second),'N');
-[X invcond1]=rightLinSolve(U(first,:),U(second,:));
-
-V=rowSwap([-S(first,first);eye(n)],v(first),'T');
-[Y invcond2]=rightLinSolve(V(second,:),V(first,:));
+switch type
+    case 'sda'
+        n=length(S)/2;
+        first=1:n;second=n+1:2*n;
+        
+        U=rowSwap([eye(n);-S(second,second);],v(second),'N');
+        [X invcond1]=rightLinSolve(U(first,:),U(second,:));
+        
+        V=rowSwap([-S(first,first);eye(n)],v(first),'T');
+        [Y invcond2]=rightLinSolve(V(second,:),V(first,:));
+    case 'sign'
+        [A,E]=symBasis2HamiltonianPencil(S,v);
+        
+        %to be replaced by sth else structure-preserving...
+        n=length(S)/2;
+        first=1:n;second=n+1:2*n;
+        [u s v]=svd(A+E);U=v(:,second);
+        [u s v]=svd(A-E);V=v(:,second);
+        
+        
+        [X invcond1]=rightLinSolve(U(first,:),U(second,:));
+        [Y invcond2]=rightLinSolve(V(second,:),V(first,:));        
+end
