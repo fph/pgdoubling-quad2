@@ -1,42 +1,68 @@
 function [X,Y,U,V]=solveCARE(A,G,Q,varargin)
-% solves a continuous-time algebraic Riccati equation using permuted doubling
+% solves a continuous-time algebraic Riccati equation using doubling
 %
 % [X,Y,U,V]=solveCARE(A,G,Q,...)
 %
 % options:
-% defectCorrectionSteps: makes extra defect correction steps at the end
-% (*on X,U only, not Y,V*)
-% (default: 0)
-% maxSteps, tolerance, verbose: as in doubling.m
+%
+% minSteps, maxSteps, tolerance, verbose: as in doubling.m
+%
+% type: either 'sda' or 'sign'
 
 o=matgic.Options(varargin{:});
 
+type=o.get('type','sda');
+
 H=hamiltonian(A,G,Q);
-%optimizes basis for the Hamiltonian pencil
-[S,v]=hamiltonianPencil2SymBasis(H,eye(size(H)));
+scaling=norm(H);
+[S,v]=hamiltonianPencil2SymBasis(H,scaling*eye(size(H)));
 [S,v]=optimizeSymBasis(S,v);
-[AA,EE]=symBasis2HamiltonianPencil(S,v);
+switch type
+    case 'sda'
+        [AA,EE]=symBasis2HamiltonianPencil(S,v);
+        
+        %Cayley transform
+        gamma=o.get('gamma',1.1*length(S)*max(max(abs(S)))); %this should ensure that gamma does not collide with some eigenvalues
+        if not(gamma>0)
+            error 'gamma must be positive'
+        end
+        
+        [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
+        [S,v]=optimizeSymBasis(S,v);
+    case 'sign'
+        if o.isSet('gamma')
+            error 'specifying gamma makes sense only for sda, not for matrix sign'
+        end
 
-gamma=1.1*length(S)*max(max(abs(S))); %this should ensure that gamma does not collide with some eigenvalues 
-[S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
-[S,v]=optimizeSymBasis(S,v);
-
-[S,v]=doubling(S,v,'sda',o);
-
-n=length(S)/2;
-first=1:n;second=n+1:2*n;
-
-Xpi=-S(second,second);vx=v(second);
-Ypi=-S(first,first);vy=v(first);
-
-defectCorrectionSteps=o.get('defectCorrectionSteps',0);
-
-if defectCorrectionSteps>0
-    [Xpi,vx]=defectCorrectionCARE(A,G,Q,Xpi,vx,defectCorrectionSteps);
+        %do nothing, S is already ok as it is
 end
 
-U=rowSwap([eye(n);Xpi;],vx,'N');
-[X invcond1]=rightLinSolve(U(second,:),U(first,:));
+[S,v]=doubling(S,v,type,o);
 
-V=rowSwap([Ypi;eye(n)],vy,'T');
-[Y invcond2]=rightLinSolve(V(first,:),V(second,:));
+switch type
+    case 'sda'
+        n=length(S)/2;
+        first=1:n;second=n+1:2*n;
+        
+        Xpi=-S(second,second);vx=v(second);
+        Ypi=-S(first,first);vy=v(first);
+        
+        U=rowSwap([eye(n);Xpi;],vx,'N');
+        [X invcond1]=rightLinSolve(U(second,:),U(first,:));
+        
+        V=rowSwap([Ypi;eye(n)],vy,'T');
+        [Y invcond2]=rightLinSolve(V(first,:),V(second,:));
+    case 'sign'
+        [A,E]=symBasis2HamiltonianPencil(S,v);
+        
+        %TODO: replace with sth else structure-preserving...
+        n=size(S)/2;
+        first=1:n;second=n+1:2*n;
+        [u s v]=svd(A+E);U=v(:,second);
+        [u s v]=svd(A-E);V=v(:,second);
+        
+        
+        [X invcond1]=rightLinSolve(U(second,:),U(first,:));
+        [Y invcond2]=rightLinSolve(V(first,:),V(second,:));
+        
+end
