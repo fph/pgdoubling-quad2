@@ -30,8 +30,11 @@ first=1:n;second=n+1:2*n;
 [A,E]=symBasis2HamiltonianPencil(X,v);
 Z=[A;E];
 [leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
-[leftX,w,swaps1]=optimizeCanBasis(leftX,w,threshold1);
-[leftX,w,invcond1]=subspace2CanBasis(Z,w);
+[leftX,w,swaps1,optcond]=optimizeCanBasis(leftX,w,threshold1);
+if 1/optcond>n*threshold1
+    %'recompute' --- this almost never happens
+    [leftX,w,invcond1]=subspace2CanBasis(Z,w);
+end
 [Etilde,Atilde]=leftDual(leftX,w);
 
 %assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
@@ -46,9 +49,14 @@ scaling=norm(newA,'fro')/norm(newE,'fro');
 % But when you go inverse-free, this does not work as it makes the matrices
 % unbounded (s may be very large/small). Instead, we scale here, which is
 % equivalent but plays better with the inverse-free setting.
-[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,scaling*newE,vguess);
-[Xnew vnew swaps2]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
-[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vnew);
+%
+% TODO: disabled scaling, gave problems? Investigate
+[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vguess);
+[Xnew vnew swaps2,optcond]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
+if 1/optcond>n*threshold2o
+    %'recompute' --- this almost never happens
+    [Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vnew);
+end
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
 res=norm(Xold-Xnew,'fro');
