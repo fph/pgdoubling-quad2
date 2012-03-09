@@ -43,14 +43,14 @@ convergenceHistory=[nan nan nan nan nan nan];
 w=[];
 while(true)
     steps=steps+1;
-    if(safer)
-        wguess=[];
-        vguess=[];
+    if(~safer)
+        o.set('initialPermutation',w);
+        o.set('initialSwap',v);
     else
-        wguess=w;
-        vguess=v;
+        o.set('initialPermutation',[]);
+        o.set('initialSwap',[]);
     end
-    [S,v,w,swaps1,swaps2,res,res2]=f(S,v,wguess,vguess);
+    [S,v,w,swaps1,swaps2,res,res2]=f(S,v,o);
     if(verbose)
         fprintf('Step %3d, residual 1 %5.2e, residual 2 %5.2e, swaps 2*%d+%d\n',steps,res,res2,swaps1,swaps2);
     end

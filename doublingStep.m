@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,varargin)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+% [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,options)
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
 % 
@@ -17,28 +17,12 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,wguess,vguess,thr
 %
 % also computes two residual measures
 
-if not(exist('wguess','var'))
-    wguess=[];
-end
-
-if not(exist('vguess','var'))
-    vguess=[];
-end
-
-if not(exist('threshold1','var'))
-    threshold1=[];
-end
-if not(exist('threshold2d','var'))
-    threshold2d=[];
-end
-if not(exist('threshold2o','var'))
-    threshold2o=[];
-end
+o=matgic.Options(varargin{:});
  
 n=length(X);
 [L,U]=symBasis2SymplecticPencil(X,v);
 Z=[L;U];
-[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,'threshold',threshold1,'initialPermutation',wguess);
+[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,o);
 
 [Ltilde,Utilde]=leftDual(leftX,w);
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
@@ -46,7 +30,7 @@ newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton for the matrix sign
 
-[Xnew vnew invcond2 swaps2]=symplecticPencil2SymBasis(newL,newU,'initialSwap',vguess,'diagonalThreshold',threshold2d,'offDiagonalThreshold',threshold2o);
+[Xnew vnew invcond2 swaps2]=symplecticPencil2SymBasis(newL,newU,o);
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
