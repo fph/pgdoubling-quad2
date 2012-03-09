@@ -6,4 +6,4 @@ function [X,targetp]=canBasis2canBasis(X,p,targetp)
 % equivalent to subspace2CanBasis(canBasis2Subspace(X,p),targetp);
 
 %crappy implementation for now...
-[X, targetp]=subspace2CanBasis(canBasis2Subspace(X,p),targetp);
+[X, targetp]=subspace2CanBasis(canBasis2Subspace(X,p),'permutation',targetp);

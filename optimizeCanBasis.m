@@ -1,7 +1,7 @@
-function [X,p swaps invcond]=optimizeCanBasis(X,p,threshold,maxSwaps)
+function [X,p,invcond,swaps]=optimizeCanBasis(X,p,threshold,maxSwaps)
 % given a canBasis, reduces it so that all elements are below a threshold
 %
-% [X,p swaps invcond]=optimizeCanBasis(X,p,threshold,maxswaps);
+% [X,p,invcond,swaps]=optimizeCanBasis(X,p,threshold,maxswaps);
 %
 % for the meaning of invcond, see optimizeSymBasis
 
