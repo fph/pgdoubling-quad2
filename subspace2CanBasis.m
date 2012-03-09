@@ -23,6 +23,7 @@ o=matgic.Options(varargin{:});
 
 if o.isSet('permutation')
     [X,p,invcond]=subspace2SpecifiedCanBasis(U,o.get('permutation'));
+    swaps=0;
 else
     if o.isSet('initialPermutation') && ~isempty(o.get('initialPermutation'))
         [X,p,invcond]=subspace2SpecifiedCanBasis(U,o.get('initialPermutation'));
