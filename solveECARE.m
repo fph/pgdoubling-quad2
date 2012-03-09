@@ -46,7 +46,6 @@ switch type
         end
         
         [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
-        [S,v]=optimizeSymBasis(S,v);
     case 'sign'
         if o.isSet('gamma')
             error 'specifying gamma makes sense only for sda, not for matrix sign'
