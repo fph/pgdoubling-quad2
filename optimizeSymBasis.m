@@ -1,4 +1,4 @@
-function [X,v,swaps,invcond]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+function [X,v,invcond,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
 % [X,v,swaps,invcond]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
