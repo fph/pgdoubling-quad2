@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,varargin)
 % analogous of doublingStep which performs a step of Newton for the matrix sign
 %
-% [Xnew,vnew,w,swaps1,swaps2,res,res2]=nmsStep(X,v,wguess,vguess,threshold1,threshold2d,threshold2o)
+% [Xnew,vnew,w,swaps1,swaps2,res,res2]=nmsStep(X,v,options)
 %
 % given X,v symbasis for a Hamiltonian matrix pencil H-sI
 % computes H_new=1/2* (H+inv(H))
@@ -9,28 +9,12 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,wguess,vgu
 % res and res2 are residual measures. Currently res2 is nan, but it is
 % there to get the same signature of doublingStep
 
-if not(exist('wguess','var'))
-    wguess=[];
-end
-
-if not(exist('vguess','var'))
-    vguess=[];
-end
-
-if not(exist('threshold1','var'))
-    threshold1=[];
-end
-if not(exist('threshold2d','var'))
-    threshold2d=[];
-end
-if not(exist('threshold2o','var'))
-    threshold2o=[];
-end
+o=matgic.Options(varargin{:});
 
 n=length(X);
 [A,E]=symBasis2HamiltonianPencil(X,v);
 Z=[A;E];
-[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,'threshold',threshold1,'initialPermutation',wguess);
+[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,o);
 [Etilde,Atilde]=leftDual(leftX,w);
 
 %assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
@@ -47,7 +31,7 @@ newE=Etilde*E;
 % equivalent but plays better with the inverse-free setting.
 %
 % TODO: disabled scaling because it gave problems. Need to investigate
-[Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,'diagonalThreshold',threshold2d,'offDiagonalThreshold',threshold2o,'initialSwap',vguess);
+[Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,o);
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
