@@ -14,5 +14,5 @@ for tries=1:100
     [Xup,pup]=canBasis2canBasis(X,p,targetp);
     assertEqual(pup,targetp);
     
-    assertVectorsAlmostEqual(Xup,subspace2CanBasis(canBasis2Subspace(X,p),targetp));
+    assertVectorsAlmostEqual(Xup,subspace2CanBasis(canBasis2Subspace(X,p),'permutation',targetp));
 end

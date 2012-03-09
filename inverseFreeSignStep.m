@@ -28,15 +28,9 @@ if not(exist('threshold2o','var'))
 end
 
 n=length(X);
-first=1:n;second=n+1:2*n;
 [A,E]=symBasis2HamiltonianPencil(X,v);
 Z=[A;E];
-[leftX,w,invcond1]=subspace2CanBasis(Z,wguess);
-[leftX,w,swaps1,optcond]=optimizeCanBasis(leftX,w,threshold1);
-if 1/optcond>n*threshold1
-    %'recompute' --- this almost never happens
-    [leftX,w,invcond1]=subspace2CanBasis(Z,w);
-end
+[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,'threshold',threshold1,'initialPermutation',wguess);
 [Etilde,Atilde]=leftDual(leftX,w);
 
 %assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...

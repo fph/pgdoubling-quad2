@@ -48,14 +48,14 @@ for k=1:n
         rowNorm=-norm(w)*sign(w(1));
     end
     w(1)=w(1)-rowNorm;
-    beta = -1/(rowNorm'*w(1));
+    bbeta = -1/(rowNorm'*w(1));
     rowNorm=abs(rowNorm);
 %
 %
-    U(:,k:end)=U(:,k:end)-beta*(U(:,k:end)*w)*w';
+    U(:,k:end)=U(:,k:end)-bbeta*(U(:,k:end)*w)*w';
     U(k,k+1:end)=0;
     
-    Q(k:end,:)=Q(k:end,:)-beta*w*(w'*Q(k:end,:));
+    Q(k:end,:)=Q(k:end,:)-bbeta*w*(w'*Q(k:end,:));
     if isnan(firstPivot)
         firstPivot=rowNorm;
     end
