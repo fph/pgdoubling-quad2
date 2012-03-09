@@ -47,12 +47,8 @@ newE=Etilde*E;
 % equivalent but plays better with the inverse-free setting.
 %
 % TODO: disabled scaling because it gave problems. Need to investigate
-[Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vguess);
-[Xnew vnew swaps2,optcond]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
-if 1/optcond>n*threshold2o
-    %'recompute' --- this almost never happens
-    [Xnew vnew invcond2]=hamiltonianPencil2SymBasis(newA,newE,vnew);
-end
+[Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,'diagonalThreshold',threshold2d,'offDiagonalThreshold',threshold2o,'initialSwap',vguess);
+
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);
 res=norm(Xold-Xnew,'fro');

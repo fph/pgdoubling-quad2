@@ -9,4 +9,4 @@ X=randn(n);X=X+X';
 [Xup,vup]=symBasis2symBasis(X,v,targetv);
 assertEqual(vup,targetv);
 
-assertVectorsAlmostEqual(Xup,symplecticSubspace2SymBasis(symBasis2SymplecticSubspace(X,v),targetv));
+assertVectorsAlmostEqual(Xup,symplecticSubspace2SymBasis(symBasis2SymplecticSubspace(X,v),'swap',targetv));
