@@ -46,12 +46,7 @@ newL=Ltilde*L;
 newU=Utilde*U;
 %TODO: could do scaling as in Newton for the matrix sign
 
-[Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vguess);
-[Xnew vnew swaps2 optcond]=optimizeSymBasis(Xnew,vnew,threshold2d,threshold2o);
-if 1/optcond>n*threshold2o
-    %'recompute' --- this almost never happens
-    [Xnew vnew invcond2]=symplecticPencil2SymBasis(newL,newU,vnew);
-end
+[Xnew vnew invcond2 swaps2]=symplecticPencil2SymBasis(newL,newU,'initialSwap',vguess,'diagonalThreshold',threshold2d,'offDiagonalThreshold',threshold2o);
 
 %computes residual measures
 Xold=symBasis2symBasis(X,v,vnew);

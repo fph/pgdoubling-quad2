@@ -16,8 +16,7 @@ for tries=1:100
     assertVectorsAlmostEqual(A*J*E'+E*J*A',zeros(n));    
     M=randn(n);
     assertVectorsAlmostEqual(M*A*J*E'*M'+M*E*J*A'*M',zeros(n));
-    [X,v]=hamiltonianPencil2SymBasis(M*A,M*E,v);
-    [X,v]=optimizeSymBasis(X,v);
+    [X,v]=hamiltonianPencil2SymBasis(M*A,M*E,'initialSwap',v);
     [A2,E2]=symBasis2HamiltonianPencil(X,v);
     assertElementsAlmostEqual(subspace([A';E'],[A2';E2']),0);
 end
