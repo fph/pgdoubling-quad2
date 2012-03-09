@@ -19,6 +19,7 @@ o=matgic.Options(varargin{:});
 
 if o.isSet('swap')
     [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,o.get('swap'));
+    swaps=0;
 else
     if o.isSet('initialSwap') && ~isempty(o.get('initialSwap'))
         [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,o.get('initialSwap'));
