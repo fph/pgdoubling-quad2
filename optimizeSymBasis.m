@@ -34,7 +34,7 @@ end
 %optimization
 swaps=0;
 invcond=1;
-while(swaps<maxSwaps)
+while(true)
     [maxvec, maxis]=max(abs(X-diag(diag(X))));
     [maxval maxj]=max(maxvec);
     maxi=maxis(maxj);
@@ -51,8 +51,7 @@ while(swaps<maxSwaps)
         break;
     end
     invcond=invcond*stepcond;
-end
-
-if swaps==maxSwaps
-    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold (obtained:%d, required:%d). Try running with a larger threshold.',maxval,threshold);
+    if swaps>=maxSwaps
+    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold. Try running with a larger threshold.');
+    end
 end
