@@ -25,7 +25,7 @@ else
         [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,o.get('initialSwap'));
         if invcond<sqrt(eps(class(U)))
             %replace our guess with the heuristic
-            [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,symBasisHeuristic(U));
+            [X,v,invcond]=symplecticSubspace2HeuristicSymBasis(U);
             if invcond<sqrt(eps(class(U)))
                 warning 'cbrpack:badSubspace' 'subspace2SymBasis: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
             else
@@ -33,7 +33,7 @@ else
             end
         end
     else %no permutation, no initial guess
-        [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,symBasisHeuristic(U));
+        [X,v,invcond]=symplecticSubspace2HeuristicSymBasis(U);
         if invcond<sqrt(eps(class(U)))
             warning 'cbrpack:badSubspace' 'subspace2SymBasis: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
         end
