@@ -29,7 +29,7 @@ else
         [X,p,invcond]=subspace2SpecifiedCanBasis(U,o.get('initialPermutation'));
         if invcond<sqrt(eps(class(U)))
             %replace our guess with the heuristic
-            [X,p,invcond]=subspace2SpecifiedCanBasis(U,canBasisHeuristic(U));
+            [X,p,invcond]=subspace2HeuristicCanBasis(U);
             if invcond<sqrt(eps(class(U)))
                 warning 'cbrpack:badSubspace' 'subspace2CanBasis: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
             else
@@ -37,7 +37,7 @@ else
             end
         end
     else %no permutation, no initial guess
-        [X,p,invcond]=subspace2SpecifiedCanBasis(U,canBasisHeuristic(U));
+        [X,p,invcond]=subspace2HeuristicCanBasis(U);
         if invcond<sqrt(eps(class(U)))
             warning 'cbrpack:badSubspace' 'subspace2CanBasis: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
         end
@@ -49,6 +49,3 @@ else
         %even if invcond is small, can't do much about it anymore
     end
 end
-
-
-
