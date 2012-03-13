@@ -28,7 +28,7 @@ for k=1:n
 
     if relativePivotRow>n-k+1
         p=relativePivotRow+2*(k-1)-n;
-        U([p,n+p],:)=jay(2)*U([p,n+p],:);
+        U([p,n+p],:)=[U(n+p,:);-U(p,:)];
         v(Perm(p))=true;
     else
         p=relativePivotRow+(k-1);
