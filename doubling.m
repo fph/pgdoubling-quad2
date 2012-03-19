@@ -50,6 +50,9 @@ while(true)
         o.set('initialPermutation',[]);
         o.set('initialSwap',[]);
     end
+
+%    o.set('scaling',determinantalScaling(S,v));
+    
     [S,v,w,swaps1,swaps2,res,res2]=f(S,v,o);
     if(verbose)
         fprintf('Step %3d, residual1 %5.2e, residual2 %5.2e, swaps 2*%d+%d\n',steps,res,res2,swaps1,swaps2);
