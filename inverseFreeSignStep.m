@@ -19,18 +19,22 @@ Z=[A;E];
 
 %assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
 
-newA=1/2*(Etilde*A+Atilde*E);
-newE=Etilde*E;
-
 %scaling=abs((det(newA)/det(newE)))^(-1/n); %determinantal scaling, see [Higham, function of matrices]
 %scaling=norm(newA,'fro')/norm(newE,'fro');
-% this is an odd place to scale. Usually you want to scale directly in the
-% NMS iteration, H<- 1/2(s*H+inv(s*H))
-% But when you go inverse-free, this does not work as it makes the matrices
-% unbounded (s may be very large/small). Instead, we scale here, which is
-% equivalent but plays better with the inverse-free setting.
-%
-% TODO: disabled scaling because it gave problems. Need to investigate
+
+scaling=o.get('scaling',1);
+%works with scaling*(E\A) instead of E\A
+% the iteration should now read newA=1/2*(scaling*Etilde*A+1/scaling*Atilde*E);
+%but this may get us entries which are very large, so we "rescale the
+%scaling" and find instead [c,s] such that t*scaling=c, t/scaling=s, and c^2+s^2=1
+G=givens(scaling,1/scaling);
+s=-G(2,1);c=G(2,2);
+assertElementsAlmostEqual(c/s,scaling/inv(scaling));
+
+newA=1/sqrt(2)*(c*Etilde*A+s*Atilde*E);
+%newA=1/2*(Etilde*A+Atilde*E);
+newE=Etilde*E;
+
 [Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,o);
 
 %computes residual measures
