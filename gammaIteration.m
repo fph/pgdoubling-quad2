@@ -37,7 +37,7 @@ while(upperBound-lowerBound>tol)
         %so we make sure we try a little bit of both and force a bisection
         %step every 4 iterations
         gamma=lowerBound-lowerF*(upperBound-lowerBound)/(upperF-lowerF);
-        assert(gamma>lowerBound && gamma<upperBound);
+        assert(gamma>=lowerBound && gamma<=upperBound);
     else
         gamma=(upperBound+lowerBound)/2;
     end
