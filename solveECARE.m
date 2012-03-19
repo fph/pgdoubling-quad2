@@ -52,6 +52,28 @@ switch type
         end
         
         %do nothing, S is already ok as it is
+    case 'signWithAnExtraUselessCayleyTransform'
+        %to check if instabilities in sda are really due to the Cayley
+        %forth and back
+        
+        [AA,EE]=symBasis2HamiltonianPencil(S,v);
+        
+        %Cayley transform
+        gamma=o.get('gamma',1.1*length(S)*max(max(abs(S)))); %this should ensure that gamma does not collide with some eigenvalues
+        if not(gamma>0)
+            error 'gamma must be positive'
+        end
+        [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
+        gamma
+
+        %now we undo the Cayley that we just did
+        
+        [AA,EE]=symBasis2SymplecticPencil(S,v);
+        [S,v]=hamiltonianPencil2SymBasis(AA+EE,AA-EE); %reverses the Cayley --- scaling shouldn't be needed?
+        
+        type='sign';
+    otherwise
+        error 'unknown type'
 end
 
 [S,v]=doubling(S,v,type,o);
