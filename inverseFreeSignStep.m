@@ -9,7 +9,7 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,varargin)
 % res and res2 are residual measures. Currently res2 is nan, but it is
 % there to get the same signature of doublingStep
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 n=length(X);
 [A,E]=symBasis2HamiltonianPencil(X,v);

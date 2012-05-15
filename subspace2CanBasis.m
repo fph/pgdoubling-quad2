@@ -19,7 +19,7 @@ function [X,p,invcond,swaps]=subspace2CanBasis(U,varargin)
 % 'allowedInvCond', recomputes the basis if it notices an inverse condition
 % number (as in Matlab's linsolve) below a certain tolerance
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 if o.isSet('permutation')
     [X,p,invcond]=subspace2SpecifiedCanBasis(U,o.get('permutation'));

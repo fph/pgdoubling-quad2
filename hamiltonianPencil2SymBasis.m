@@ -5,7 +5,7 @@ function [X,v,invcond,swaps]=hamiltonianPencil2SymBasis(A,E,varargin)
 %
 % use E=eye() or E=[] if you just have a Hamiltonian matrix
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 n=length(A);
 

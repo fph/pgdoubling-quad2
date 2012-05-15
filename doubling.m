@@ -18,7 +18,7 @@ function [S,v]=doubling(S,v,type,varargin)
 % verbose: (logical) print convergence history and extra diagnostic information
 % safer: (logical) uses a "safe" but slower QRP factorization at each step
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 maxSteps=o.get('maxSteps',inf);
 minSteps=o.get('minSteps',0);

@@ -18,7 +18,7 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 % solveCARE differ by a factor abs(jay()), and we get [X;I] instead of
 % [I;X]. This is a fault of the standard notations, not mine.
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 type=o.get('type','sda');
 
