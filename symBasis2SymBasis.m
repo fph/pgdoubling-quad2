@@ -1,7 +1,7 @@
-function [X,targetv]=symBasis2symBasis(X,v,targetv)
+function [X,targetv]=symBasis2SymBasis(X,v,targetv)
 % updates a symBasis to a new specified "target" v
 %
-% [X,targetv]=symBasis2symBasis(X,v,targetv)
+% [X,targetv]=symBasis2SymBasis(X,v,targetv)
 %
 % equivalent to symplecticSubspace2SymBasis(symBasis2SymplecticSubspace(X,v),'swap',targetv);
 

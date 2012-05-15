@@ -38,7 +38,7 @@ newE=Etilde*E;
 [Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,o);
 
 %computes residual measures
-Xold=symBasis2symBasis(X,v,vnew);
+Xold=symBasis2SymBasis(X,v,vnew);
 res=norm(Xold-Xnew,'fro');
 res2=nan;
 end
