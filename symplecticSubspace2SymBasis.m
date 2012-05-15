@@ -15,7 +15,7 @@ function [X,v,invcond,swaps]=symplecticSubspace2SymBasis(U,varargin)
 % 
 
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 if o.isSet('swap')
     [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,o.get('swap'));

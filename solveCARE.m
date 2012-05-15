@@ -9,7 +9,7 @@ function [X,Y,U,V]=solveCARE(A,G,Q,varargin)
 %
 % type: either 'sda' or 'sign'
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 type=o.get('type','sda');
 

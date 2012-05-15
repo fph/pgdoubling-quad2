@@ -17,7 +17,7 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,varargin)
 %
 % also computes two residual measures
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
  
 n=length(X);
 [L,U]=symBasis2SymplecticPencil(X,v);

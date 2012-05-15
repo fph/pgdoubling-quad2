@@ -1,6 +1,6 @@
 function results=runChuLMExperiments(experiments,varargin)
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 if not(exist('experiments','var'))
     experiments=1:33;

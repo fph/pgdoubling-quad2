@@ -4,7 +4,7 @@ function [X,Y]=vanillaSDA(A,G,Q,varargin)
 % [X,Y]=vanillaSDA(A,G,Q)
 %
 
-o=matgic.Options(varargin{:});
+o=Options(varargin{:});
 
 verbose=logical(o.get('verbose',false));
 

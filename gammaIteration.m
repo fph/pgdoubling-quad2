@@ -4,9 +4,9 @@ function gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,varargin);
 % gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,opts);
 
 if size(varargin)==0
-    o=matgic.Options('safer',true,'type','sign','maxSteps',100);
+    o=Options('safer',true,'type','sign','maxSteps',100);
 else
-    o=matgic.Options(varargin{:});
+    o=Options(varargin{:});
 end
 
 [p1 m2]=size(D12);
