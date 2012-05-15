@@ -18,11 +18,11 @@ function [X,v,invcond,swaps]=symplecticSubspace2SymBasis(U,varargin)
 o=matgic.Options(varargin{:});
 
 if o.isSet('swap')
-    [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,o.get('swap'));
+    [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,o.get('swap'));
     swaps=0;
 else
     if o.isSet('initialSwap') && ~isempty(o.get('initialSwap'))
-        [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,o.get('initialSwap'));
+        [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,o.get('initialSwap'));
         if invcond<sqrt(eps(class(U)))
             %replace our guess with the heuristic
             [X,v,invcond]=symplecticSubspace2HeuristicSymBasis(U);
@@ -41,7 +41,7 @@ else
     [X,v,optcond,swaps]=optimizeSymBasis(X,v,o.get('diagonalThreshold',[]),o.get('offDiagonalThreshold',[]),o.get('maxSwaps',[]));
     if optcond<o.get('allowedInvCond',1e-1) %TODO: is this a good "magic value"?
         %recompute
-        [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,v);
+        [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,v);
         %even if invcond is small, can't do much about it anymore
     end
 end

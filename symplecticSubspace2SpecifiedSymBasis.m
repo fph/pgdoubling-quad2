@@ -1,4 +1,4 @@
-function [X,v,invcond]=symplecticSubspace2SpecifiedymBasis(U,v)
+function [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,v)
 % symplectic basis representation of a symplectic subspace
 %
 % [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,v)
