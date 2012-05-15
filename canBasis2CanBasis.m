@@ -1,7 +1,7 @@
-function [X,targetp]=canBasis2canBasis(X,p,targetp)
+function [X,targetp]=canBasis2CanBasis(X,p,targetp)
 % updates a canbasis to a new specified "target" p
 %
-% [X,targetp]=canBasis2canBasis(X,p,targetp)
+% [X,targetp]=canBasis2CanBasis(X,p,targetp)
 %
 % equivalent to subspace2CanBasis(canBasis2Subspace(X,p),targetp);
 

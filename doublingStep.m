@@ -33,7 +33,7 @@ newU=Utilde*U;
 [Xnew vnew invcond2 swaps2]=symplecticPencil2SymBasis(newL,newU,o);
 
 %computes residual measures
-Xold=symBasis2symBasis(X,v,vnew);
+Xold=symBasis2SymBasis(X,v,vnew);
 res2=norm(Xold-Xnew,'fro');
 n=n/2;first=1:n;second=n+1:2*n;
 res=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
