@@ -3,6 +3,9 @@ function [X,Y]=vanillaSDA(A,G,Q,varargin)
 %
 % [X,Y]=vanillaSDA(A,G,Q)
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 

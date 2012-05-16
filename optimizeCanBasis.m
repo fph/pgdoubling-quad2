@@ -4,6 +4,10 @@ function [X,p,invcond,swaps]=optimizeCanBasis(X,p,threshold,maxSwaps)
 % [X,p,invcond,swaps]=optimizeCanBasis(X,p,threshold,maxswaps);
 %
 % for the meaning of invcond, see optimizeSymBasis
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 if not(exist('threshold','var')) || isempty(threshold)
     threshold=2;

@@ -15,6 +15,10 @@ function k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,U,stab)
 % k.isGood=boolean value telling if the solution is "roughly ok"
 % k.lagrangianityResidual = how fare we are from Lagrangianity
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
+
 
 if not(exist('stab','var')) || isempty(stab)
     stab='stabilizing';

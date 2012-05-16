@@ -5,6 +5,10 @@ function lambda=hInfinityEigenvaluesAlt(UH,UJ,gamma)
 % eigenvalues of (X_HX_J)
 %
 % uses the "alternative" formulation of Ben
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [twon n]=size(UH);
 first=1:n;second=n+1:2*n;

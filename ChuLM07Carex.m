@@ -1,5 +1,12 @@
 function [A,G,Q,X, parout, B, R, C, Q0]=ChuLM07Carex(n)
 %generates the nth experiment in ChuLM07, n=1..33
+%
+% [A,G,Q,X, parout, B, R, C, Q0]=ChuLM07Carex(n)
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
+
 
 experiments={
     1,[],

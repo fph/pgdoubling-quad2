@@ -8,6 +8,10 @@ function [X,v,invcond]=evenPencil2SymBasis(AA,EE,n,m,v)
 %
 % Warning: kinda misnamed, does not work with every even pencil --- I need
 % to write down the theory
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 firstSecond=1:2*n;third=2*n+1:2*n+m;
 U=[EE(:,firstSecond)'; (AA(:,firstSecond)*jay(2*n))'];

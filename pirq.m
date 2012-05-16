@@ -7,6 +7,10 @@ function [v,U,Q,invcond]=pirq(U)
 %
 % returns Pi_v, R, Q such that R*Q=RowSwap(U,v,'N')
 % R is permuted lower triangular, Q is orthogonal
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [m n]=size(U);
 if(m~=2*n)

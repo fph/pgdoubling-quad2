@@ -4,6 +4,10 @@ function S=randomOrthosymplecticMatrix(twon)
 % S=randomOrthosymplecticMatrix(twon)
 %
 % generates a twon x twon matrix
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 if mod(twon,2)==1
     error('cbrpack:oddSize','symplectic matrices must have even size');

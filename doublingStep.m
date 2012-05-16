@@ -16,6 +16,10 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,varargin)
 % note that one swap in swaps2 should cost half as much as one in swaps1, because of symmetry.
 %
 % also computes two residual measures
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
  

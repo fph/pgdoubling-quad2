@@ -6,6 +6,10 @@ function [v invcond]=extendedSymBasisHeuristic(U)
 % uses QRP (just a crappy heuristic)
 %
 % U is 2n+m x n+m
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [a b]=size(U);
 n=a-b;

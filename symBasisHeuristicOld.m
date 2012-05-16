@@ -4,6 +4,9 @@ function [v invcond]=symBasisHeuristic(U)
 %
 % [v invcond]=symBasisHeuristic(U)
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 n=size(U,2);
 if(size(U,1)~=2*n)

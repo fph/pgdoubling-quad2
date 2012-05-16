@@ -9,6 +9,10 @@ function [X,p,invcond]=subspace2HeuristicCanBasis(U)
 % X,p: such that U(p,:) and [I;X] span the same subspace
 %
 % p is determined through QRP, and the same QRP is used to solve the system
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [m n]=size(U);
 

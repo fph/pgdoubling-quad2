@@ -3,6 +3,10 @@ function lambda=hInfinityEigenvalues(UH,UJ)
 %
 % given bases of the subspaces UH=im [X_H;I], UJ=im [X_J;I], computes the
 % eigenvalues of (X_HX_J)
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [twon n]=size(UH);
 first=1:n;second=n+1:2*n;

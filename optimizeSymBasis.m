@@ -10,6 +10,10 @@ function [X,v,invcond,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalT
 % TODO: the condition number probably ain't the right thing --- if X=[1e12
 % 1; 1 1], then invcond is huge but the computation is perfectly
 % conditioned
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 if not(exist('diagonalThreshold','var')) || isempty(diagonalThreshold)
     diagonalThreshold=2;

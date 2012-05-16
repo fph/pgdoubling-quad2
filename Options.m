@@ -2,6 +2,10 @@ classdef Options < handle
     % Also known as: I wish MATLAB had named arguments like Python
     %
     %
+    % (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+    % see AUTHORS.txt and COPYING.txt for details
+    % https://bitbucket.org/fph/pgdoubling
+
     properties (Access=private)
         values_ %values.key = something
         used_  %used.key = boolean

@@ -6,6 +6,10 @@ function [v invcond]=extendedSymBasisHeuristicPaper(U)
 % computes a "restricted QRP" 
 %
 % U is 2n+m x n+m, 1:n can be swapped with n+1:2*n
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [a b]=size(U);
 n=a-b;

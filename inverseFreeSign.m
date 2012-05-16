@@ -13,6 +13,10 @@ function [S,v]=inverseFreeSign(S,v,varargin)
 %   (the algorithm will stop anyway if the results aren't improving anymore)
 % verbose: (logical) print convergence history and extra diagnostic information
 % safer: (logical) uses a "safe" slower O(n^3) heuristic at every step
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 

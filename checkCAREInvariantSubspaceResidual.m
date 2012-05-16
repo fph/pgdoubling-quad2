@@ -18,6 +18,10 @@ function k=checkCAREInvariantSubspaceResidual(A,G,Q,U,X,stab)
 %    (see Byers, Benner, A structure-preserving method for generalized...)
 % k.isGood=boolean value telling if the solution is "roughly ok"
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
+
 
 if not(exist('stab','var')) || isempty(stab)
     stab='stabilizing';

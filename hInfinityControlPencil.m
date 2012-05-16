@@ -4,6 +4,10 @@ function [A,B,Q,R,S]=hInfinityControlPencil(type,gamma,A,B1,B2,C1,C2,D11,D12,D21
 % [A,B,Q,R,S]=hInfinityControlPencil(type,gamma,A,B1,B2,C1,C2,D11,D12,D21);
 %
 % type == 'H' or 'J'
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [n m1]=size(B1);
 [n m2]=size(B2);

@@ -12,7 +12,10 @@ function [X,v,invcond,swaps]=symplecticSubspace2SymBasis(U,varargin)
 % swap
 % 'initialSwap': use the specified swap
 % 'diagonalThreshold', 'offDiagonalThreshold', 'allowedInvCond'
-% 
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 
 o=Options(varargin{:});

@@ -18,6 +18,10 @@ function [X,p,invcond,swaps]=subspace2CanBasis(U,varargin)
 % 'threshold', threshold to use
 % 'allowedInvCond', recomputes the basis if it notices an inverse condition
 % number (as in Matlab's linsolve) below a certain tolerance
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 
