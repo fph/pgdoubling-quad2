@@ -1,10 +1,12 @@
-==Purpose==
+Purpose
+=======
 This package uses the algorithms described in [MehP12,MehP12_ppt] to compute Lagrangian invariant subspaces of Hamiltonian and "extended Hamiltonian" pencils. You can use it to solve algebraic Riccati equations, Lur'e equations/singular control problems, and finding the optimal gamma in H_infinity control.
 
-==Terminology==
-A 'CanBasis' is a basis matrix for an n-dimensional subspace in the form P*[I(n);X], where P is a permutation matrix and X is arbitrary. Usually the routines return CanBases in which each element of X is smaller (in modulus) than a certain configurable threshold.
+Terminology
+===========
+A *CanBasis* is a basis matrix for an n-dimensional subspace in the form `P*[I(n);X]`, where P is a permutation matrix and X is arbitrary. Usually the routines return CanBases in which each element of X is smaller (in modulus) than a certain configurable threshold.
 
-A 'SymBasis' is the structured version of a CanBasis, but for a Lagrangian subspace. P is a "symplectic swap matrix" (a symplectic analogous of a permutation), and X is Hermitian.
+A *SymBasis* is the structured version of a CanBasis, but for a Lagrangian subspace. P is a "symplectic swap matrix" (a symplectic analogous of a permutation), and X is Hermitian.
 
 You can represent subspaces, matrices and matrix pencils through canBases and symBases. See the basic theory in [Meh12]. (In the following, all will be clearer if you have read this paper.)
 
