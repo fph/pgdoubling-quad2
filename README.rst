@@ -30,9 +30,9 @@ Recommended options for robustness: ``solveCARE(A,G,Q,'type','sign','safer',true
 
 solve a (possibly singular) generic control problem in the form::
 
- [ 0  I 0]   [0  A  B]
-s[ -I 0 0] - [A' Q  S],
- [ 0  0 0]   [B' S' R]
+  [ 0  I 0]    [0  A  B]
+  [ -I 0 0]s - [A' Q  S],
+  [ 0  0 0]    [B' S' R]
 
 returning the (semi)stabilizing X and Y. Following the more standard notation of this problem, U and V now are bases for the subspaces [X;I] (stabilizing) and [I;Y] (antistabilizing). Again, you should work with them rather than with X and Y.
 
@@ -74,7 +74,7 @@ A: mainly, because of the \Pi RQ factorization (which should be rewritten in a M
 Q: why do you roll your own option parsing functions? OOP is slow as hell in Matlab!
 A: I haven't found yet an option parser which satisfy some basic requirements, namely: (1) can pass options unchanged to subroutines (2) complains at the end if and only if there are unused parameters (3) has an acceptable syntax which does not require me to specify option names in 18 different places. If you know of one, let me know.
 
-Q: does it work for DAE control problems, i.e., when there is a mass matrix E?
+Q: does it work when there is a mass matrix E?
 A: no, and it would require significant changes to the algorithm to support it. We'll be working on that hopefully.
 
 References
