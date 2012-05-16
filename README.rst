@@ -80,8 +80,15 @@ A: no, and it would require significant changes to the algorithm to support it. 
 References
 ==========
 
-[MehP12] Volker Mehrmann, Federico Poloni "Doubling Algorithms With Permuted Lagrangian Graph Bases". To appear in SIMAX.
-[Meh12_ppt] Volker Mehrmann, Federico Poloni "Robust control with doubling and permuted Lagrangian bases" (provisional title). In preparation.
-[ChuLM07] Chu, Delin; Liu, Xinmin; Mehrmann, Volker A numerical method for computing the Hamiltonian Schur form. Numer. Math. 105 (2007), no. 3, 375–412.
-[BenBMX07] Benner, Peter; Byers, Ralph; Mehrmann, Volker; Xu, Hongguo A robust numerical method for the γ-iteration in H∞ control. Linear Algebra Appl. 425 (2007), no. 2-3, 548–570.
+[MehP12]
+  Volker Mehrmann, Federico Poloni "Doubling Algorithms With Permuted Lagrangian Graph Bases". To appear in SIMAX.
+
+[Meh12_ppt]
+  Volker Mehrmann, Federico Poloni "Robust control with doubling and permuted Lagrangian bases" (provisional title). In preparation.
+
+[ChuLM07]
+  Chu, Delin; Liu, Xinmin; Mehrmann, Volker A numerical method for computing the Hamiltonian Schur form. Numer. Math. 105 (2007), no. 3, 375–412.
+
+[BenBMX07]
+  Benner, Peter; Byers, Ralph; Mehrmann, Volker; Xu, Hongguo A robust numerical method for the γ-iteration in H∞ control. Linear Algebra Appl. 425 (2007), no. 2-3, 548–570.
 
