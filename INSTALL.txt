@@ -1,0 +1,12 @@
+==Prerequisites==
+
+In order to use this Matlab library, you need:
+* The MATLAB xUnit Test Framework, available at http://www.mathworks.com/matlabcentral/fileexchange/22846-matlab-xunit-test-framework
+  This is just syntax sugar for efficient testing.
+* CAREX (optional, if you wish to run the tests and for some subroutines) from http://www.mpi-magdeburg.mpg.de/mpcsc/benner/software.php?lang=en
+  This is a benchmark set for algebraic Riccati equations.
+
+Both packages should be installed and in Matlab's path (adjust it with the command 'pathtool', and optionally save it to the current directory). For xUnit, this means that the folder $(INSTALL)DIR)/matlab_xunit/xunit should be in the path.
+
+==Installation==
+Unpack and add to Matlab's path. You can check that everything works by typing the xUnit command 'runtests' in Matlab. You should get some warnings complaining about ill-conditioned matrices, but all the test should pass if you have everything installed properly.

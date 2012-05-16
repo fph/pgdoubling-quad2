@@ -7,14 +7,13 @@ This software is free to use, copy and modify for academic research purposes, AS
 If, on the other hand, you charge your fellow researchers money for your code, you will find it fair if I do the same.
 
 If you redistribute this code, portions of it, or derived works, make sure to include proper attribution to this work.
-If you use this code in a paper, CITE! In the academia we basically live off citation counts.
 
 ==Liability==
 This software is provided "as is", without any explicit or implied warranties, including warranties of merchantability and fitness for a particular purpose
 
 ==FAQ==
 Q: So, what does it mean exactly?
-A: As mathematicians and lawyers are the worst tedious nitpicks around, I'd better include a more precise statement. Let us say that "A is nice to B" if all software written by A is free to use, copy and modify for academic research purposes by B. Let us say that a set of people S is "mutually nice" if A is nice to B for every A,B in S, and in addition S includes all people who never wrote any numerical algorithms code. It is left to the reader to prove that the intersection S_- of all mutually nice sets is is mutually nice. This software is free to use, copy and modify for all academic research purposes by all the elements of S_-.
+A: Since mathematicians and lawyers are the worst tedious nitpicks around, I'd better include a more precise statement. Let us say that "A is nice to B" if all software written by A is free to use, copy and modify for academic research purposes by B. Let us say that a set of people S is "mutually nice" if A is nice to B for every A,B in S, and in addition S includes all people who never wrote any numerical algorithms code. It is left to the reader to prove that the intersection S_- of all mutually nice sets is is mutually nice. This software is free to use, copy and modify for all academic research purposes by all the elements of S_-.
 
 Q: What is "academic research" exactly?
 A: All research that you conduct for the primary purpose of publishing articles. In case of doubt, the primary author's interpretation is binding.
