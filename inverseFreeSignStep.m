@@ -8,6 +8,10 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,varargin)
 %
 % res and res2 are residual measures. Currently res2 is nan, but it is
 % there to get the same signature of doublingStep
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 

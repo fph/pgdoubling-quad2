@@ -17,6 +17,10 @@ function [X,Y,U,V]=solveECARE(A,B,Q,R,S,varargin)
 % approach are different, so U and V obtained by this function and
 % solveCARE differ by a factor abs(jay()), and we get [X;I] instead of
 % [I;X]. This is a fault of the standard notations, not mine.
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 

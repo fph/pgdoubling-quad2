@@ -5,6 +5,7 @@ function [X,v]=defectCorrectionCARE(A,G,Q,X,v,steps)
 %
 % WORK IN PROGRESS, does not seem to work as of now
 
+
 H=hamiltonian(A,G,Q);
 
 %switches to Pi'*H*Pi, whose invariant subspace is [I;X]

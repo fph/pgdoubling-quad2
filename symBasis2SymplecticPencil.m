@@ -6,6 +6,10 @@ function [L,U]=symBasis2SymplecticPencil(X,v)
 % given X,v representing a symplectic pencil,
 % returns L,U such that pencil=L-s*U
 % L is permuted lower block triangular, U upper
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 n=length(X)/2;
 %if we ever adapt this to a nonsymmetric case, add a X=X' here

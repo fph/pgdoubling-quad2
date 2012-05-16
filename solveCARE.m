@@ -8,6 +8,10 @@ function [X,Y,U,V]=solveCARE(A,G,Q,varargin)
 % minSteps, maxSteps, tolerance, verbose: as in doubling.m
 %
 % type: either 'sda' or 'sign'
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 

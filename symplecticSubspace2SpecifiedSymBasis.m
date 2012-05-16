@@ -8,6 +8,10 @@ function [X,v,invcond]=symplecticSubspace2SpecifiedSymBasis(U,v)
 % here Pi_v = the matrix in rowSwap(?,v,'N'), and X is symmetric
 %
 % here, v is specified a priori, no optimization attempt is done
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [m n]=size(U);
 if m~=2*n

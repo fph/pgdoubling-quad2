@@ -4,6 +4,9 @@ function [v invcond X]=symBasisHeuristic(U)
 %
 % [v invcond X]=symBasisHeuristic(U)
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [v,R,Q,invcond]=pirq(U);
 

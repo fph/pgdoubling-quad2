@@ -9,7 +9,10 @@ function [AA,EE]=evenPencil(A,B,Q,R,S)
 %
 % S may be omited (it is often zero)
 % A,B,Q,R may be taken directly from the carex output
-
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 if not(exist('S','var')) || isempty(S)
     S=zeros(size(B));

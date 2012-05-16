@@ -2,6 +2,10 @@ function gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,varargin);
 % gamma iteration for H-infinity control
 %
 % gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,opts);
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 if size(varargin)==0
     o=Options('safer',true,'type','sign','maxSteps',100);

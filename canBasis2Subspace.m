@@ -3,6 +3,10 @@ function U=canBasis2Subspace(X,p)
 %
 % U=canBasis2Subspace(X,p)
 %
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
+
 
 [m n]=size(X);
 p=p(:);

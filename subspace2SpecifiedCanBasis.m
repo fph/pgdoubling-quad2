@@ -9,6 +9,10 @@ function [X,p,invcond]=subspace2SpecifiedCanBasis(U,p)
 % X,p: such that U(p,:) and [I;X] span the same subspace
 % p is copied to the output without changes (it is there to ensure
 % consistent output with the other procedures)
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 [m n]=size(U);
 assertEqual(length(p),m);

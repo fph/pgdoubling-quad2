@@ -8,6 +8,10 @@ function [A B1 B2 C1 C2 D11 D12 D21 D22 gammaOpt]=hInfinityControlExample(kind,p
 % BenMX07Example3.1: parameters [alpha beta delta epsilon1 epsilon2 eta]
 % BenMX07Example6.2 or 6.3: as the previous one, with parameters hardcoded to the
 %   values in the paper
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 switch kind
     case 'BenMX07Example6.1'

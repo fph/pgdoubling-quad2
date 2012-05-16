@@ -10,7 +10,10 @@ function Y=rowSwap(U,v,transp)
 % or its transpose (depending on the last argument 'N' or 'T').
 % v is a logical (0-1) vector of length n;
 % if v=false(n,1), then J_v=I; if v=true(n,1), then J_v=J.
-
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 v=logical(v);
 n=length(v);

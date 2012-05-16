@@ -4,6 +4,10 @@ function [X,v,invcond,swaps]=hamiltonianPencil2SymBasis(A,E,varargin)
 % [X,v,invcond,swaps]=hamiltonianPencil2SymBasis(A,E,options)
 %
 % use E=eye() or E=[] if you just have a Hamiltonian matrix
+%
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% see AUTHORS.txt and COPYING.txt for details
+% https://bitbucket.org/fph/pgdoubling
 
 o=Options(varargin{:});
 
