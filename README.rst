@@ -38,7 +38,7 @@ returning the (semi)stabilizing X and Y. Following the more standard notation of
 
 ::
 
-gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,...options...);
+ gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,...options...);
 
 run the gamma iteration [BenBMX07,MehP12_ppt] on a H_inf control problem, with tolerance tol.
 
