@@ -94,7 +94,7 @@ while(upperBound-lowerBound>tol)
     expectedZeros=nj+nh-kj-kh;
     assertElementsAlmostEqual(eigY(1:expectedZeros),zeros(expectedZeros,1));
     fValue=eigY(expectedZeros+1);
-    if all(eigY(expectedZeros+1:end)>0)  
+    if all(eigY(expectedZeros+1:end)>0)
         upperBound=gamma;
         upperF=fValue;
         reason='Stabilizable';
