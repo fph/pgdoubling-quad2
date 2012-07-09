@@ -16,8 +16,8 @@ for tries=1:100
     
     %multiplies with a random vector
     v=randn(m+n,2);
-    w=randn(2,m+n);
-    [Lv wL]=productWithSparseL(X,p,v,w);
-    assertVectorsAlmostEqual(Lv,L*v);
-    assertVectorsAlmostEqual(wL,w*L);
+    assertVectorsAlmostEqual(productWithSparseL(X,p,v,'N'),L*v);
+    assertVectorsAlmostEqual(productWithSparseL(X,p,v','T'),v'*L);
+    assertVectorsAlmostEqual(productWithSparseL(X,p,v,'I'),L\v);
+    assertVectorsAlmostEqual(productWithSparseL(X,p,v','IT'),v'/L);
 end
