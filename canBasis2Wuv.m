@@ -36,10 +36,6 @@ v=v';
 v=v(columnPermutation,:);
 w=w(columnPermutation,:);
 
+ImvTu=v'*u;
 v=u-v;
 
-%subspace([eye(m)-u*v';w'],UU)
-
-1;
-
-ImvTu=nan;
