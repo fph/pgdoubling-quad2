@@ -3,7 +3,7 @@ function [A B1 B2 C1 C2 D11 D12 D21 D22 gammaOpt]=hInfinityControlExample(kind,p
 %
 % [A B1 B2 C1 C2 D11 D12 D21 D22 gammaOpt]=hInfinityControlExample(kind,parameters)
 %
-% BenBMX07Example6.1, parameters: [a]
+% BenMX07Example6.1, parameters: [a]
 % DrcexcExample2.4, parameters: [m c k]
 % BenMX07Example3.1: parameters [alpha beta delta epsilon1 epsilon2 eta]
 % BenMX07Example6.2 or 6.3: as the previous one, with parameters hardcoded to the
