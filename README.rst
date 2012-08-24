@@ -8,7 +8,7 @@ A *CanBasis* is a basis matrix for an n-dimensional subspace in the form ``P*[I(
 
 A *SymBasis* is the structured version of a CanBasis, but for a Lagrangian subspace. P is a "symplectic swap matrix" (a symplectic analogous of a permutation), and X is Hermitian.
 
-You can represent subspaces, matrices and matrix pencils through canBases and symBases. See the basic theory in [Meh12]. (In the following, all will be clearer if you have read this paper.)
+You can represent subspaces, matrices and matrix pencils through canBases and symBases. See the basic theory in [MehP12]. (In the following, all will be clearer if you have read this paper.)
 
 Documentation
 =============
@@ -42,7 +42,7 @@ returning the (semi)stabilizing X and Y. Following the more standard notation of
 
 run the gamma iteration [BenBMX07,MehP12_ppt] on a H_inf control problem, with tolerance tol.
 
-Some more matrix equations could be added --- I expect these techniques to work also for X=Q+A*inv(X)*A', X=Q-A*inv(X)*A', and 0=P+QY+RY^2 (with some modifications).
+Some more matrix equations could be added --- These techniques work also for DARE, X=Q+A*inv(X)*A', X=Q-A*inv(X)*A', and 0=P+QY+RY^2 (with some modifications).
 
 Basic usage: building blocks
 ============================
@@ -66,15 +66,19 @@ Check ``COPYING.txt`` to see if you qualify to use the library for free.
 FAQ
 ===
 Q: why are the function names so long?
+
 A: I find it more expressive than the default 'shorten everything' (and slightly inconsistent) Matlab syntax. If you use Matlab's editor, you can configure it for tab completion and they will be fast to type as if they were short. If you use some other editor, well, I hope it supports tab completion. After all, you're using it because it's better than Matlab's builtin one, right?
 
 Q: why is it so slow?
+
 A: mainly, because of the \Pi RQ factorization (which should be rewritten in a MEX file, but MEX files are a mess) and because of option parsing (which could be removed, at the expenses of configurability and parameter-tweaking-ability). In general, some more performance could be squeezed out, the functions are not aggressively optimized.
 
 Q: why do you roll your own option parsing functions? OOP is slow as hell in Matlab!
-A: I haven't found yet an option parser which satisfy some basic requirements, namely: (1) can pass options unchanged to subroutines (2) complains at the end if and only if there are unused parameters (3) has an acceptable syntax which does not require me to specify option names in 18 different places. If you know of one, let me know.
+
+A: I haven't found yet an option parser that satisfies some basic requirements, namely: (1) can pass options unchanged to subroutines (2) complains at the end if there are unused parameters (3) has an acceptable syntax which does not require me to specify option names in 18 different places. If you know of one, let me know.
 
 Q: does it work when there is a mass matrix E?
+
 A: no, and it would require significant changes to the algorithm to support it. We'll be working on that hopefully.
 
 References
@@ -83,7 +87,7 @@ References
 [MehP12]
   Volker Mehrmann, Federico Poloni "Doubling Algorithms With Permuted Lagrangian Graph Bases". To appear in SIMAX.
 
-[Meh12_ppt]
+[MehP12_ppt]
   Volker Mehrmann, Federico Poloni "Robust control with doubling and permuted Lagrangian bases" (provisional title). In preparation.
 
 [ChuLM07]
