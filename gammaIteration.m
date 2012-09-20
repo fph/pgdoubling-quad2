@@ -39,6 +39,7 @@ iterations=0;
 
 while(upperBound-lowerBound>tol)
     iterations=iterations+1;
+    gammaOld=gamma;
     %gets the next value of gamma to try
     if upperBound==inf
         gamma=2*gamma;
@@ -51,6 +52,9 @@ while(upperBound-lowerBound>tol)
     else
         gamma=(upperBound+lowerBound)/2;
     end
+    if gammaOld==gamma %we cannot get any more accurate than this apparently, ran into floating point max precision
+        break;
+    end
     
     if isempty(reason)
         %we are at the first iteration
@@ -60,7 +64,7 @@ while(upperBound-lowerBound>tol)
         fprintf('result: %s\n',reason);
     end
         
-    fprintf('It %3d yLower=%e, yUpper=%e, xLower: %e, xUpper:%e, gamma tested=%e ',iterations,lowerF,upperF,lowerBound,upperBound,gamma);
+    fprintf('It %3d yLower=%e, yUpper=%e, xLower: %e, xUpper:%e, delta=%e, gamma tested=%e ',iterations,lowerF,upperF,lowerBound,upperBound,upperBound-lowerBound,gamma);
     
     [A,B,Q,R,S]=hInfinityControlPencil('J',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
     [XJ YJ UJ VJ]=solveECARE(A,B,Q,R,S,o);
