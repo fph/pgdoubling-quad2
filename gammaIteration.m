@@ -70,20 +70,14 @@ while(upperBound-lowerBound>tol)
     [XJ YJ UJ VJ]=solveECARE(A,B,Q,R,S,o);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UJ);
     if not(k.isGood)
-        lowerBound=gamma;
-        lowerF=nan;
-        reason='Could not solve the Riccati equation for X_J';
-        continue;
+        warning('cbrpack:badRiccatiSolution','The solution to the Riccati equation might be numerically bad');
     end
     
     [A,B,Q,R,S]=hInfinityControlPencil('H',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
     [XH YH UH VH]=solveECARE(A,B,Q,R,S,o);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UH);
     if not(k.isGood)
-        lowerBound=gamma;
-        lowerF=nan;
-        reason='Could not solve the Riccati equation for X_H';
-        continue;
+        warning('cbrpack:badRiccatiSolution','The solution to the Riccati equation might be numerically bad');
     end
 
     nj=length(UJ)/2;
