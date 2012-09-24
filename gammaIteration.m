@@ -43,10 +43,9 @@ while(upperBound-lowerBound>tol)
     %gets the next value of gamma to try
     if upperBound==inf
         gamma=2*gamma;
-    elseif not(isnan(lowerF+upperF)) && mod(iterations,4)~=0
-        %the secant method can still be dramatically slower than bisection,
-        %so we make sure we try a little bit of both and force a bisection
-        %step every 4 iterations
+    elseif not(isnan(lowerF+upperF)) && mod(iterations,5)==0
+        %secant works well only in the very end, when we have accurate
+        %eigenvalues, so we make one step every 5 with it
         gamma=lowerBound-lowerF*(upperBound-lowerBound)/(upperF-lowerF);
         assert(gamma>=lowerBound && gamma<=upperBound);
     else
@@ -86,16 +85,21 @@ while(upperBound-lowerBound>tol)
         continue;
     end
     
-    nj=length(UJ)/2;
-    nh=length(UH)/2;
-    kj=rank(UJ(nj+1:end,:)'*UJ(1:nj,:),tol);
-    kh=rank(UH(nh+1:end,:)'*UH(1:nh,:),tol);
+%    %once we have found a stabilizable case, we stop updating expectedZeros
+%    % since (1) the rank shouldn't change (2) computing the rank when
+%    % close to the critical point is more ill-conditioned
+    if(upperBound==inf) 
+        nj=length(UJ)/2;
+        nh=length(UH)/2;
+        kj=rank(UJ(nj+1:end,:)'*UJ(1:nj,:),tol); %tol should not be too small
+        kh=rank(UH(nh+1:end,:)'*UH(1:nh,:),tol);
+        expectedZeros=nj+nh-kj-kh;
+    end
     
     eigY=hInfinityEigenvaluesAlt(UH,UJ,gamma);
     eigY=real(eigY);
     [absoluteValues permutation]=sort(abs(eigY));
     eigY=eigY(permutation);
-    expectedZeros=nj+nh-kj-kh;
     assertElementsAlmostEqual(eigY(1:expectedZeros),zeros(expectedZeros,1));
     fValue=eigY(expectedZeros+1);
     if all(eigY(expectedZeros+1:end)>0)
@@ -108,4 +112,5 @@ while(upperBound-lowerBound>tol)
         lowerF=eigY(expectedZeros+negativeIndex);
         reason='Not stabilizable';
     end
+%    [expectedZeros eigY']
 end
