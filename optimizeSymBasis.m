@@ -11,14 +11,14 @@ function [X,v,invcond,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalT
 % 1; 1 1], then invcond is huge but the computation is perfectly
 % conditioned
 %
-% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
 if not(exist('diagonalThreshold','var')) || isempty(diagonalThreshold)
     diagonalThreshold=2;
 end
-    
+
 if not(exist('odddiagonalThreshold','var')) || isempty(offdiagonalThreshold)
     offdiagonalThreshold=sqrt(5+diagonalThreshold^2);
 end
@@ -32,7 +32,7 @@ if offdiagonalThreshold<sqrt(1+diagonalThreshold^2)+sqrt(eps(class(X)))
 end
 
 if not(exist('maxSwaps','var')) || isempty(maxSwaps)
-    maxSwaps=10*size(X,2);
+    maxSwaps=20*size(X,2);
 end
 
 %optimization
@@ -43,7 +43,7 @@ while(true)
     [maxval maxj]=max(maxvec);
     maxi=maxis(maxj);
     % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
-
+    
     [maxdiag maxdiagPos]=max(diag(X));
     if maxdiag>diagonalThreshold
         [X,v,stepcond]=updateSymBasis(X,v,maxdiagPos);
@@ -56,6 +56,7 @@ while(true)
     end
     invcond=invcond*stepcond;
     if swaps>=maxSwaps
-    warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold. Try running with a larger threshold.');
+        warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold. Try running with a larger threshold.');
+        break
     end
 end

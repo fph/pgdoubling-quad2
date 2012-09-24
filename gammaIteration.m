@@ -3,7 +3,7 @@ function gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,varargin);
 %
 % gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,opts);
 %
-% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
+% (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
@@ -33,7 +33,7 @@ S=warning('off','cbrpack:illConditionedSubspace');
 onCleanup(@() warning(S));
 
 upperF=nan; %we want to use the secant method, therefore we need to keep track of the "y"s in the points upperBound and lowerBound
-lowerF=nan; 
+lowerF=nan;
 
 iterations=0;
 
@@ -63,28 +63,34 @@ while(upperBound-lowerBound>tol)
         %completing line printed at the previous iteration
         fprintf('result: %s\n',reason);
     end
-        
+    
     fprintf('It %3d yLower=%e, yUpper=%e, xLower: %e, xUpper:%e, delta=%e, gamma tested=%e ',iterations,lowerF,upperF,lowerBound,upperBound,upperBound-lowerBound,gamma);
     
     [A,B,Q,R,S]=hInfinityControlPencil('J',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
     [XJ YJ UJ VJ]=solveECARE(A,B,Q,R,S,o);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UJ);
-    if not(k.isGood)
-        warning('cbrpack:badRiccatiSolution','The solution to the Riccati equation might be numerically bad');
+    if not(k.pencilBackwardError<1e-10)
+        lowerBound=gamma;
+        lowerF=nan;
+        reason='Could not solve the Riccati equation for X_J';
+        continue;
     end
     
     [A,B,Q,R,S]=hInfinityControlPencil('H',gamma,A1,B1,B2,C1,C2,D11,D12,D21);
     [XH YH UH VH]=solveECARE(A,B,Q,R,S,o);
     k=checkECAREInvariantSubspaceResidual(A,B,Q,R,S,UH);
-    if not(k.isGood)
-        warning('cbrpack:badRiccatiSolution','The solution to the Riccati equation might be numerically bad');
+    if not(k.pencilBackwardError<1e-10)
+        lowerBound=gamma;
+        lowerF=nan;
+        reason='Could not solve the Riccati equation for X_H';
+        continue;
     end
-
+    
     nj=length(UJ)/2;
     nh=length(UH)/2;
     kj=rank(UJ(nj+1:end,:)'*UJ(1:nj,:),tol);
     kh=rank(UH(nh+1:end,:)'*UH(1:nh,:),tol);
-
+    
     eigY=hInfinityEigenvaluesAlt(UH,UJ,gamma);
     eigY=real(eigY);
     [absoluteValues permutation]=sort(abs(eigY));
