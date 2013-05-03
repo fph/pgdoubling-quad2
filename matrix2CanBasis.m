@@ -3,8 +3,7 @@ function [X,p,invcond,swaps]=matrix2CanBasis(X,varargin)
 %
 % [X,p,invcond]=subspace2CanBasis(M,options);
 %
-% input: M matrix, p initial permutation guess (may be empty, in this
-% case the procedure will use a O(n^3) heuristic based on QRP)
+% input: M matrix
 %
 % output:
 % X,p: such that U(p(1:end),:) and [I;X] span the same subspace, where U=[I;M]

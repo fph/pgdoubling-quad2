@@ -3,18 +3,17 @@ function [X,p,invcond,swaps]=subspace2CanBasis(U,varargin)
 %
 % [X,p,invcond]=subspace2CanBasis(U,options);
 %
-% input: U subspace, p initial permutation guess (may be empty, in this
-% case the procedure will use a O(n^3) heuristic based on QRP)
+% input: U subspace
 %
 % output:
 % X,p: such that U(p(1:end),:) and [I;X] span the same subspace
 %
 % Options:
-% 'permutation': if this parameter exists, used its value "p" as the
+% 'permutation': if this parameter exists, use its value "p" as the
 % permutation and skips optimization overall (i.e., works exactly as
 % subspace2SpecifiedCanBasis)
-% 'initialPermutation', initial permutation guess  (may be empty, uses QRP
-%  heuristic if so or if the guess is bad)
+% 'initialPermutation', initial permutation guess  (may be empty, uses O(n^3)
+%  QRP heuristic if so or if the guess is bad)
 % 'threshold', threshold to use
 % 'allowedInvCond', recomputes the basis if it notices an inverse condition
 % number (as in Matlab's linsolve) below a certain tolerance
