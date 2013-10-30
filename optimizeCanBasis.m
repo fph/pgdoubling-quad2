@@ -9,6 +9,11 @@ function [X,p,invcond,swaps]=optimizeCanBasis(X,p,threshold,maxSwaps)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
+if isempty(X)
+    invcond=1;swaps=0;
+    return;
+end
+
 if not(exist('threshold','var')) || isempty(threshold)
     threshold=2;
 elseif threshold<1+sqrt(eps(class(X)))
