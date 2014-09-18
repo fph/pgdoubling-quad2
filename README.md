@@ -1,6 +1,6 @@
 PGDoubling
 ====
-a MATLAB package to solve algebraic Riccati equations and solve optimal control problems using permuted graph bases
+a MATLAB package to solve algebraic Riccati equations and optimal control problems using permuted graph bases
 ------
 
 © Federico Poloni, 2012 -- 2014
