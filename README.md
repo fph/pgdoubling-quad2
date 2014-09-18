@@ -195,6 +195,6 @@ References
 
 [carex]
 :   Jörn Abels , Peter Benner *CAREX - A Collection of Benchmark Examples for Continuous-Time Algebraic Riccati Equations (Version 2.0) (1999)*,
-    :   <http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.40.4899>
+    http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.40.4899
 
 
