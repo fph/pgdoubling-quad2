@@ -1,14 +1,29 @@
 Purpose
 =======
-This package uses the algorithms described in [MehP12,MehP12_ppt] to compute Lagrangian invariant subspaces of Hamiltonian and "extended Hamiltonian" pencils. You can use it to solve algebraic Riccati equations, Lur'e equations/singular control problems, and finding the optimal gamma in H_infinity control.
+This package uses the algorithms described in [MehP12, MehP13] to compute Lagrangian invariant subspaces of Hamiltonian and "extended Hamiltonian" pencils. The resulting algorithm is more accurate than Matlab's ``care`` on several tricky test problems [carex].
+
+It is the right choice for you if:
+* you want to compute a **linear-quadratic regulator**, solve a **Riccati equation**, or a generalized Riccati equation (those that correspond to a matrix pencil in the form::
+
+  [ 0  I 0]    [0  A  B]
+  [ -I 0 0]s - [A' Q  S]
+  [ 0  0 0]    [B' S' R]
+
+);
+* your problem might also be a **singular control** problem (Lur'e equations, singular ``R``); there is also a function to compute the optimal parameter gamma in **H_infinity control**;
+* you are not satisfied with Matlab's `care`, or wish to test a new algorithm;
+* your problem is **small-scale** (up to a few hundred degrees of freedom);
+* your system is **not a descriptor system** (i.e., no ``E`` coefficient, just ``\dot{x}=Ax``).
+
+The current implementation is in **pure Matlab** (no mex-files), so it is **slower** that ``care``. Rewriting the more intensive parts in Fortran or C will very likely result in a huge speedup.
 
 Terminology
 ===========
 A *CanBasis* is a basis matrix for an n-dimensional subspace in the form ``P*[I(n);X]``, where P is a permutation matrix and X is arbitrary. Usually the routines return CanBases in which each element of X is smaller (in modulus) than a certain configurable threshold.
 
-A *SymBasis* is the structured version of a CanBasis, but for a Lagrangian subspace. P is a "symplectic swap matrix" (a symplectic analogous of a permutation), and X is Hermitian.
+A *SymBasis* is the structured version of a CanBasis for a Lagrangian subspace. P is a "symplectic swap matrix" (a symplectic analogous of a permutation), and X is Hermitian.
 
-You can represent subspaces, matrices and matrix pencils through canBases and symBases. See the basic theory in [MehP12]. (In the following, all will be clearer if you have read this paper.)
+You can represent subspaces, matrices and matrix pencils through canBases and symBases. See the basic theory in [MehP12]. (all will be clearer if you have read this paper.)
 
 Documentation
 =============
@@ -20,7 +35,7 @@ Basic usage: matrix equations
 
 [X,Y,U,V]=solveCARE(A,G,Q,...options...)
 
-Returns the symmetric (semi)stabilizing solution of a CARE ``A'X+XA+Q=XGX``. Also returns the (semi)stabilizing solution of the "dual CARE" ``YA'+AY+YQY=G``. More important, U and V are basis matrices for the (semi)stabilizing and (semi)antistabilizing Lagrangian subspaces of the Hamiltonian, i.e., subspaces ``U=[U1;U2]`` and ``V=[V1;V2]`` such that ``X=U2/U1``, ``Y=V1/V2``. **You should always try to restate your equations in order to use U and V rather than X and Y**, as X and Y may be ill-conditioned while U and V are tame.
+Returns the symmetric (semi)stabilizing solution of a CARE ``A'X+XA+Q=XGX``. Also returns the (semi)stabilizing solution of the "dual CARE" ``YA'+AY+YQY=G``. More important, U and V are basis matrices for the (semi)stabilizing and (semi)antistabilizing Lagrangian subspaces of the Hamiltonian, i.e., subspaces ``U=[U1;U2]`` and ``V=[V1;V2]`` such that ``X=U2/U1``, ``Y=V1/V2``. **You should always try to restate your successive computations in order to use U and V rather than X and Y**, as X and Y may be ill-conditioned while U and V are tame.
 
 Recommended options for robustness: ``solveCARE(A,G,Q,'type','sign','safer',true)``. If your problem has large size, you may consider increasing the threshold with ``(...'threshold',sqrt(n),'diagonalThreshold',sqrt(n))``. The impact of the thresholds hasn't been investigated thoroughly yet.
 
@@ -38,9 +53,9 @@ returning the (semi)stabilizing X and Y. Following the more standard notation of
 
 ::
 
- gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,...options...);
+  gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,...options...);
 
-run the gamma iteration [BenBMX07,MehP12_ppt] on a H_inf control problem, with tolerance tol.
+run the gamma iteration [BenBMX07,MehP13] on a H_inf control problem, with tolerance tol.
 
 Some more matrix equations could be added --- These techniques work also for DARE, X=Q+A*inv(X)*A', X=Q-A*inv(X)*A', and 0=P+QY+RY^2 (with some modifications).
 
@@ -52,16 +67,16 @@ Basic usage: building blocks
 
 You may also be interested in ``symplecticPencil2SymBasis``, ``hamiltonianPencil2SymBasis``, ``evenPencil2SymBasis`` (actually only works for even pencils in the form above, a generic even pencil does not have a symBasis).
 
-Some random stuff that an end user might find interesting: ``checkCAREInvariantSubspaceResidual`` (computes and returns several error measures), ``Hamiltonian2RiccatiCoefficients``, ``hamiltonian`` (should be named ``RiccatiCoefficients2Hamiltonian``), ``pirq`` ((symplectic swap P)*R*Q factorization), ``ChuLM07Carex`` (returns the experiments used in [ChuLM07]), ``randomLagrangianSubspace``.
+Some random stuff that an end user might find interesting: ``checkCAREInvariantSubspaceResidual`` (computes and returns several error measures), ``Hamiltonian2RiccatiCoefficients``, ``hamiltonian`` (should be named ``RiccatiCoefficients2Hamiltonian``), ``pirq`` ((symplectic swap P)*R*Q factorization), ``ChuLM07Carex`` (returns the results of the experiments shown in [ChuLM07]), ``randomLagrangianSubspace``.
 
 Feedback
 ========
-The code is quite new at the moment; I am happy to hear about end users' experiences (I tried it and it works great; I tried it and it doesn't work) and to receive feedback and bug reports.
+The code is quite new at the moment; I am happy to hear about end users' experiences ("I tried it and it works great; I tried it and it doesn't work") and to receive feedback and bug reports.
 Also, if you use this code in a paper, please cite us when it is relevant. In the academia we basically live off citation counts.
 
 License
 =======
-Check ``COPYING.txt`` to see if you qualify to use the library for free.
+Check ``COPYING.txt`` to see if you qualify to use the library in other projects for free.
 
 FAQ
 ===
@@ -85,14 +100,18 @@ References
 ==========
 
 [MehP12]
-  Volker Mehrmann, Federico Poloni "Doubling Algorithms With Permuted Lagrangian Graph Bases". To appear in SIMAX.
+  Mehrmann, Volker; Poloni, Federico *Doubling algorithms with permuted Lagrangian graph bases.* SIAM J. Matrix Anal. Appl. 33 (2012), no. 3, 780–805.
 
-[MehP12_ppt]
-  Volker Mehrmann, Federico Poloni "Robust control with doubling and permuted Lagrangian bases" (provisional title). In preparation.
-
+[MehP13]
+ Mehrmann, Volker; Poloni, Federico *Using permuted graph bases in H∞ control.* Automatica J. IFAC 49 (2013), no. 6, 1790–1797.
+ 
 [ChuLM07]
-  Chu, Delin; Liu, Xinmin; Mehrmann, Volker A numerical method for computing the Hamiltonian Schur form. Numer. Math. 105 (2007), no. 3, 375–412.
+  Chu, Delin; Liu, Xinmin; Mehrmann, Volker *A numerical method for computing the Hamiltonian Schur form.* Numer. Math. 105 (2007), no. 3, 375–412.
 
 [BenBMX07]
-  Benner, Peter; Byers, Ralph; Mehrmann, Volker; Xu, Hongguo A robust numerical method for the γ-iteration in H∞ control. Linear Algebra Appl. 425 (2007), no. 2-3, 548–570.
+  Benner, Peter; Byers, Ralph; Mehrmann, Volker; Xu, Hongguo *A robust numerical method for the γ-iteration in H∞ control.* Linear Algebra Appl. 425 (2007), no. 2-3, 548–570.
 
+[carex]
+  Jörn Abels , Peter Benner *CAREX - A Collection of Benchmark Examples for Continuous-Time Algebraic Riccati Equations (Version 2.0) (1999) *,
+    http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.40.4899
+    
