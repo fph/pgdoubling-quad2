@@ -3,7 +3,7 @@ PGDoubling
 a MATLAB package to solve algebraic Riccati equations and solve optimal control problems using permuted graph bases
 ------
 
-&copy; Federico Poloni, 2012 -- 2014
+© Federico Poloni, 2012 -- 2014
 
 Purpose
 ------
@@ -19,10 +19,12 @@ It is the right choice for you if:
 **linear-quadratic regulator**, solve a **Riccati equation**, or a
 generalized Riccati equation (those that correspond to a matrix pencil
 in the form:
-:::text
+
+```none
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S]
     [ 0  0 0]    [B' S' R]
+```
 
 ); 
 
@@ -91,10 +93,11 @@ the thresholds hasn't been investigated thoroughly yet.
 ```
 solve a (possibly singular) generic control problem in the form:
 
-:::text
+```none
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S],
     [ 0  0 0]    [B' S' R]
+```
 
 returning the (semi)stabilizing X and Y. Following the more standard
 notation of this problem, U and V now are bases for the subspaces [X;I]
