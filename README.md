@@ -12,11 +12,11 @@ It is the right choice for you if:
 **linear-quadratic regulator**, solve a **Riccati equation**, or a
 generalized Riccati equation (those that correspond to a matrix pencil
 in the form:
-```
+:::text
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S]
     [ 0  0 0]    [B' S' R]
-```
+
 ); 
 
 * your problem might also be a **singular control** problem (Lur'e
@@ -83,11 +83,12 @@ the thresholds hasn't been investigated thoroughly yet.
 [X,Y,U,V]=solveECARE(A,B,Q,R,S,...options...)
 ```
 solve a (possibly singular) generic control problem in the form:
-```
+
+:::text
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S],
     [ 0  0 0]    [B' S' R]
-```
+
 returning the (semi)stabilizing X and Y. Following the more standard
 notation of this problem, U and V now are bases for the subspaces [X;I]
 (stabilizing) and [I;Y] (antistabilizing). Again, you should work with
