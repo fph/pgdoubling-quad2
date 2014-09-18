@@ -1,5 +1,12 @@
+PGDoubling
+====
+a MATLAB package to solve algebraic Riccati equations and solve optimal control problems using permuted graph bases
+------
+
+&copy; Federico Poloni, 2012 -- 2014
+
 Purpose
-=======
+------
 
 This package uses the algorithms described in [MehP12, MehP13] to
 compute Lagrangian invariant subspaces of Hamiltonian and "extended
@@ -36,7 +43,7 @@ is **slower** that `care`. Rewriting the more intensive parts in Fortran
 or C will very likely result in a huge speedup.
 
 Terminology
-===========
+------
 
 A *CanBasis* is a basis matrix for an n-dimensional subspace in the form
 `P*[I(n);X]`, where P is a permutation matrix and X is arbitrary.
@@ -52,14 +59,14 @@ canBases and symBases. See the basic theory in [MehP12]. (all will be
 clearer if you have read this paper.)
 
 Documentation
-=============
+------
 
 All functions contain help; type `help functionName` in Matlab to access
 it. You can look in the "test" functions for some more usage examples.
 In the following there is a quick introduction.
 
 Basic usage: matrix equations
-=============================
+------
 
 ```matlab
     [X,Y,U,V]=solveCARE(A,G,Q,...options...)
@@ -104,7 +111,7 @@ for DARE, X=Q+A\*inv(X)*A', X=Q-A*inv(X)\*A', and 0=P+QY+RY\^2 (with
 some modifications).
 
 Basic usage: building blocks
-============================
+------
 
 `subspace2CanBasis` takes a subspace and returns X and a permutation P
 defining its CanBasis. `symplecticSubspace2SymBasis` takes a Lagrangian
@@ -124,7 +131,7 @@ P)*R*Q factorization), `ChuLM07Carex` (returns the results of the
 experiments shown in [ChuLM07]), `randomLagrangianSubspace`.
 
 Feedback
-========
+------
 
 The code is quite new at the moment; I am happy to hear about end users'
 experiences ("I tried it and it works great; I tried it and it doesn't
@@ -133,13 +140,13 @@ code in a paper, please cite us when it is relevant. In the academia we
 basically live off citation counts.
 
 License
-=======
+------
 
 Check `COPYING.txt` to see if you qualify to use the library in other
 projects for free.
 
 FAQ
-===
+------
 
 Q: why are the function names so long?
 
@@ -173,7 +180,7 @@ A: no, and it would require significant changes to the algorithm to
 support it. We'll be working on that hopefully.
 
 References
-==========
+------
 
 [MehP12]
 :   Mehrmann, Volker; Poloni, Federico *Doubling algorithms with
