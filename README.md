@@ -12,11 +12,11 @@ It is the right choice for you if:
 **linear-quadratic regulator**, solve a **Riccati equation**, or a
 generalized Riccati equation (those that correspond to a matrix pencil
 in the form:
-
+```
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S]
     [ 0  0 0]    [B' S' R]
-
+```
 ); 
 
 * your problem might also be a **singular control** problem (Lur'e
@@ -61,10 +61,9 @@ In the following there is a quick introduction.
 Basic usage: matrix equations
 =============================
 
-:
-
-[X,Y,U,V]=solveCARE(A,G,Q,...options...)
-
+```matlab
+    [X,Y,U,V]=solveCARE(A,G,Q,...options...)
+```
 Returns the symmetric (semi)stabilizing solution of a CARE
 `A'X+XA+Q=XGX`. Also returns the (semi)stabilizing solution of the "dual
 CARE" `YA'+AY+YQY=G`. More important, U and V are basis matrices for the
@@ -80,23 +79,22 @@ size, you may consider increasing the threshold with
 `(...'threshold',sqrt(n),'diagonalThreshold',sqrt(n))`. The impact of
 the thresholds hasn't been investigated thoroughly yet.
 
-:
-
+```matlab
 [X,Y,U,V]=solveECARE(A,B,Q,R,S,...options...)
-
+```
 solve a (possibly singular) generic control problem in the form:
-
+```
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S],
     [ 0  0 0]    [B' S' R]
-
+```
 returning the (semi)stabilizing X and Y. Following the more standard
 notation of this problem, U and V now are bases for the subspaces [X;I]
 (stabilizing) and [I;Y] (antistabilizing). Again, you should work with
 them rather than with X and Y.
-
+```matlab
     gamma=gammaIteration(A1,B1,B2,C1,C2,D11,D12,D21,D22,tol,...options...);
-
+```
 run the gamma iteration [BenBMX07,MehP13] on a H\_inf control problem,
 with tolerance tol.
 
