@@ -1,6 +1,6 @@
 function testUpdateCanBasis
 
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 
 U=randn(10,6);
 U(2,1)=10^12; %so that we test a "difficult" case

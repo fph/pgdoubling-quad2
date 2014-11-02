@@ -1,6 +1,6 @@
 function testSymPencil
 %tests pack/unpack symplectic pencils
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 
 n=10;
 for tries=1:100

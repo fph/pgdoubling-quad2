@@ -1,5 +1,5 @@
 function testSymBasis
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 
 U=[1:6]';
 assertExceptionThrown(@() rowSwap(U,[1 0 0 0],'N'),'cbrpack:wrongPermutationLength');
