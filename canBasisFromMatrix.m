@@ -1,12 +1,12 @@
-function [X,p,invcond,swaps]=matrix2CanBasis(X,varargin)
+function [can,invcond,swaps]=canBasisFromMatrix(X,varargin)
 % Bounded canonical basis representation of a matrix
 %
-% [X,p,invcond]=subspace2CanBasis(M,options);
+% [can,invcond]=canBasisFromMatrix(M,options);
 %
 % input: M matrix
 %
 % output:
-% X,p: such that U(p(1:end),:) and [I;X] span the same subspace, where U=[I;M]
+% can: such that U(can.p(1:end),:) and [I;can.X] span the same subspace, where U=[I;M]
 %
 % Options: see subspace2CanBasis: 'permutation', 'threshold', 'maxswaps'
 %
@@ -17,11 +17,13 @@ function [X,p,invcond,swaps]=matrix2CanBasis(X,varargin)
 o=Options(varargin{:});
 
 [m n]=size(X);
-p=1:m+n;
+can.X = X;
+can.p = 1:m+n;
+can.origin = 'matrix';
 
 if o.isSet('permutation')
-    [X p invcond]=canBasis2CanBasis(X,p,o.get('permutation'));
+    [can invcond]=canBasisFromCanBasis(can,o.get('permutation'));
     swaps=0;
 else
-    [X p invcond swaps]=optimizeCanBasis(X,p,o.get('threshold',[]),o.get('maxswaps',[]));
+    [can invcond swaps]=optimizeCanBasis(can,o.get('threshold',[]),o.get('maxswaps',[]));
 end
