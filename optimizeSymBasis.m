@@ -1,7 +1,7 @@
-function [X,v,invcond,swaps]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+function [symb,invcond,swaps]=optimizeSymBasis(symb,diagonalThreshold,offDiagonalThreshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
-% [X,v,swaps,invcond]=optimizeSymBasis(X,v,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+% [symb,swaps,invcond]=optimizeSymBasis(symb,diagonalThreshold,offdiagonalThreshold,maxSwaps)
 %
 % invcond is the inverse condition number of all the performed
 % transformations composed. If it is larger than some moderate value,
@@ -19,44 +19,44 @@ if not(exist('diagonalThreshold','var')) || isempty(diagonalThreshold)
     diagonalThreshold=2;
 end
 
-if not(exist('odddiagonalThreshold','var')) || isempty(offdiagonalThreshold)
-    offdiagonalThreshold=sqrt(5+diagonalThreshold^2);
+if not(exist('offDiagonalThreshold','var')) || isempty(offDiagonalThreshold)
+    offDiagonalThreshold=sqrt(5+diagonalThreshold^2);
 end
 
-if diagonalThreshold<1+sqrt(eps(class(X)))
-    error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds S=1+sqrt(eps) or larger');
+if diagonalThreshold<1+sqrt(eps(class(symb.X)))
+    error('PGDoubling:thresholdTooSmall','you can only hope to enforce thresholds S=1+sqrt(eps) or larger');
 end
 
-if offdiagonalThreshold<sqrt(1+diagonalThreshold^2)+sqrt(eps(class(X)))
-    error('cbrpack:thresholdTooSmall','you can only hope to enforce thresholds T=sqrt(1+S^2) or larger');
+if offDiagonalThreshold<sqrt(1+diagonalThreshold^2)+sqrt(eps(class(symb.X)))
+    error('PGDoubling:thresholdTooSmall','you can only hope to enforce thresholds T=sqrt(1+S^2) or larger');
 end
 
 if not(exist('maxSwaps','var')) || isempty(maxSwaps)
-    maxSwaps=20*size(X,2);
+    maxSwaps=20*size(symb.X,2);
 end
 
 %optimization
 swaps=0;
 invcond=1;
 while(true)
-    [maxvec, maxis]=max(abs(X-diag(diag(X))));
-    [maxval maxj]=max(maxvec);
-    maxi=maxis(maxj);
-    % the three lines above compute maxi,maxj=argmax(abs(X(i,j)))
+    [maxvec, maxis] = max(abs(symb.X-diag(diag(symb.X))));
+    [maxval, maxj] = max(maxvec);
+    maxi = maxis(maxj);
+    % the three lines above compute maxi,maxj = argmax(abs(X(i,j)))
     
-    [maxdiag maxdiagPos]=max(diag(X));
-    if maxdiag>diagonalThreshold
-        [X,v,stepcond]=updateSymBasis(X,v,maxdiagPos);
-        swaps=swaps+1;
-    elseif maxval>offdiagonalThreshold
-        [X,v,stepcond]=updateSymBasis(X,v,[maxi maxj]);
-        swaps=swaps+2;
+    [maxdiag, maxdiagPos] = max(diag(symb.X));
+    if maxdiag > diagonalThreshold
+        [symb.X,symb.v,stepcond] = updateSymBasis(symb.X,symb.v,maxdiagPos);
+        swaps = swaps+1;
+    elseif maxval > offDiagonalThreshold
+        [symb.X,symb.v,stepcond] = updateSymBasis(symb.X,symb.v,[maxi maxj]);
+        swaps = swaps+2;
     else
         break;
     end
-    invcond=invcond*stepcond;
-    if swaps>=maxSwaps
-        warning('cbrpack:stagnated','failed to produce a X with elements below the required threshold. Try running with a larger threshold.');
+    invcond = invcond*stepcond;
+    if swaps >= maxSwaps
+        warning('PGDoubling:stagnated','failed to produce a X with elements below the required threshold. Try running with a larger threshold.');
         break
     end
 end

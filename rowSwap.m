@@ -18,7 +18,7 @@ function Y=rowSwap(U,v,transp)
 v=logical(v);
 n=length(v);
 if not(2*n==size(U,1))
-    error('cbrpack:wrongPermutationLength','the row swap vector has wrong length (actual: %d, expected (half of the symplectic matrix size): %g)',n,size(U,1)/2);
+    error('PGDoubling:wrongPermutationLength','the row swap vector has wrong length (actual: %d, expected (half of the symplectic matrix size): %g)',n,size(U,1)/2);
 end
 
 A=U(1:n,:);
@@ -30,6 +30,6 @@ switch(transp)
     case 'T'
         [A(v,:),B(v,:)]=deal(-B(v,:),A(v,:));
     otherwise
-        error('cbrpack:wrongTransposedness', 'parameter "transp" must be either ''N'' or ''T''');
+        error('PGDoubling:wrongTransposedness', 'parameter "transp" must be either ''N'' or ''T''');
 end
 Y=[A;B];

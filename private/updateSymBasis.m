@@ -1,7 +1,7 @@
-function [X newv invcond]=updateSymBasis(X,oldv,inout)
+function [X, newv, invcond]=updateSymBasis(X, oldv, inout)
 % computes efficiently a new symplectic basis from an old one 
 %
-% [newX newv invcond]=updateCanBasis(oldX,oldv,inout)
+% [X, newv, invcond]=updateSymbBasis(X, oldv, inout)
 %
 % computes a new representation of the same subspaces using a different newv
 % newv is the same as oldv, but with the bits at the indices in "inout" flipped
