@@ -32,3 +32,5 @@ symb.X=(symb.X+symb.X')/2;
 if invcond<sqrt(eps(class(U))) && nargout<3 %output error only if the caller does not request invcond explicitly. Otherwise, handling it is their business.
     warning('PGDoubling:illConditionedMatrix', 'symplecticSubspace2SymBasis: the matrix I am inverting has conditioning >1/sqrt(eps). The selected symplectic swap guess may be wrong');
 end
+
+symb.origin = 'symplecticSubspace';
