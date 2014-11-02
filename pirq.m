@@ -12,6 +12,8 @@ function [v,U,Q,invcond]=pirq(U)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
+% TODO: could avoid Q, is not used anywhere now
+
 [m n]=size(U);
 if(m~=2*n)
     error('cbrpack:oddSize','the input matrix must have an even number of rows');

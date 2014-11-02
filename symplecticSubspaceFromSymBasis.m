@@ -1,7 +1,7 @@
-function U=symBasis2SymplecticSubspace(X,v)
+function U=symplecticSubspaceFromSymBasis(symb)
 % unpacks the symBasis representation of a subspace
 %
-% U=symBasis2SymplecticSubspace(X,v)
+% U=symplecticSubspaceFromSymBasis(symb)
 %
 % given X,v representing a symplectic subspace, return a matrix spanning it.
 %
@@ -9,5 +9,5 @@ function U=symBasis2SymplecticSubspace(X,v)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-U=[eye(size(X));X];
-U=rowSwap(U,v,'T');
+U=[eye(size(symb.X));symb.X];
+U=rowSwap(U,symb.v,'T');

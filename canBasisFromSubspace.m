@@ -47,22 +47,26 @@ elseif o.isSet('initialPermutation')
         %replace our guess with the heuristic
         [can, invcond] = heuristicCanBasisFromSubspace(U);
         if invcond < sqrt(eps(class(U)))
-            warning 'PGDoubling:badSubspace' 'canBasisFromSubspace: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
+            warning 'PGDoubling:badSubspace' 'the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
         else
-            warning 'PGDoubling:badInitialPermutation' 'canBasisFromSubspace: the initial guess provided is ill-conditioned, it has been replaced by the O(n^3) QRP heuristic';
+            warning 'PGDoubling:badInitialPermutation' 'the initial guess provided is ill-conditioned, it has been replaced by the O(n^3) QRP heuristic';
         end
     end
 else
     [can, invcond] = heuristicCanBasisFromSubspace(U);
     if invcond < sqrt(eps(class(U)))
-        warning 'PGDoubling:badSubspace' 'canBasisFromSubspace: the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
+        warning 'PGDoubling:badSubspace' 'the provided subspace is ill-conditioned. Using O(n^3) QRP heuristic, but it won''t help much by itself'
     end
 end
 
 [can, optcond, swaps]=optimizeCanBasis(can, threshold, o.get('maxSwaps',[]));
+invcond = invcond * optcond;
 if optcond < o.get('allowedInvCond',1e-1) %TODO: is this a good "magic value"?
     %recompute
-    [can, invcond] = specifiedCanBasisFromSubspace(U, p);
+    [can, invcond] = specifiedCanBasisFromSubspace(U, can.p);
     %even if invcond is small, can't do much about it anymore
 end
 
+if invcond < sqrt(eps(class(U))) && nargout<3
+    warning('PGDoubling:illConditionedMatrix', 'the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace');
+end
