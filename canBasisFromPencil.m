@@ -1,12 +1,12 @@
-function [X,p,invcond,swaps]=pencil2CanBasis(A,E,varargin)
+function [can,invcond,swaps]=canBasisFromPencil(A,E,varargin)
 % Bounded canonical basis representation of a pencil
 %
-% [X,p,invcond,swaps]=pencil2CanBasis(A,E,options);
+% [can,invcond,swaps]=pencil2CanBasis(A,E,options);
 %
 % input: A-xE pencil
 %
 % output:
-% X,p: a canBasis of [E';A']
+% can: a canBasis of [E';A']
 %
 % Options: see subspace2CanBasis: 'permutation', 'threshold', 'maxswaps'
 %
@@ -14,4 +14,5 @@ function [X,p,invcond,swaps]=pencil2CanBasis(A,E,varargin)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-[X,p,invcond,swaps]=subspace2CanBasis([E';A'],varargin{:});
+[can,invcond,swaps] = canBasisFromSubspace([E';A'], varargin{:});
+can.origin = 'pencil';
