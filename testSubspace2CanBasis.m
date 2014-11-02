@@ -16,7 +16,7 @@ U=[4 0; 0 1; 10 20; 30 40];
 assertEqual(p,[2 1 3 4]);
 assertEqual(X,[20 2.5;40 7.5]);
 
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 for k=1:40
    U=randn(40,13).*exp(randn(40,13));
    [X,p]=subspace2CanBasis(U,'threshold',1.5);

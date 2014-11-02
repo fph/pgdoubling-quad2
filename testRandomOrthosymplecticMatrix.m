@@ -1,6 +1,6 @@
 function testRandomOrthosymplecticMatrix
 
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 
 assertExceptionThrown(@() randomOrthosymplecticMatrix(3),'cbrpack:oddSize');
 

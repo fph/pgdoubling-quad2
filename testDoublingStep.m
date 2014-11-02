@@ -1,6 +1,6 @@
 function testDoublingStep
 
-reset(RandStream.getDefaultStream);
+reset(RandStream.getGlobalStream);
 
 n=10;
 
