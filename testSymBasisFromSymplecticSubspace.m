@@ -15,6 +15,7 @@ assertEqual(rowSwap(U,[1 0 0],'T'),[-4 2 3 1 5 6]');
 
 U=[2;1];
 symb=symBasisFromSymplecticSubspace(U);
+assertEqual(symb.origin,'symplecticSubspace');
 
 assertExceptionThrown(@() symBasisFromSymplecticSubspace([1]),'PGDoubling:oddSize');
 
