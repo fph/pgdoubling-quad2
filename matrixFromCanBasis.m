@@ -1,7 +1,7 @@
-function X = MatrixFromCanBasis(can)
+function X = matrixFromCanBasis(can)
 % turns a canbasis into a matrix
 % 
-% M = MatrixFromCanBasis(can);
+% M = matrixFromCanBasis(can);
 %
 % (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
 % see AUTHORS.txt and COPYING.txt for details
