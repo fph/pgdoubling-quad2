@@ -1,5 +1,4 @@
-function testCanBasis2Subspace
-
+function testCanBasisFromPencil
 
 reset(RandStream.getGlobalStream);
 
@@ -9,8 +8,8 @@ for tries=1:100
     A=5*randn(m,n)+5*1i*randn(m,n);
     E=5*randn(m,n)+5*1i*randn(m,n);
     
-    [X,p]=pencil2CanBasis(A,E);
-    [A2,E2]=canBasis2Pencil(X,p);
+    can = canBasisFromPencil(A,E);
+    [A2,E2] = pencilFromCanBasis(can);
     assertElementsAlmostEqual(subspace([E';A'],[E2';A2']),0); %checks that they are the same subspace
 end
 
@@ -20,7 +19,7 @@ for tries=1:100
     A=5*randn(m,n)+5*1i*randn(m,n);
     E=5*randn(m,n)+5*1i*randn(m,n);
     
-    [X,p]=pencil2CanBasis(A,E);
-    [A2,E2]=canBasis2Pencil(X,p);
+    can = canBasisFromPencil(A,E);
+    [A2,E2] = pencilFromCanBasis(can);
     assertElementsAlmostEqual(subspace([E';A'],[E2';A2']),0); %checks that they are the same subspace
 end
