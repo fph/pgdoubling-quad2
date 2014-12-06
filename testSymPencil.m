@@ -12,8 +12,8 @@ L=[S(fourth,:)' S(second,:)'];
 
 assertElementsAlmostEqual(U*jay(2*n)*U',L*jay(2*n)*L');
 
-[X,v]=symplecticPencil2SymBasis(L,U);
-[L2,U2]=symBasis2SymplecticPencil(X,v);
+sym=symBasisFromSymplecticPencil(L,U);
+[L2,U2]=symplecticPencilFromSymBasis(sym);
 
 assertElementsAlmostEqual(subspace([L';U'],[L2';U2']),0);
 end
