@@ -24,3 +24,4 @@ out = find(invTargetP(can.p(1:n))>n);
 %reorder the rows and columns of X to get the order right
 reordering=invTargetP(can.p);
 can.X(reordering(n+1:end)-n,reordering(1:n))=can.X;
+can.p = targetp;
