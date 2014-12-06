@@ -10,4 +10,4 @@ function [symb]=symBasisFromSymBasis(symb,targetv)
 % https://bitbucket.org/fph/pgdoubling
 
 %crappy implementation for now...
-symb = symplecticSubspace2SymBasis(symBasis2SymplecticSubspace(symb),'swap',targetv);
+symb = symBasisFromSymplecticSubspace(symplecticSubspaceFromSymBasis(symb),'swap',targetv);
