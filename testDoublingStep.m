@@ -5,12 +5,16 @@ reset(RandStream.getGlobalStream);
 n=10;
 
 for tries=1:10
-    X=randn(n);X=(X+X')/2;
-    v=logical(randi(2,n,1)-1);
-    [L,U]=symBasis2SymplecticPencil(X,v);
-    [X2,v2]=doublingStep(X,v);
+    sym.X=randn(n);sym.X=(sym.X+sym.X')/2;
+    sym.v=logical(randi(2,n,1)-1);
+    sym.origin='symplecticPencil';
+    [L,U]=symplecticPencilFromSymBasis(sym);
+    sym2=doublingStep(sym);
     M=U\L;
-    [XX,vv]=symplecticPencil2SymBasis(M^2,eye(n));
+    sym3=symBasisFromSymplecticPencil(M^2,eye(n));
     
-    assertElementsAlmostEqual(subspace(symBasis2SymplecticSubspace(X2,v2),symBasis2SymplecticSubspace(XX,vv)),0);
+    [LL,UU]=symplecticPencilFromSymBasis(sym2);
+    [LLL,UUU]=symplecticPencilFromSymBasis(sym3);
+    
+    assertElementsAlmostEqual(subspace([LL,UU]',[LLL,UUU]'),0);
 end
