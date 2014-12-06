@@ -31,7 +31,6 @@ j1=true(n,1);
 j1(out)=false;
 j2=out;
 
-%TODO: matgic:minv?
 invcond=norm(X(i2,j2));
 X(i2,j2)=inv(X(i2,j2));
 invcond=invcond*norm(X(i2,j2));
