@@ -1,11 +1,11 @@
-function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,varargin)
+function [sym2,w,swaps1,swaps2,res,res2]=doublingStep(sym,varargin)
 % perform a doubling step using permuted bases
 %
-% [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,options)
+% [sym2,w,swaps1,swaps2,res,res2]=doublingStep(sym,options)
 %
 % (X,v) is a symBasis for a symplectic pencil L-sU
 % 
-% (Xnew,vnew,swaps2) (in output) is a symBasis for the symplectic pencil obtained by "squaring" L-sU
+% (sym2,swaps2) (in output) is a symBasis for the symplectic pencil obtained by "squaring" L-sU
 % squaring here is extended to pencils in the sense of [Benner, Byers]:
 % if U is invertible, then it is a pencil that is right-equivalent to U^{-1}LU^{-1}L-sI,
 % and this is extended by continuity to singular U.
@@ -23,22 +23,23 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=doublingStep(X,v,varargin)
 
 o=Options(varargin{:});
  
-n=length(X);
-[L,U]=symBasis2SymplecticPencil(X,v);
+n=length(sym.X);
+[L,U]=symplecticPencilFromSymBasis(sym);
 Z=[L;U];
-[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,o);
+[can,invcond1,swaps1]=canBasisFromSubspace(Z,o);
 
-[Ltilde,Utilde]=leftDual(leftX,w);
+[Ltilde,Utilde]=leftDual(can);
 %assertVectorsAlmostEqual(Ltilde*U,Utilde*L);
 newL=Ltilde*L;
 newU=Utilde*U;
-%TODO: could do scaling as in Newton for the matrix sign
+%it is not easy to do scaling as in Newton for the matrix sign, in this
+%setting
 
-[Xnew vnew invcond2 swaps2]=symplecticPencil2SymBasis(newL,newU,o);
+[sym2 invcond2 swaps2]=symBasisFromSymplecticPencil(newL,newU,o);
 
 %computes residual measures
-Xold=symBasis2SymBasis(X,v,vnew);
-res2=norm(Xold-Xnew,'fro');
+symOld=symBasisFromSymBasis(sym,sym2.v);
+res2=norm(symOld.X-sym2.X,'fro');
 n=n/2;first=1:n;second=n+1:2*n;
-res=norm(Xnew(first,second),'fro')+norm(Xnew(second,first),'fro');
+res=norm(sym2.X(first,second),'fro')+norm(sym2.X(second,first),'fro');
 end
