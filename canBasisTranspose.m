@@ -1,29 +1,35 @@
-function [X,p]=canBasisTranspose(X,p);
+function can=canBasisTranspose(can);
 % returns canBasis of M'
 %
-% [Xt,pt]=canBasisTranspose(X,p);
+% canT=canBasisTranspose(can);
 %
-% returns a canBasis of M', where M=canBasis2Matrix(X,p)
+% returns a canBasis of M', where M=matrixFromCanBasis(can)
 
-[m n]=size(X);
+[m n]=size(can.X);
 
-U=canBasis2Subspace(X,p);
-M=canBasis2Matrix(X,p);
 
-X=-X';
-p=p([n+1:end,1:n]);
+if not(strcmp(can.origin,'matrix'))
+    warning('PGDoubling:wrongOrigin','You are trying to transpose a canBasis that did not originate from a matrix');
+end
 
-% now X,p is a canBasis of the subspace ker U', where U was the original
+%can.origin='subspace';
+%U=subspaceFromCanBasis(can);
+%M=canBasis2Matrix(X,p);
+
+can.X=-can.X';
+can.p=can.p([n+1:end,1:n]);
+
+% now can is a canBasis of the subspace ker U', where U was the original
 % subspace/canBasis
 %
 % TODO: what we did above is in fact a dual - merge it with leftDual somehow?
 
 swap([n+1:n+m,1:n])=1:n+m;
-p=swap(p);
+can.p=swap(can.p);
 
 toChangeSign=[false(1,m) true(1,n)];
-toChangeSign=toChangeSign(p);
+toChangeSign=toChangeSign(can.p);
 
-X(:,toChangeSign(1:m))=-X(:,toChangeSign(1:m));
-X(toChangeSign(m+1:end),:)=-X(toChangeSign(m+1:end),:);
+can.X(:,toChangeSign(1:m))=-can.X(:,toChangeSign(1:m));
+can.X(toChangeSign(m+1:end),:)=-can.X(toChangeSign(m+1:end),:);
 
