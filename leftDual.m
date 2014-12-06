@@ -1,7 +1,7 @@
-function [Etilde,Atilde]=leftDual(X,p)
+function [Etilde,Atilde]=leftDual(can)
 % computes left dual of a subspace (given its canBasis)
 %
-% [Etilde,Atilde]=leftDual(X,p)
+% [Etilde,Atilde]=leftDual(can)
 %
 % given a canBasis of U (of dim 2nxn), computes Etilde,Atilde such that 
 % [Etilde,Atilde]*J*U=0 and rk [Etilde,Atilde]=n
@@ -10,8 +10,9 @@ function [Etilde,Atilde]=leftDual(X,p)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-n=length(X);
+n=length(can.X);
 first=1:n;second=n+1:2*n;
-invp=p([second,first]);
-Tildes=canBasis2Subspace(-X',invp);Tildes=Tildes';
+can.X=-can.X';
+can.p=can.p([second,first]);
+Tildes=subspaceFromCanBasis(can);Tildes=Tildes';
 Etilde=Tildes(:,second);Atilde=-Tildes(:,first);

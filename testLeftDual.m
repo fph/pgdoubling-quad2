@@ -2,11 +2,12 @@ function testLeftDual
 
 n=10;
 
-X=randn(n);
-p=randperm(2*n);
+can.X=randn(n);
+can.p=randperm(2*n);
+can.origin='subspace';
 
-U=canBasis2Subspace(X,p);
+U=subspaceFromCanBasis(can);
 
-[Etilde,Atilde]=leftDual(X,p);
+[Etilde,Atilde]=leftDual(can);
 
 assertVectorsAlmostEqual([Etilde Atilde]*jay(2*n)*U,zeros(n));
