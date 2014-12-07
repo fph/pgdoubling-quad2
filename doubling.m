@@ -1,12 +1,12 @@
-function [S,v]=doubling(S,v,type,varargin)
+function sym=doubling(sym,type,varargin)
 % applies doubling to a symplectic or inverse-free sign to a Hamiltonian pencil
 %
-%  [X,v]=doubling(X,v,type,varargin)
+%  sym=doubling(sym,type,varargin)
 %
-% if type=='sign', (X,v) is a symBasis of a Hamiltonian pencil, and the
+% if type=='sign', sym is a symBasis of a Hamiltonian pencil, and the
 % algorithm performs repeated H <- H+inv(H)
 %
-% if type=='sda', (X,v) is a symBasis of a symplectic pencil, and the
+% if type=='sda', sym is a symBasis of a symplectic pencil, and the
 % algorithm performs repeates S <- S*S
 %
 %
@@ -26,7 +26,7 @@ o=Options(varargin{:});
 
 maxSteps=o.get('maxSteps',inf);
 minSteps=o.get('minSteps',0);
-tol=o.get('tolerance',length(S)*eps);
+tol=o.get('tolerance',length(sym.X)*eps);
 
 verbose=logical(o.get('verbose',false));
 safer=logical(o.get('safer',false));
@@ -49,7 +49,7 @@ while(true)
     steps=steps+1;
     if(~safer)
         o.set('initialPermutation',w);
-        o.set('initialSwap',v);
+        o.set('initialSwap',sym.v);
     else
         o.set('initialPermutation',[]);
         o.set('initialSwap',[]);
@@ -57,7 +57,7 @@ while(true)
 
 %    o.set('scaling',determinantalScaling(S,v));
     
-    [S,v,w,swaps1,swaps2,res,res2]=f(S,v,o);
+    [sym,w,swaps1,swaps2,res,res2]=f(sym,o);
     if(verbose)
         fprintf('Step %3d, residual1 %5.2e, residual2 %5.2e, swaps 2*%d+%d\n',steps,res,res2,swaps1,swaps2);
     end
