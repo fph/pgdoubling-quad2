@@ -19,14 +19,14 @@ for i=1:50
 %    size(AA),size(EE),size(v)
     
     S=warning('off','cbrpack:notSymplectic');
-    [X,v,invcond]=evenPencil2SymBasis(AA,EE,n/2,m,vh);
-    [Xp,vp,invcondp]=evenPencil2SymBasis(AA,EE,n/2,m,vhp);
+    [sym,invcond]=symBasisFromEvenPencil(AA,EE,n/2,m,vh);
+    [symp,invcondp]=symBasisFromEvenPencil(AA,EE,n/2,m,vhp);
     warning(S);
     
     assertElementsAlmostEqual(invcond,1);
     assertElementsAlmostEqual(invcondp,1);
 
-    assertEqual(logical(vhp(:)),logical(v(:)));
-    assertEqual(logical(vh(:)),logical(v(:)));
+    assertEqual(logical(vhp(:)),logical(symp.v(:)));
+    assertEqual(logical(vh(:)),logical(sym.v(:)));
     
 end
