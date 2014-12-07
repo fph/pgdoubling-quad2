@@ -31,13 +31,13 @@ if o.isSet('heuristic')
     [symb, invcond] = heuristicSymBasisFromSymplecticSubspace(U);
     dt = inf;
     
-elseif o.isSet('swap')
+elseif o.isSet('swap') && ~isempty(o.look('swap'))
     if o.isSet('initialSwap') || o.isSet('diagonalThreshold') || o.isSet('offDiagonalThreshold')
         error('PGDoubling:conflictingOptions','Conflicting options added to ''swap''');
     end
     [symb,invcond] = specifiedSymBasisFromSymplecticSubspace(U,o.get('swap'));
     dt = inf; odt = inf;
-elseif o.isSet('initialSwap')
+elseif o.isSet('initialSwap') && ~isempty(o.get('initialSwap'))
     [symb,invcond] = specifiedSymBasisFromSymplecticSubspace(U,o.get('initialSwap'));
     if invcond<sqrt(eps(class(U)))
         %replace our guess with the heuristic

@@ -42,4 +42,5 @@ symOld=symBasisFromSymBasis(sym,sym2.v);
 res2=norm(symOld.X-sym2.X,'fro');
 n=n/2;first=1:n;second=n+1:2*n;
 res=norm(sym2.X(first,second),'fro')+norm(sym2.X(second,first),'fro');
+w = can.p;
 end

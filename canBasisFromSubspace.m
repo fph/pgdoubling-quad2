@@ -35,13 +35,13 @@ if o.isSet('heuristic')
     end
     [can, invcond] = heuristicCanBasisFromSubspace(U);
     threshold = inf;
-elseif o.isSet('permutation')
+elseif o.isSet('permutation') && ~isempty(o.get('permutation'))
     if o.isSet('initialPermutation') || o.isSet('threshold')
         error('PGDoubling:conflictingOptions','Conflicting options added to ''permutation''');
     end
     [can,invcond]=specifiedCanBasisFromSubspace(U,o.get('permutation'));
     threshold = inf;
-elseif o.isSet('initialPermutation')
+elseif o.isSet('initialPermutation') && ~isempty(o.get('initialPermutation'))
     [can, invcond] = specifiedCanBasisFromSubspace(U,o.get('initialPermutation'));
     if invcond < sqrt(eps(class(U)))
         %replace our guess with the heuristic

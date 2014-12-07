@@ -1,9 +1,9 @@
-function [S,v]=inverseFreeSign(S,v,varargin)
+function sym=inverseFreeSign(sym,varargin)
 % applies the inverse-free sign method to a Hamiltonian pencil
 %
-% [X,v]=doubling(X,v,varargin)
+% sym=doubling(sym,varargin)
 %
-% X,v are the symBasis of a Hamiltonian pencil
+% sym is the symBasis of a Hamiltonian pencil
 %
 % options available:
 % maxSteps: maximum number of step before returning (default:200)
@@ -31,6 +31,10 @@ steps=0;
 
 convergenceHistory=[nan nan nan nan nan nan];
 
+if not(strcmp(sym.origin,'hamiltonianPencil'))
+    warning('PGDoubling:wrongOrigin','You are converting to a Hamiltonian pencil a symBasis that did not come from one.');
+end
+
 w=[];
 while(true)
     steps=steps+1;
@@ -41,7 +45,7 @@ while(true)
         wguess=w;
         vguess=v;
     end
-    [S,v,w,swaps1,swaps2,res]=inverseFreeSignStep(S,v,wguess,vguess);
+    [sym,w,swaps1,swaps2,res]=inverseFreeSignStep(sym,wguess,vguess);
     if(verbose)
         fprintf('Step %3d, pseudo-residual measure %5.2e, swaps 2*%d+%d\n',steps,res,swaps1,swaps2);
     end
