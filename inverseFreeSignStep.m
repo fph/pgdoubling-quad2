@@ -1,7 +1,7 @@
-function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,varargin)
+function [symNew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(sym,varargin)
 % analogous of doublingStep which performs a step of Newton for the matrix sign
 %
-% [Xnew,vnew,w,swaps1,swaps2,res,res2]=nmsStep(X,v,options)
+% [symnew,w,swaps1,swaps2,res,res2]=nmsStep(sym,options)
 %
 % given X,v symbasis for a Hamiltonian matrix pencil H-sI
 % computes H_new=1/2* (H+inv(H))
@@ -15,11 +15,11 @@ function [Xnew,vnew,w,swaps1,swaps2,res,res2]=inverseFreeSignStep(X,v,varargin)
 
 o=Options(varargin{:});
 
-n=length(X);
-[A,E]=symBasis2HamiltonianPencil(X,v);
+n=length(sym.X);
+[A,E]=hamiltonianPencilFromSymBasis(sym);
 Z=[A;E];
-[leftX,w,invcond1,swaps1]=subspace2CanBasis(Z,o);
-[Etilde,Atilde]=leftDual(leftX,w);
+[can,invcond1,swaps1]=canBasisFromSubspace(Z,o);
+[Etilde,Atilde]=leftDual(can);
 
 %assertVectorsAlmostEqual(Etilde*E,Atilde*A); %I need to be careful with A and E...
 
@@ -39,10 +39,11 @@ newA=1/sqrt(2)*(c*Etilde*A+s*Atilde*E);
 %newA=1/2*(Etilde*A+Atilde*E);
 newE=Etilde*E;
 
-[Xnew vnew invcond2,swaps2]=hamiltonianPencil2SymBasis(newA,newE,o);
+[symNew, invcond2,swaps2]=symBasisFromHamiltonianPencil(newA,newE,o);
 
 %computes residual measures
-Xold=symBasis2SymBasis(X,v,vnew);
-res=norm(Xold-Xnew,'fro');
+symOld=symBasisFromSymBasis(sym,symNew.v);
+res=norm(symOld.X-symNew.X,'fro');
 res2=nan;
+w = can.p;
 end
