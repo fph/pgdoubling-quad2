@@ -1,7 +1,7 @@
-function [A,G,Q]=Hamiltonian2RiccatiCoefficients(H)
+function [A,G,Q]=riccatiCoefficientsFromHamiltonian(H)
 % converts a Hamiltonian H to Riccati coefficients
 %
-% [A,G,Q]=Hamiltonian2RiccatiCoefficients(H)
+% [A,G,Q]=riccatiCoefficientsFromHamiltonian(H)
 %
 % (c) 2011-2012 F. Poloni <poloni@math.tu-berlin.de> and others 
 % see AUTHORS.txt and COPYING.txt for details
