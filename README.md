@@ -20,17 +20,13 @@ It is the right choice for you if:
 generalized Riccati equation (those that correspond to a matrix pencil
 in the form:
 
-```none
+```matlab
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S]
     [ 0  0 0]    [B' S' R]
 ```
 
 ); 
-
-* your problem might also be a **singular control** problem (Lur'e
-equations, singular `R`); there is also a function to compute the
-optimal parameter gamma in **H\_infinity control**; 
 
 * you are not
 satisfied with Matlab's care, or wish to test a new algorithm; 
@@ -39,6 +35,10 @@ satisfied with Matlab's care, or wish to test a new algorithm;
 
 * your system is **not a descriptor system** (i.e., no `E` coefficient,
 just `\dot{x}=Ax`).
+
+* Note: your problem could also be a **singular control** problem (Lur'e
+equations, singular `R`); there is also a function to compute the
+optimal parameter gamma in **H\_infinity control**; 
 
 The current implementation is in **pure Matlab** (no mex-files), so it
 is **slower** that `care`. Rewriting the more intensive parts in Fortran
@@ -51,10 +51,12 @@ A *CanBasis* is a basis matrix for an n-dimensional subspace in the form
 `P*[I(n);X]`, where P is a permutation matrix and X is arbitrary.
 Usually the routines return CanBases in which each element of X is
 smaller (in modulus) than a certain configurable threshold.
+A CanBasis is stored as a struct `can` with fields `can.X` and `can.p` (permutation vector).
 
 A *SymBasis* is the structured version of a CanBasis for a Lagrangian
 subspace. P is a "symplectic swap matrix" (a symplectic analogous of a
 permutation), and X is Hermitian.
+A SymBasis is stored as a struct `sym` with fields `sym.X` and `sym.v` (boolean vector).
 
 You can represent subspaces, matrices and matrix pencils through
 canBases and symBases. See the basic theory in [MehP12]. (all will be
@@ -93,7 +95,7 @@ the thresholds hasn't been investigated thoroughly yet.
 ```
 solve a (possibly singular) generic control problem in the form:
 
-```none
+```matlab
     [ 0  I 0]    [0  A  B]
     [ -I 0 0]s - [A' Q  S],
     [ 0  0 0]    [B' S' R]
@@ -116,20 +118,20 @@ some modifications).
 Basic usage: building blocks
 ------
 
-`subspace2CanBasis` takes a subspace and returns X and a permutation P
-defining its CanBasis. `symplecticSubspace2SymBasis` takes a Lagrangian
-subspace and returns X and a vector v defining its SymBasis. The "real"
-P is obtained by `rowSwap(eye(2*n),v,'N')`, if needed.
+`canBasisFromSubspace` takes a subspace and returns X and a permutation P
+defining its CanBasis. `symBasisFromSymplecticSubspace` takes a Lagrangian
+subspace and returns its SymBasis. The associated permutation matrix
+P is obtained by `rowSwap(eye(2*n),sym.v,'N')`, if needed.
 
-You may also be interested in `symplecticPencil2SymBasis`,
-`hamiltonianPencil2SymBasis`, `evenPencil2SymBasis` (actually only works
-for even pencils in the form above, a generic even pencil does not have
+You may also be interested in `symBasisFromSymplecticPencil`,
+`symBasisFromHamiltonianPencil`, `symBasisFromEvenPencil` (actually only works
+for even pencils in the form above; a generic even pencil does not have
 a symBasis).
 
 Some random stuff that an end user might find interesting:
 `checkCAREInvariantSubspaceResidual` (computes and returns several error
-measures), `Hamiltonian2RiccatiCoefficients`, `hamiltonian` (should be
-named `RiccatiCoefficients2Hamiltonian`), `pirq` ((symplectic swap
+measures), `riccatiCoefficientsFromHamiltonian`, `hamiltonian` (should be
+named `hamiltonianFromRiccatiCoefficients`), `pirq` ((symplectic swap
 P)*R*Q factorization), `ChuLM07Carex` (returns the results of the
 experiments shown in [ChuLM07]), `randomLagrangianSubspace`.
 
