@@ -21,8 +21,8 @@ YJ=UJ(first,:);
 ZJ=UJ(second,:);
 
 U=[YH';ZJ'];
-[X,p]=subspace2CanBasis(U);
-[Ytilde Ztilde]=leftDual(X,p);
+can=canBasisFromSubspace(U);
+[Ytilde Ztilde]=leftDual(can);
 
 Ytilde=Ytilde';
 Ztilde=Ztilde';
