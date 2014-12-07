@@ -5,7 +5,6 @@ function [X,v]=defectCorrectionCARE(A,G,Q,X,v,steps)
 %
 % WORK IN PROGRESS, does not seem to work as of now
 
-
 H=hamiltonian(A,G,Q);
 
 %switches to Pi'*H*Pi, whose invariant subspace is [I;X]
@@ -14,7 +13,7 @@ H=rowSwap(rowSwap(H,v,'T')',v,'T')';
 
 %assertElementsAlmostEqual(0,subspace(H*[eye(size(X));X],[eye(size(X));X]));
 
-[A,G,Q]=Hamiltonian2RiccatiCoefficients(H);
+[A,G,Q]=riccatiCoefficientsFromHamiltonian(H);
 
 AA=A-G*X;
 QQ=Q+X*A+A'*X-X*G*X;
