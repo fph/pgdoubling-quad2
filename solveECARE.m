@@ -36,20 +36,20 @@ v=o.get('initialv',[]);
 
 [AA,EE]=evenPencil(A,B,Q,R,S);
 
-[S,v]=evenPencil2SymBasis(AA,EE,n,m,v);
-[S,v]=optimizeSymBasis(S,v);
+sym=symBasisFromEvenPencil(AA,EE,n,m,v);
+sym=optimizeSymBasis(sym);
 
 switch type
     case 'sda'
-        [AA,EE]=symBasis2HamiltonianPencil(S,v);
+        [AA,EE]=hamiltonianPencilFromSymBasis(sym);
         
         %Cayley transform
-        gamma=o.get('gamma',1.1*length(S)*max(max(abs(S)))); %this should ensure that gamma does not collide with some eigenvalues
+        gamma=o.get('gamma',1.1*length(sym.X)*max(max(abs(sym.X)))); %this should ensure that gamma does not collide with some eigenvalues
         if not(gamma>0)
             error 'gamma must be positive'
         end
         
-        [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
+        sym=symBasisFromSymplecticPencil(AA+gamma*EE,AA-gamma*EE);
     case 'sign'
         if o.isSet('gamma')
             error 'specifying gamma makes sense only for sda, not for matrix sign'
@@ -60,43 +60,43 @@ switch type
         %to check if instabilities in sda are really due to the Cayley
         %forth and back
         
-        [AA,EE]=symBasis2HamiltonianPencil(S,v);
+        [AA,EE]=hamiltonianPencilFromSymBasis(sym);
         
         %Cayley transform
-        gamma=o.get('gamma',1.1*length(S)*max(max(abs(S)))); %this should ensure that gamma does not collide with some eigenvalues
+        gamma=o.get('gamma',1.1*length(sym.X)*max(max(abs(sym.X)))); %this should ensure that gamma does not collide with some eigenvalues
         if not(gamma>0)
             error 'gamma must be positive'
         end
-        [S,v]=symplecticPencil2SymBasis(AA+gamma*EE,AA-gamma*EE);
+        sym=symBasisFromSymplecticPencil(AA+gamma*EE,AA-gamma*EE);
         gamma
 
         %now we undo the Cayley that we just did
         
-        [AA,EE]=symBasis2SymplecticPencil(S,v);
-        [S,v]=hamiltonianPencil2SymBasis(AA+EE,AA-EE); %reverses the Cayley --- scaling shouldn't be needed?
+        [AA,EE]=symplecticPencilFromSymBasis(sym);
+        sym=symBasisFromHamiltonianPencil(AA+EE,AA-EE); %reverses the Cayley --- scaling shouldn't be needed?
         
         type='sign';
     otherwise
         error 'unknown type'
 end
 
-[S,v]=doubling(S,v,type,o);
+sym=doubling(sym,type,o);
 
 switch type
     case 'sda'
-        n=length(S)/2;
+        n=length(sym.X)/2;
         first=1:n;second=n+1:2*n;
         
-        U=rowSwap([eye(n);-S(second,second);],v(second),'N');
+        U=rowSwap([eye(n);-sym.X(second,second);],sym.v(second),'N');
         [X invcond1]=rightLinSolve(U(first,:),U(second,:));
         
-        V=rowSwap([-S(first,first);eye(n)],v(first),'T');
+        V=rowSwap([-sym.X(first,first);eye(n)],sym.v(first),'T');
         [Y invcond2]=rightLinSolve(V(second,:),V(first,:));
     case 'sign'
         [A,E]=symBasis2HamiltonianPencil(S,v);
         
         %to be replaced by sth else structure-preserving...
-        n=length(S)/2;
+        n=length(sym.X)/2;
         first=1:n;second=n+1:2*n;
         [u s v]=svd(A+E);U=v(:,second);
         [u s v]=svd(A-E);V=v(:,second);
