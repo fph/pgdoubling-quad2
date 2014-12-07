@@ -16,16 +16,16 @@ assertElementsAlmostEqual(sort(abs(v1(isfinite(v1)))),sort(abs(v2)));
 
 %when v=0, we should recover the Hamiltonian (up to inverting two blocks)
 v=false(2*n,1);
-[X,v]=evenPencil2SymBasis(AA,EE,n,m,v);
-[Ah,Eh]=symBasis2HamiltonianPencil(X,v);
+sym=symBasisFromEvenPencil(AA,EE,n,m,v);
+[Ah,Eh]=hamiltonianPencilFromSymBasis(sym);
 K=abs(jay(2*n));
 assertVectorsAlmostEqual(Eh\Ah,K*H*K');
 
 %also when v is different...
 for tries=1:4 %if we try more, we stumble on a singular leading matrix
     v=logical(randi(2,2*n,1)-1);
-    [X,v]=evenPencil2SymBasis(AA,EE,n,m,v);
-    [Ah,Eh]=symBasis2HamiltonianPencil(X,v);
+    sym=symBasisFromEvenPencil(AA,EE,n,m,v);
+    [Ah,Eh]=hamiltonianPencilFromSymBasis(sym);
     K=abs(jay(2*n));
     assertVectorsAlmostEqual(Eh\Ah,K*H*K');
 end

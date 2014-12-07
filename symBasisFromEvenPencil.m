@@ -1,7 +1,7 @@
-function [X,v,invcond]=evenPencil2SymBasis(AA,EE,n,m,v)
+function [sym,invcond]=symBasisFromEvenPencil(AA,EE,n,m,v)
 %converts an even pencil to a symBasis
 %
-% [X,v,invcond]=evenPencil2SymBasis(AA,EE,n,m,v)
+% [sym,invcond]=symBasisFromEvenPencil(AA,EE,n,m,v)
 %
 % since we wish to allow more general pencils AA-sEE, we give n and m
 % explicitly
@@ -25,15 +25,17 @@ U=rowSwap(U,v,'N');
 
 [Xext invcond]=rightLinSolve(U(2*n+1:4*n,:),[U(1:2*n,:); AA(third,:)]);
 
-X=Xext(:,firstSecond);
+sym.X=Xext(:,firstSecond);
 
 %final check
-if norm(X-X','fro')/norm(X,'fro') > sqrt(eps)
+if norm(sym.X-sym.X','fro')/norm(sym.X,'fro') > sqrt(eps)
     warning('cbrpack:notSymplectic','the resulting matrix is numerically very far from Hermitian --- was your starting subspace symplectic?');
 end
 
 %symmetrize
-X=(X+X')/2;
+sym.X=(sym.X+sym.X')/2;
+sym.v = v;
+sym.origin='hamiltonianPencil'; %an even pencil "is" a Hamiltonian one, in this context
 
 if(invcond<sqrt(eps(class(U))))
     warning('cbrpack:illConditionedMatrix', 'symplecticSubspace2SymBasis: the matrix I am inverting has conditioning >1/sqrt(eps). This may be due to an ill-conditioned subspace or to a bad initial guess --- consider using the initial value heuristic instead');
