@@ -15,8 +15,10 @@ if not(strcmp(sym.origin,'hamiltonianPencil'))
 end
 sym.origin='symplecticSubspace';
 U=symplecticSubspaceFromSymBasis(sym);
-n=length(sym.X);
+n=length(sym.X)/2;
 first=1:n;
 second=n+1:2*n;
-E=U(first,:)';
-A=(jay(n)*U(second,:))';
+third=2*n+1:3*n;
+fourth=3*n+1:4*n;
+E=[U(first,:);-U(fourth,:)]';
+A=[U(second,:);-U(third,:)]';
