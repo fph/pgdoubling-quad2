@@ -13,8 +13,10 @@ function [sym,invcond]=symBasisFromEvenPencil(AA,EE,n,m,v)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-firstSecond=1:2*n;third=2*n+1:2*n+m;
-U=[EE(:,firstSecond)'; (AA(:,firstSecond)*jay(2*n))'];
+first = 1:n;
+second = n+1:2*n;
+third=2*n+1:2*n+m;
+U=[EE(:,first) AA(:,first) -AA(:,second) -EE(:,second)]';
 
 if not(exist('v','var')) || isempty(v)
     [v invcond1]=extendedSymBasisHeuristicPaper([U; AA(:,third)']);
@@ -22,10 +24,9 @@ end
 
 U=rowSwap(U,v,'N');
 
-
 [Xext invcond]=rightLinSolve(U(2*n+1:4*n,:),[U(1:2*n,:); AA(third,:)]);
 
-sym.X=Xext(:,firstSecond);
+sym.X=Xext(:,[first second]);
 
 %final check
 if norm(sym.X-sym.X','fro')/norm(sym.X,'fro') > sqrt(eps)

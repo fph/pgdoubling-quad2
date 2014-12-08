@@ -20,7 +20,6 @@ if not(exist('E','var')) || isempty(E)
     E=eye(2*n);
 end
 
-J=jay(2*n);
 first = 1:n;
 second = n+1:2*n;
 U=[E(:,first) A(:,first) -A(:,second) -E(:,second)]';
