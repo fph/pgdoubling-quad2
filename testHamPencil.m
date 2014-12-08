@@ -1,5 +1,5 @@
 function testHamPencil
-%tests pack/unpack symplectic pencils
+%tests pack/unpack Hamiltonian pencils
 reset(RandStream.getGlobalStream);
 
 n=10;
@@ -17,3 +17,12 @@ for tries=1:100
     
     assertElementsAlmostEqual(subspace([A';E'],[A2';E2']),0);
 end
+
+%makes sure that the transformation choice is one such that v=all zeros
+%corresponds to a positive-semidefinite sym.X when the signs are as in the
+%standard control problem
+[A, G, H] = carex(1);
+Ham = hamiltonian(A, G, H);
+sym = symBasisFromHamiltonianPencil(Ham);
+sym = symBasisFromSymBasis(sym,false(length(Ham)));
+assert(all(eig(sym.X)>-sqrt(eps)));

@@ -13,9 +13,14 @@ for i=1:50
     
     [vh invcondprev]=extendedSymBasisHeuristicOld(U);
     [vhp invcondprevp]=extendedSymBasisHeuristicPaper(U);
-        
-    EE=[U(1:n,:)' zeros(n+m,m)];
-    AA=[(jay(n)*U(n+1:2*n,:))' U(2*n+1:2*n+m,:)'];
+    
+    first = 1:n/2;
+    second = n/2+1:n;
+    third = n+1:3*n/2;
+    fourth = 3*n/2+1:2*n;
+    
+    EE=[U(first,:)' -U(fourth,:)' zeros(n+m,m)];
+    AA=[U(second,:)' -U(third,:)' U(2*n+1:2*n+m,:)'];
 %    size(AA),size(EE),size(v)
     
     S=warning('off','cbrpack:notSymplectic');
