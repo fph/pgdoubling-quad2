@@ -11,14 +11,19 @@ function [sym,invcond,swaps]=symBasisFromHamiltonianPencil(A,E,varargin)
 
 o=Options(varargin{:});
 
-n=length(A);
-
-if not(exist('E','var')) || isempty(E)
-    E=eye(n);
+n=length(A)/2;
+if not(n==round(n))
+    error 'This pencil does not have even size'
 end
 
-J=jay(n);
-U=[E'; (A*J)'];
+if not(exist('E','var')) || isempty(E)
+    E=eye(2*n);
+end
+
+J=jay(2*n);
+first = 1:n;
+second = n+1:2*n;
+U=[E(:,first) A(:,first) -A(:,second) -E(:,second)]';
 
 [sym,invcond,swaps]=symBasisFromSymplecticSubspace(U,o);
 sym.origin='hamiltonianPencil';
