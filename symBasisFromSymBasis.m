@@ -1,7 +1,7 @@
 function [symb]=symBasisFromSymBasis(symb,targetv)
 % updates a symBasis to a new specified "target" v
 %
-% [sym,targetv]=symBasis2SymBasis(symb,targetv)
+% sym = symBasis2SymBasis(symb,targetv)
 %
 % equivalent to symplecticSubspace2SymBasis(symBasis2SymplecticSubspace(symb),'swap',targetv);
 %
@@ -9,5 +9,5 @@ function [symb]=symBasisFromSymBasis(symb,targetv)
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-%crappy implementation for now...
+%crappy implementation for now... TODO: warn about this?
 symb = symBasisFromSymplecticSubspace(symplecticSubspaceFromSymBasis(symb),'swap',targetv);
