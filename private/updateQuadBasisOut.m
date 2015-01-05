@@ -19,8 +19,19 @@ third = ~v;
 % Householder transformation to put zeros in X(first, out)
 % this transformation should leave the subspace represented unaltered.
 [w beta s] = gallery('house', [X(out,out);X(first,out)]);
-scalar_product = w(1)'*X(out,first)+w(2:end)'*X(first,first);
-X(first, first) = X(first, first) - w(2:end)*beta*scalar_product;
+scalar_product = w(1)'*X(out,first)+w(2:end,1)'*X(first,first);
+X(first, first) = X(first, first) - w(2:end,1)*beta*scalar_product;
 X(out, first) = X(out, first) - w(1)*beta*scalar_product;
 X(first,out) = 0;
-X(out,out) = s;
+%X(out,out) = s; we omit this since it will be overwritten almost
+%immediately
+
+% real PPT update
+% note that we are pivoting *back* 1->0 in a symplectic PPT, so there is
+% an additional minus sign in row and column out
+X(out, out) = - 1 / s;
+X(out, first) = -X(out, first) / s;
+X(third, first) = X(third, first) + X(third, out)*X(out, first); %the minus and the division are already in the previous line
+X(third, out) = -X(third, out) / s;
+X(out, third) = 0;
+v(out) = false;
