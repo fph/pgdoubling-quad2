@@ -35,3 +35,5 @@ X(third, first) = X(third, first) + X(third, out)*X(out, first); %the minus and 
 X(third, out) = -X(third, out) / s;
 X(out, third) = 0;
 v(out) = false;
+
+invcond = 1;
