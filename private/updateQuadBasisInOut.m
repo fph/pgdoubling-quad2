@@ -40,7 +40,30 @@ X(in,third) = 0;
 X(in, in) = conj(s); %we can omit this since it will be overwritten
 
 % the actual ppt update
-%Delta = hypot(X(in,in)*X(out,out),X(in,out));
-%X(out,first) = 
+gamma = X(in,in);
+alpha = X(out,out);
+beta = X(in,out);
+Delta = hypot(alpha*gamma,beta);
 
+X(third,first) = X(third,first) - X(third,[out,in])/Delta^2*[alpha*gamma^2 conj(beta); -alpha*beta*gamma alpha^2*gamma]*X([out,in],first);
 
+% the two additional minuses wrt notes are there to correct signs after the
+% in->out exchange
+[X(out,first),X(in,first)] = deal(-(gamma^2*alpha*X(out,first) + conj(beta)*X(in,first)) / Delta^2,...
+                    (-beta*X(out,first) + alpha*X(in,first)) / Delta);
+[X(third,out) X(third,in)] = deal(-(gamma*X(third,out)-beta*X(third,in))/Delta,...
+   (conj(beta)*X(third,out)+alpha^2*gamma*X(third,in))/Delta^2);
+
+%...as is the omitted minus in X(out,in)
+X(out,out) = -gamma/Delta;
+X(in,in) = -alpha/Delta;
+X(in,out) = 0;
+X(out,in) = conj(beta)/Delta^2;
+
+X(first,in) = 0;
+X(out,third) = 0;
+
+v(out) = false;
+v(in) = true;
+
+%TODO: invcond
