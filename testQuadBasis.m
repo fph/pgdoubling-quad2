@@ -35,8 +35,9 @@ quad.v = [true true false false];
 sym = symBasisFromQuadBasis(quad);
 [quad.X, quad.v] = updateQuadBasisInOut(quad.X,quad.v,3,2);
 sym2 = symBasisFromQuadBasis(quad);
+symForward = symBasisFromSymBasis(sym, sym2.v);
 
-sym.X,sym2.X
+sym2.X,symForward.X
 
 % randomized tests updateQuadBasisOut
 reset(RandStream.getGlobalStream);
