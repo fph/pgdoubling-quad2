@@ -33,7 +33,7 @@ X(out,out) = s; %we can omit this since it will be overwritten
 
 % Householder transformation to put zeros in X(in, third)
 [w beta s] = gallery('house', [X(in,in) X(in, third)]');
-scalar_product = X(third,in)*w(1) + X(third,third)*w(2:end);
+scalar_product = X(third,in)*w(1) + X(third,third)*w(2:end,1);
 X(third,third) = X(third,third) - scalar_product*beta*w(2:end,1)';
 X(third,in) = X(third,in) - scalar_product*beta*w(1)';
 X(in,third) = 0;
@@ -45,14 +45,14 @@ alpha = X(out,out);
 beta = X(in,out);
 Delta = hypot(alpha*gamma,beta);
 
-X(third,first) = X(third,first) - X(third,[out,in])/Delta^2*[alpha*gamma^2 conj(beta); -alpha*beta*gamma alpha^2*gamma]*X([out,in],first);
+X(third,first) = X(third,first) - X(third,[out,in])/Delta^2*[conj(alpha)*gamma*conj(gamma) conj(beta); -conj(alpha)*beta*conj(gamma) alpha*conj(alpha)*conj(gamma)]*X([out,in],first);
 
 % the two additional minuses wrt notes are there to correct signs after the
 % in->out exchange
-[X(out,first),X(in,first)] = deal(-(gamma^2*alpha*X(out,first) + conj(beta)*X(in,first)) / Delta^2,...
+[X(out,first),X(in,first)] = deal(-(gamma*conj(gamma)*conj(alpha)*X(out,first) + conj(beta)*X(in,first)) / Delta^2,...
                     (-beta*X(out,first) + alpha*X(in,first)) / Delta);
-[X(third,out) X(third,in)] = deal(-(gamma*X(third,out)-beta*X(third,in))/Delta,...
-   (conj(beta)*X(third,out)+alpha^2*gamma*X(third,in))/Delta^2);
+[X(third,out),X(third,in)] = deal(-(gamma*X(third,out)-beta*X(third,in))/Delta,...
+   (conj(beta)*X(third,out)+alpha*conj(alpha)*conj(gamma)*X(third,in))/Delta^2);
 
 %...as is the omitted minus in X(out,in)
 X(out,out) = -gamma/Delta;
