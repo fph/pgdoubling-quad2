@@ -30,14 +30,13 @@ symForward = symBasisFromSymBasis(sym, sym2.v);
 assertElementsAlmostEqual(symForward.X, sym2.X);
 
 %test updateQuadBasisInOut
-quad.X = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16]; %+1i*rand(4);
+quad.X = [1 2 3 4; 5 6 7 8; 9 10 11 12; 13 14 15 16] +1i*rand(4);
 quad.v = [true true false false];
 sym = symBasisFromQuadBasis(quad);
 [quad.X, quad.v] = updateQuadBasisInOut(quad.X,quad.v,3,2);
 sym2 = symBasisFromQuadBasis(quad);
 symForward = symBasisFromSymBasis(sym, sym2.v);
-
-sym2.X,symForward.X
+assertElementsAlmostEqual(symForward.X, sym2.X);
 
 % randomized tests updateQuadBasisOut
 reset(RandStream.getGlobalStream);
@@ -69,3 +68,22 @@ for i = 1:50
     assertElementsAlmostEqual(symForward.X, sym2.X);
 end
 
+% randomized tests updateQuadBasiIn
+reset(RandStream.getGlobalStream);
+n = 5;
+for i = 1:50
+    quad.X = rand(n) + 1i*rand(n);
+    quad.v = logical(randi([0,1],n,1));
+    in = randi(n);
+    out = randi(n);
+    if in == out
+        continue;
+    end
+    quad.v(in) = false;
+    quad.v(out) = true;
+    sym = symBasisFromQuadBasis(quad);
+    [quad.X, quad.v] = updateQuadBasisInOut(quad.X,quad.v,in,out);
+    sym2 = symBasisFromQuadBasis(quad);
+    symForward = symBasisFromSymBasis(sym, sym2.v);
+    assertElementsAlmostEqual(symForward.X, sym2.X);
+end
