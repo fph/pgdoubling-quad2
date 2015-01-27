@@ -45,6 +45,8 @@ alpha = X(out,out);
 beta = X(in,out);
 Delta = hypot(alpha*gamma,beta);
 
+invcond = norm([-alpha conj(beta);beta gamma])*norm([gamma -conj(beta); -beta -alpha])/Delta^2;
+
 X(third,first) = X(third,first) - X(third,[out,in])/Delta^2*[conj(alpha)*gamma*conj(gamma) conj(beta); -conj(alpha)*beta*conj(gamma) alpha*conj(alpha)*conj(gamma)]*X([out,in],first);
 
 % the two additional minuses wrt notes are there to correct signs after the
@@ -65,5 +67,3 @@ X(out,third) = 0;
 
 v(out) = false;
 v(in) = true;
-
-%TODO: invcond
