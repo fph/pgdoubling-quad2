@@ -7,7 +7,7 @@ function [symb,invcond,swaps]=optimizeSymBasis(symb,diagonalThreshold,offDiagona
 % transformations composed. If it is larger than some moderate value,
 % consider recomputing the basis
 %
-% TODO: the condition number probably ain't the right thing --- if X=[1e12
+% TODO: the condition number probably isn't the right thing --- if X=[1e12
 % 1; 1 1], then invcond is huge but the computation is perfectly
 % conditioned
 %

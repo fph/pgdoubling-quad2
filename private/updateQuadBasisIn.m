@@ -20,7 +20,7 @@ third = ~v; third(in) = false;
 
 % Householder transformation to put zeros in X(in, third)
 [w beta s] = gallery('house', [X(in,in) X(in, third)]');
-scalar_product = X(third,in)*w(1) + X(third,third)*w(2:end);
+scalar_product = X(third,in)*w(1) + X(third,third)*w(2:end,1);
 X(third,third) = X(third,third) - scalar_product*beta*w(2:end,1)';
 X(third,in) = X(third,in) - scalar_product*beta*w(1)';
 X(in,third) = 0;
