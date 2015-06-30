@@ -4,7 +4,7 @@ reset(RandStream.getGlobalStream);
 
 for dt = [2 10 20]
     for odt = dt+[4 20 40]
-        for trie = 1:30
+        for trie = 1:25
             n=9;
             quad.X = randn(n) .* exp(4*randn(n)); quad.X = quad.X + quad.X';
             quad.v = randi(2,n,1)==1;

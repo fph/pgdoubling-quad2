@@ -23,7 +23,6 @@ for k=1:40
    U = randn(40,13).*exp(randn(40,13));
    can = canBasisFromSubspace(U, 'threshold', 1.5);
    assert(all(all(abs(can.X)<1.5)));
-   newcan = canBasisFromSubspace(U);
-   assertEqual(newcan.p,can.p);
-   assert(all(all(abs(newcan.X)<1.5)));
+   newcan = canBasisFromSubspace(U,'threshold',20);
+   assert(all(all(abs(newcan.X)<20)));
 end
