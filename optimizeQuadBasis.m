@@ -1,4 +1,4 @@
-function [quad,invcond,swaps]=optimizeQuadBasis(quad,diagonalThreshold,offDiagonalThreshold,maxSwaps)
+function [quad,invcond,swaps]=optimizeQuadBasis(quad,threshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
 % [quad,swaps,invcond]=optimizeQuadBasis(quad,diagonalThreshold,offdiagonalThreshold,maxSwaps)
@@ -7,7 +7,7 @@ function [quad,invcond,swaps]=optimizeQuadBasis(quad,diagonalThreshold,offDiagon
 % transformations composed. If it is larger than some moderate value,
 % consider recomputing the basis
 %
-% diagonalThreshold and offDiagonalThreshold are hard limits on the
+% threshold is a hard limits on the
 % possible magnitudes of the elements of symBasisFromQuadBasis(quad).
 %
 % TODO: the condition number probably isn't the right thing --- (see other
@@ -18,20 +18,12 @@ function [quad,invcond,swaps]=optimizeQuadBasis(quad,diagonalThreshold,offDiagon
 % see AUTHORS.txt and COPYING.txt for details
 % https://bitbucket.org/fph/pgdoubling
 
-if not(exist('diagonalThreshold','var')) || isempty(diagonalThreshold)
-    diagonalThreshold=2;
+if not(exist('threshold','var')) || isempty(threshold)
+    threshold=2;
 end
 
-if not(exist('offDiagonalThreshold','var')) || isempty(offDiagonalThreshold)
-    offDiagonalThreshold=diagonalThreshold + 1;
-end
-
-if diagonalThreshold<1+sqrt(eps(class(quad.X)))
+if threshold<1+sqrt(eps(class(quad.X)))
     error('PGDoubling:thresholdTooSmall','you can only hope to enforce thresholds S=1+sqrt(eps) or larger');
-end
-
-if offDiagonalThreshold<diagonalThreshold
-    error('PGDoubling:thresholdTooSmall','you can only hope to enforce thresholds T=S or larger');
 end
 
 if not(exist('maxSwaps','var')) || isempty(maxSwaps)
@@ -44,10 +36,10 @@ invcond=1;
 indices = 1:length(quad.X); %helper for Matlab indexing
 while(true)
     % TODO: use Natasa's heuristic instead of recomputing norms each time
-    % row norms of A
+    % row norms of C
     squaredRowNorms = sum(abs(quad.X(quad.v,quad.v)).^2,1);
     [maxSquaredRowNorm,maxi] = max(squaredRowNorms);
-    if maxSquaredRowNorm > diagonalThreshold
+    if maxSquaredRowNorm > threshold
         % I can't find how to avoid this index juggling --federico
         indicesInV = indices(quad.v);
         maxi = indicesInV(maxi);
@@ -55,17 +47,16 @@ while(true)
         swaps = swaps + 1;
     else
         squaredColumnNorms = sum(abs(quad.X(~quad.v,~quad.v)).^2,2);
-        [maxColumnNorm,maxj] = max(squaredColumnNorms);
-        if maxColumnNorm > diagonalThreshold
+        [maxSquaredColumnNorm,maxj] = max(squaredColumnNorms);
+        if maxSquaredColumnNorm > threshold
             indicesNotInV = indices(~quad.v);
             maxj = indicesNotInV(maxj);
             [quad.X, quad.v, stepcond] = updateQuadBasisIn(quad.X, quad.v, maxj);
             swaps = swaps + 1;
         else
-            dets = abs(quad.X(~quad.v,quad.v)).^2 + squaredColumnNorms*squaredRowNorms;
-            [maxvec, maxis] = max(dets);
+            [maxvec, maxis] = max(abs(quad.X(~quad.v,quad.v)));
             [maxval, maxj] = max(maxvec);
-            if maxval > offDiagonalThreshold^2
+            if maxval > threshold
                 indicesNotInV = indices(~quad.v);
                 maxi = indicesNotInV(maxis(maxj));
                 indicesInV = indices(quad.v);
