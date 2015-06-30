@@ -1,7 +1,7 @@
 function [symb,invcond,swaps]=optimizeSymBasis(symb,diagonalThreshold,offDiagonalThreshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
-% [symb,swaps,invcond]=optimizeSymBasis(symb,diagonalThreshold,offdiagonalThreshold,maxSwaps)
+% [symb,invcond,swaps]=optimizeSymBasis(symb,diagonalThreshold,offdiagonalThreshold,maxSwaps)
 %
 % invcond is the inverse condition number of all the performed
 % transformations composed. If it is larger than some moderate value,
