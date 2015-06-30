@@ -4,7 +4,7 @@ reset(RandStream.getGlobalStream);
 
 n=5;
 A=randn(n);
-A=A-1.1*max(eig(A))*eye(n); %creates a stable A
+A=A-1.1*max(abs(eig(A)))*eye(n); %creates a stable A
 Q=randn(n);
 Q=Q*Q';
 A=vpa(A);
