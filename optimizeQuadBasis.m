@@ -36,19 +36,20 @@ invcond=1;
 indices = 1:length(quad.X); %helper for Matlab indexing
 while(true)
     % TODO: use Natasa's heuristic instead of recomputing norms each time
-    % row norms of C
-    squaredRowNorms = sum(abs(quad.X(quad.v,quad.v)).^2,1);
-    [maxSquaredRowNorm,maxi] = max(squaredRowNorms);
-    if maxSquaredRowNorm > threshold
+    % column norms of C
+    squaredColNorms = sum(abs(quad.X(quad.v,quad.v)).^2,1);
+    [maxSquaredColNorm,maxi] = max(squaredColNorms);
+    if maxSquaredColNorm > threshold
         % I can't find how to avoid this index juggling --federico
         indicesInV = indices(quad.v);
         maxi = indicesInV(maxi);
         [quad.X, quad.v, stepcond] = updateQuadBasisOut(quad.X, quad.v, maxi);
         swaps = swaps + 1;
     else
-        squaredColumnNorms = sum(abs(quad.X(~quad.v,~quad.v)).^2,2);
-        [maxSquaredColumnNorm,maxj] = max(squaredColumnNorms);
-        if maxSquaredColumnNorm > threshold
+        % row norms of B
+        squaredRowNorms = sum(abs(quad.X(~quad.v,~quad.v)).^2,2);
+        [maxSquaredRowNorm,maxj] = max(squaredRowNorms);
+        if maxSquaredRowNorm > threshold
             indicesNotInV = indices(~quad.v);
             maxj = indicesNotInV(maxj);
             [quad.X, quad.v, stepcond] = updateQuadBasisIn(quad.X, quad.v, maxj);
