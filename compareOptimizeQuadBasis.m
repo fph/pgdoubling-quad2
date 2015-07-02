@@ -21,7 +21,7 @@ for threshold = [1.1 2 10 20]
         U4 = symplecticSubspaceFromQuadBasis(quadRecomputed);
         symRecomputed = symBasisFromSymBasis(sym,symOpt.v);
         U5 = symplecticSubspaceFromSymBasis(symRecomputed);
-        [subspace(U,U2),subspace(U,U3),subspace(U,U4),subspace(U,U5),invcond2,invcond3]
+        [subspace(U,U2),subspace(U,U3),subspace(U,U4),subspace(U,U5),invcond2,invcond3,cond(U)]
 
         %%%
         
