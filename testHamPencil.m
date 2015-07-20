@@ -24,5 +24,5 @@ end
 [A, G, H] = carex(1);
 Ham = hamiltonian(A, G, H);
 sym = symBasisFromHamiltonianPencil(Ham);
-sym = symBasisFromSymBasis(sym,false(length(Ham)));
+sym = symBasisFromSymBasis(sym,false(length(Ham),1));
 assert(all(eig(sym.X)>-sqrt(eps)));

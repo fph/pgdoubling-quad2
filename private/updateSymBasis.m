@@ -3,7 +3,7 @@ function [X, newv, invcond]=updateSymBasis(X, oldv, inout)
 %
 % [X, newv, invcond]=updateSymbBasis(X, oldv, inout)
 %
-% computes a new representation of the same subspaces using a different newv
+% computes a new representation of the same subspace using a different v
 % newv is the same as oldv, but with the bits at the indices in "inout" flipped
 %
 % it is effectively a PPT [Tsatsomeros, LAA '00] + some sign swaps
