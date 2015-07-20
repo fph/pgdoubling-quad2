@@ -20,5 +20,5 @@ first=1:n;
 second=n+1:2*n;
 third=2*n+1:3*n;
 fourth=3*n+1:4*n;
-E=[U(first,:);-U(fourth,:)]';
-A=[U(second,:);-U(third,:)]';
+E=[-U(second,:);-U(third,:)]';
+A=[U(first,:);U(fourth,:)]';
