@@ -16,7 +16,7 @@ function [sym,invcond]=symBasisFromEvenPencil(AA,EE,n,m,v)
 first = 1:n;
 second = n+1:2*n;
 third=2*n+1:2*n+m;
-U=[EE(:,first) AA(:,first) -AA(:,second) -EE(:,second)]';
+U=[AA(:,first) -EE(:,first) -EE(:,second) AA(:,second)]';
 
 if not(exist('v','var')) || isempty(v)
     [v invcond1]=extendedSymBasisHeuristicPaper([U; AA(:,third)']);
