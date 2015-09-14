@@ -1,18 +1,8 @@
-function [quad,invcond,swaps,iterations]=optimizeQuadBasis(quad,threshold,maxSwaps)
+function [absdets,maxnorms]=optimizeQuadBasis(quad,threshold,maxSwaps)
 % given a symBasis, reduces it so that all elements are below a threshold
 %
-% [quad,swaps,invcond]=optimizeQuadBasis(quad,diagonalThreshold,offdiagonalThreshold,maxSwaps)
-%
-% invcond is the inverse condition number of all the performed
-% transformations composed. If it is larger than some moderate value,
-% consider recomputing the basis
-%
-% threshold is a hard limits on the
-% possible magnitudes of the elements of symBasisFromQuadBasis(quad).
-%
-% TODO: the condition number probably isn't the right thing --- (see other
-% bases)
-% conditioned
+% A version of optimizeQuadBasis that returns the sequence of |det(X)| and
+% max |X| along the steps, for plotting.
 %
 % (c) 2015-2015 F. Poloni <poloni@math.tu-berlin.de> and others
 % see AUTHORS.txt and COPYING.txt for details
@@ -30,13 +20,20 @@ if not(exist('maxSwaps','var')) || isempty(maxSwaps)
     maxSwaps=20*size(quad.X,2);
 end
 
+absdets = [];
+maxnorms = [];
 %optimization
 swaps=0;
 invcond=1;
-iterations=0;
 indices = 1:length(quad.X); %helper for Matlab indexing
 while(true)
-    iterations = iterations + 1;
+    sym = symBasisFromQuadBasis(quad);
+    absdets = [absdets abs(det(sym.X))];
+    maxnorms = [maxnorms max(max(abs(sym.X)))];
+    subplot(2,2,1);imagesc(abs(sym.X),[0 2*threshold]);
+    subplot(2,2,2);plot(maxnorms);xlabel('iteration');ylabel('max |X|');
+    subplot(2,2,3);semilogy(absdets);xlabel('iteration');ylabel('|det X|');
+    drawnow;
     % TODO: use Natasa's heuristic instead of recomputing norms each time
     % column norms of C
     squaredColNorms = sum(abs(quad.X(quad.v,quad.v)).^2,1);
