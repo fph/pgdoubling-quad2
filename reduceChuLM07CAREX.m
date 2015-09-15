@@ -13,7 +13,7 @@ canUseFactors = [1 2 5 6 7 8 9 10 11 12 13 14 15 16 19 20 21 22 23 24 25 26 27 2
 
 fprintf(1,'---- We use the factors B and C defining G and Q ----\n\n')
 
-fprintf(1,'Example & $k$ & $t$ & $r$ & Subspace distance & $\\max|(X_{ij})|$ & $\\max|(X_{\\opt})_{ij}|$ & Iterations \\\\\n\\hline\n')
+fprintf(1,'Example & $k$ & $t$ & $r$ & $\\kappa(\\mathcal{G}_{\\mathcal{I}}(X))$ & Subspace distance & $\\max|(X_{ij})|$ & $\\max|(X_{\\opt})_{ij}|$ & $\\texttt{it}$ \\\\\n\\hline\n')
 
 for i=canUseFactors
 
@@ -45,13 +45,13 @@ for i=canUseFactors
     Uopt = symplecticSubspaceFromQuadBasis(quadOpt);
     symOpt = symBasisFromQuadBasis(quadOpt);
 
-    fprintf(1, '%d & %d & %d & %5.3e & %5.3f & %5.3f & %d\\\\\n',...
-        parout(1),parout(2),parout(3),subspace(U,Uopt), max(max(abs(sym.X))), max(max(abs(symOpt.X))), iterations)
+    fprintf(1, '%d & %d & %d & %1.2e & %1.2e & %5.3e & %5.3f & %d\\\\\n',...
+        parout(1),parout(2),parout(3),cond(U),subspace(U,Uopt), max(max(abs(sym.X))), max(max(abs(symOpt.X))), iterations)
 end
 
 fprintf(1,'\n\n---- We use the Cholesky factors of G and Q ----\n\n')
 
-fprintf(1,'Example & $k$ & $t$ & $r$ & Subspace distance & $\\max|(X_{ij})|$ & $\\max|(X_{\\opt})_{ij}|$ & Iterations \\\\\n\\hline\n')
+fprintf(1,'Example & $k$ & $t$ & $r$ & $\\kappa(\\mathcal{G}_{\\mathcal{I}}(X))$ & Subspace distance & $\\max|(X_{ij})|$ & $\\max|(X_{\\opt})_{ij}|$ & \\texttt{it} \\\\\n\\hline\n')
 
 for i=canUseBoth
 
@@ -73,8 +73,8 @@ for i=canUseBoth
     Uopt = symplecticSubspaceFromQuadBasis(quadOpt);
     symOpt = symBasisFromQuadBasis(quadOpt);
 
-    fprintf(1, '%d & %d & %d & %5.3e & %5.3f & %5.3f & %d\\\\\n',...
-        parout(1),parout(2),parout(3),subspace(U,Uopt), max(max(abs(sym.X))), max(max(abs(symOpt.X))), iterations)
+    fprintf(1, '%d & %d & %d & %5.3e & %5.3e & %5.3f & %5.3f & %d\\\\\n',...
+        parout(1),parout(2),parout(3),cond(U),subspace(U,Uopt), max(max(abs(sym.X))), max(max(abs(symOpt.X))), iterations)
 end
 
 end
