@@ -1,12 +1,10 @@
 # PGDoubling-quad
 
-This is a fork of [pgdoubling](https://bitbucket.org/fph/pgdoubling/) in which we introduce the ability to work with *quad-bases*, that is, using a triple $(A,B,C) \in \mathbb{C}^{(n-k)\times k} \times \mathbb{C}^{(n-k)\times t} \times \mathbb{C}^{r\times k}$ to represent the quasidefinite matrix
-$$
-X=\begin{bmatrix}
--C^*C & A^*\\
-A & BB^*
-\end{bmatrix}
-$$
+This is a fork of [pgdoubling](https://bitbucket.org/fph/pgdoubling/) in which we introduce the ability to work with *quad-bases*, that is, using a triple (A,B,C) \in ℂ^{(n-k) × k} × ℂ^{(n-k) × t} × ℂ^{r × k} to represent the quasidefinite matrix
+```
+X=[ -C^T*C  A^T   ]
+  [   A     B*B^T ]
+```
 appearing in the context of principal pivot transforms and permuted Riccati bases of Lagrangian subspaces.
 
 The theory behind these algorithms is described in [Poloni, Strabić, *Principal pivot transforms of quasidefinite matrices and semidefinite Lagrangian subspaces* (provisional title, still to be submitted)].
