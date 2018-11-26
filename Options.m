@@ -22,9 +22,10 @@ classdef Options < handle
             % around.
             %
 
+            o.values_=struct();
+            o.used_=struct();
+            
             if nargin==0
-                o.values_=struct();
-                o.used_=struct();
                 return
             end
             index=1;            
