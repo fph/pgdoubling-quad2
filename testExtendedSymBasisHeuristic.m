@@ -19,14 +19,12 @@ for i=1:50
     third = n+1:3*n/2;
     fourth = 3*n/2+1:2*n;
     
-    EE=[U(first,:)' -U(fourth,:)' zeros(n+m,m)];
-    AA=[U(second,:)' -U(third,:)' U(2*n+1:2*n+m,:)'];
+    EE=[-U(second,:)' -U(third,:)' zeros(n+m,m)];
+    AA=[U(first,:)' U(fourth,:)' U(2*n+1:2*n+m,:)'];
 %    size(AA),size(EE),size(v)
     
-    S=warning('off','cbrpack:notSymplectic');
     [sym,invcond]=symBasisFromEvenPencil(AA,EE,n/2,m,vh);
     [symp,invcondp]=symBasisFromEvenPencil(AA,EE,n/2,m,vhp);
-    warning(S);
     
     assertElementsAlmostEqual(invcond,1);
     assertElementsAlmostEqual(invcondp,1);

@@ -5,9 +5,9 @@ reset(RandStream.getGlobalStream);
 for threshold = [1.1 2 10 20]
     for trie = 1:25
         n=100;
-%        quad.X = randn(n) .* exp(4*randn(n));
-        quad.X = randn(n) .* exp(3*randn(n));
         quad.v = randi(2,n,1)==1;
+        %        quad.X = randn(n) .* exp(4*randn(n));
+        %        quad.X = randn(n) .* exp(3*randn(n));
         [quadOpt,invcond2] = optimizeQuadBasis(quad, threshold);
         U = symplecticSubspaceFromQuadBasis(quad);
         U2 = symplecticSubspaceFromQuadBasis(quadOpt);
