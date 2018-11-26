@@ -1,3 +1,4 @@
 ==Major contributions==
 
-* Federico Poloni <poloni@math.tu-berlin.de>
+* Federico Poloni <federico.poloni@unipi.it>, formerly <poloni@math.tu-berlin.de>
+* Nataša Strabić, formerly <natasa.strabic@manchester.ac.uk>
