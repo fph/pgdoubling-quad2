@@ -22,7 +22,7 @@ end
 
 first = 1:n;
 second = n+1:2*n;
-U=[E(:,first) A(:,first) -A(:,second) -E(:,second)]';
+U=[A(:,first) -E(:,first) -E(:,second) A(:,second)]';
 
 [sym,invcond,swaps]=symBasisFromSymplecticSubspace(U,o);
 sym.origin='hamiltonianPencil';

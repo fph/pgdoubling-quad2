@@ -44,7 +44,7 @@ while(true)
     maxi = maxis(maxj);
     % the three lines above compute maxi,maxj = argmax(abs(X(i,j)))
     
-    [maxdiag, maxdiagPos] = max(diag(symb.X));
+    [maxdiag, maxdiagPos] = max(abs(diag(symb.X)));
     if maxdiag > diagonalThreshold
         [symb.X,symb.v,stepcond] = updateSymBasis(symb.X,symb.v,maxdiagPos);
         swaps = swaps+1;

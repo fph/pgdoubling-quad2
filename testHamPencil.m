@@ -21,8 +21,8 @@ end
 %makes sure that the transformation choice is one such that v=all zeros
 %corresponds to a positive-semidefinite sym.X when the signs are as in the
 %standard control problem
-[A, G, H] = carex(1);
+[A, G, H] = carex(1); %not all CAREX problems work here; some have indefinite H, some do not have a symBasis with v=0
 Ham = hamiltonian(A, G, H);
 sym = symBasisFromHamiltonianPencil(Ham);
-sym = symBasisFromSymBasis(sym,false(length(Ham)));
+sym = symBasisFromSymBasis(sym,false(length(Ham),1));
 assert(all(eig(sym.X)>-sqrt(eps)));
